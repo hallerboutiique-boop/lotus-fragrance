@@ -14,7 +14,7 @@
 .category-heading h3 { font:500 clamp(28px,3vw,42px)/1.05 'Cormorant Garamond',serif; margin:0; letter-spacing:-.02em; }
 .category-heading small { margin-left:auto; color:#999; font:10px 'DM Mono',monospace; white-space:nowrap; }
 .fragrance-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:34px 24px; }
-.fragrance-card { min-width:0; border:1px solid #282828; background:var(--bg); display:flex; flex-direction:column; }
+.fragrance-card { min-width:0; border:0; background:var(--bg); display:flex; flex-direction:column; }
 .fragrance-photo { display:grid; place-items:center; position:relative; width:100%; aspect-ratio:1; padding:0; border:0; background:var(--bg); overflow:hidden; cursor:pointer; }
 .fragrance-photo img { width:100%; height:100%; object-fit:contain; min-height:0; max-height:100%; mix-blend-mode:lighten; mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent),linear-gradient(to bottom,transparent,#000 6%,#000 94%,transparent); mask-composite:intersect; }
 .fragrance-photo>span { position:absolute; bottom:12px; right:14px; color:#eee; font:9px 'DM Mono',monospace; background:#111c; border:1px solid #ffffff30; padding:8px 10px; }
