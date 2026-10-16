@@ -54,7 +54,15 @@
   const select=document.createElement('select');select.id='site-language';select.setAttribute('aria-label',labels[column]);
   const flag=document.createElement('span');flag.className='language-flag';flag.textContent=languages[column][1];flag.setAttribute('aria-hidden','true');
   for(const [code,flag,name] of languages){const option=new Option(`${flag} ${name}`,code);option.lang=code;option.dir=code==='ar'?'rtl':'ltr';option.selected=code===language;select.add(option)}
-  bar.append(flag,select);
+  const toggle=document.createElement('button');toggle.type='button';toggle.id='language-toggle';toggle.className='language-toggle';toggle.setAttribute('aria-label',labels[column]);toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls','language-menu');toggle.append(flag);
+  const menu=document.createElement('div');menu.id='language-menu';menu.className='language-menu';menu.hidden=true;menu.setAttribute('role','group');menu.setAttribute('aria-label',labels[column]);
+  const choose=code=>{try{localStorage.setItem('lotus-language',code)}catch{}const next=new URL(location.href);next.searchParams.set('lang',code);location.assign(next.href)};
+  const close=()=>{menu.hidden=true;toggle.setAttribute('aria-expanded','false')};
+  for(const [code,emoji,name] of languages){const button=document.createElement('button');button.type='button';button.lang=code;button.dir=code==='ar'?'rtl':'ltr';button.textContent=emoji+' '+name;button.setAttribute('aria-pressed',String(code===language));button.onclick=()=>choose(code);menu.append(button)}
+  toggle.onclick=()=>{menu.hidden=!menu.hidden;toggle.setAttribute('aria-expanded',String(!menu.hidden))};
+  document.addEventListener('click',event=>{if(!bar.contains(event.target))close()});
+  bar.addEventListener('keydown',event=>{if(event.key==='Escape'){close();toggle.focus()}if(event.key==='ArrowDown'&&event.target===toggle){event.preventDefault();menu.hidden=false;toggle.setAttribute('aria-expanded','true');menu.querySelector('button').focus()}});
+  select.hidden=true;bar.append(toggle,menu,select);
   const header=document.querySelector('.topbar,.product-header');if(header)header.append(bar);else document.body.prepend(bar);
   select.addEventListener('change',()=>{
    // Reload intentionally keeps the existing handlers and cart state intact.
