@@ -1,5 +1,5 @@
 .language-bar{position:absolute;left:4.5vw;top:50%;transform:translateY(-50%);width:44px;height:44px;z-index:15;display:grid;place-items:center;direction:ltr;background:none;border:0;padding:0}
-.language-flag{font:26px/1 Arial,sans-serif;pointer-events:none}.language-bar select{position:absolute;inset:0;width:44px;height:44px;opacity:0;cursor:pointer;font-size:16px}.language-bar:focus-within{outline:2px solid #fff;outline-offset:2px;border-radius:4px}
+.language-flag{font:26px/1 Arial,sans-serif;pointer-events:none}.language-bar select{position:absolute;inset:0;width:44px;height:44px;opacity:0;cursor:pointer;font-size:16px;background:#000;color:#fff;color-scheme:dark}.language-bar option{background:#000;color:#fff}.language-bar:focus-within{outline:2px solid #fff;outline-offset:2px;border-radius:4px}
 .product-header{position:relative;min-height:164px}.product-header>a:first-child{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}.product-header>nav{margin-left:auto}
 body>.language-bar{top:24px;transform:none}
 @media(min-width:1101px){html body .topbar>nav{margin-left:64px}}
