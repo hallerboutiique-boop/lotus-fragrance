@@ -20,6 +20,6 @@ for(const [index,language] of ['it','en','de','fr','es','ar'].entries()){
  assert.equal(api.translate('Lattafa · Profumi arabi da uomo'),language==='it'?'Lattafa · Profumi arabi da uomo':'Lattafa · '+api.translate('Profumi arabi da uomo'));
 }
 for(const file of ['index.html','product.html','admin.html','catalog-editor.html']){
- const html=fs.readFileSync(__dirname+'/'+file,'utf8');assert.ok(html.includes('src="i18n-data.js?v=1"'));assert.ok(html.includes('src="i18n.js?v=1"'));assert.ok(html.includes('href="i18n.css?v=1"'));
+ const html=fs.readFileSync(__dirname+'/'+file,'utf8');assert.ok(html.includes('src="i18n-data.js?v=1"'));assert.ok(html.includes('src="i18n.js?v=1"'));assert.ok(html.includes('href="i18n.css?v=2"'));
 }
 console.log('i18n: six complete dictionaries, nine product descriptions/notes, dynamic messages, RTL, EUR and page integration passed.');
