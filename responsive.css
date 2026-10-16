@@ -1,6 +1,9 @@
 /* Device-sized layouts, loaded after the campaign styling. */
 html { scroll-padding-top: 24px; }
 img { max-width: 100%; }
+html body .topbar { height: 188px; }
+html body .brand-logo { width: 250px; height: 188px; }
+html body .brand-logo img { width: 250px; height: 188px; margin-top: 0; object-fit: contain; }
 .hero > *, .product-grid > *, .product-bottom > *, footer > * { min-width: 0; }
 button, a, input { touch-action: manipulation; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
@@ -10,9 +13,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .coupon input { min-width: 0; }
 .cart-total, .checkout, .payment-note { flex-shrink: 0; }
 @media (max-width: 1100px) {
-  html body .topbar { height: 172px; padding: 0 24px 40px; }
-  html body .brand-logo, html body .brand-logo img { width: 160px; height: 130px; }
-  html body .brand-logo { top: 66px; }
+  html body .topbar { height: 204px; padding: 0 24px 44px; }
+  html body .brand-logo, html body .brand-logo img { width: 210px; height: 160px; }
+  html body .brand-logo { top: 80px; }
   html body .topbar nav { display: flex; position: absolute; bottom: 0; left: 0; right: 0; height: 44px; justify-content: center; align-items: center; gap: 32px; border-top: 1px solid var(--line); }
   html body .header-actions { margin-left: auto; }
   html body .hero { grid-template-columns: 1fr 1fr; min-height: 620px; }
@@ -26,9 +29,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   .delivery-grid { gap: 28px; }
 }
 @media (max-width: 760px) {
-  html body .topbar { height: 144px; padding: 0 20px 44px; }
-  html body .brand-logo { left: 20px; top: 50px; transform: translateY(-50%); width: 126px; height: 96px; }
-  html body .brand-logo img { width: 126px; height: 96px; }
+  html body .topbar { height: 176px; padding: 0 20px 44px; }
+  html body .brand-logo { left: 20px; top: 66px; transform: translateY(-50%); width: 160px; height: 128px; }
+  html body .brand-logo img { width: 160px; height: 128px; }
   html body .topbar nav { gap: 0; justify-content: space-evenly; }
   html body .topbar nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 7px; font-size: 10px; letter-spacing: .06em; }
   .cart-button { min-height: 44px; padding: 0 12px; }
@@ -84,8 +87,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 }
 @media (max-width: 360px) {
   html body .topbar { padding-left: 14px; padding-right: 14px; }
-  html body .brand-logo { left: 14px; width: 112px; }
-  html body .brand-logo img { width: 112px; }
+  html body .brand-logo { left: 14px; width: 144px; }
+  html body .brand-logo img { width: 144px; }
   .header-actions { gap: 6px; }
   .product-grid { grid-template-columns: minmax(0, 1fr); }
   .product { min-height: 365px; }
