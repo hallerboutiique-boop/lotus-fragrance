@@ -52,9 +52,9 @@
   const bar=document.createElement('div');bar.className='language-bar';bar.dataset.noTranslate='';
   const labels=['Lingua','Language','Sprache','Langue','Idioma','اللغة'];
   const select=document.createElement('select');select.id='site-language';select.setAttribute('aria-label',labels[column]);
-  const flag=document.createElement('span');flag.className='language-flag';flag.textContent=languages[column][1];flag.setAttribute('aria-hidden','true');
+  const globe=document.createElement('span');globe.className='language-globe';globe.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18M5.6 6.5h12.8M5.6 17.5h12.8"/></svg>';globe.setAttribute('aria-hidden','true');
   for(const [code,flag,name] of languages){const option=new Option(`${flag} ${name}`,code);option.lang=code;option.dir=code==='ar'?'rtl':'ltr';option.selected=code===language;select.add(option)}
-  const toggle=document.createElement('button');toggle.type='button';toggle.id='language-toggle';toggle.className='language-toggle';toggle.setAttribute('aria-label',labels[column]);toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls','language-menu');toggle.append(flag);
+  const toggle=document.createElement('button');toggle.type='button';toggle.id='language-toggle';toggle.className='language-toggle';toggle.setAttribute('aria-label',labels[column]);toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls','language-menu');toggle.append(globe);
   const menu=document.createElement('div');menu.id='language-menu';menu.className='language-menu';menu.hidden=true;menu.setAttribute('role','group');menu.setAttribute('aria-label',labels[column]);
   const choose=code=>{try{localStorage.setItem('lotus-language',code)}catch{}const next=new URL(location.href);next.searchParams.set('lang',code);next.hash='';location.assign(next.href)};
   const close=()=>{menu.hidden=true;toggle.setAttribute('aria-expanded','false')};
