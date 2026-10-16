@@ -1,5 +1,5 @@
 const products=[];let cart=[],commerceCatalog=[],checkoutSettings={checkoutEndpoint:null,checkoutAllowedHosts:[]};
-const euro=n=>new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(n);
+const euro=n=>LotusI18n.money(n);
 const escapeCart=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function renderProducts(){}
 function saveCart(){try{localStorage.setItem('lotus-bundle-cart',JSON.stringify(cart))}catch{}}

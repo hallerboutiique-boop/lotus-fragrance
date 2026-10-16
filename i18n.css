@@ -1,0 +1,9 @@
+.language-bar{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:7px 4.5vw;background:#050505;color:#ddd;border-bottom:1px solid #222;font:12px/1.4 Manrope,Arial,sans-serif;position:relative;z-index:15}
+.language-bar label{font:inherit;color:#aaa}.language-bar select{width:150px;max-width:65vw;min-height:36px;padding:6px 10px;background:#111;color:#f5f5f5;border:1px solid #555;border-radius:4px;font:14px/1.4 Manrope,Arial,sans-serif;cursor:pointer}.language-bar select:focus-visible{outline:2px solid #fff;outline-offset:3px}
+html[dir=rtl] body{font-family:Tahoma,Arial,sans-serif}html[dir=rtl] h1,html[dir=rtl] h2,html[dir=rtl] h3,html[dir=rtl] h4,html[dir=rtl] em{font-family:Tahoma,Arial,sans-serif;font-style:normal;letter-spacing:normal}
+html[dir=rtl] .eyebrow,html[dir=rtl] .offer-kicker,html[dir=rtl] .pocket-banner p{letter-spacing:normal}
+html[dir=rtl] .cart-drawer{right:auto;left:0;transform:translateX(-105%);text-align:right}html[dir=rtl] .cart-drawer.open{transform:translateX(0)}
+html[dir=rtl] .modal-close{right:auto;left:15px}html[dir=rtl] .offer-selectors select,html[dir=rtl] .catalog-search-row input{text-align:right}
+html[dir=rtl] .hero-copy h1{font-size:clamp(44px,5.3vw,82px);line-height:1.4}html[dir=rtl] .hero-copy,html[dir=rtl] .feature-copy{text-align:right}
+html[dir=rtl] body .topbar .header-actions{margin-left:0;margin-right:auto}html[dir=rtl] .topbar nav{margin-left:0;margin-right:0}
+@media(max-width:760px){.language-bar{padding:6px 20px}.language-bar select{font-size:13px;min-height:36px}html[dir=rtl] body .brand-logo{left:auto;right:20px}html[dir=rtl] body .hero h1{font-size:44px;line-height:1.4}html[dir=rtl] .offer-card,html[dir=rtl] .product-layout{min-width:0}}

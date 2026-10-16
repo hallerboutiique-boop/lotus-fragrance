@@ -1,5 +1,5 @@
 const escapeProduct=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const productMoney=new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'});
+const productMoney={format:value=>LotusI18n.money(value)};
 async function loadProduct(){
  const host=document.querySelector('#product-content');
  try{

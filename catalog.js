@@ -20,7 +20,7 @@ const catalogHost=document.querySelector('#product-grid');
 catalogHost.className='catalog-groups';
 catalogHost.innerHTML='<p role="status">Caricamento della collezione…</p>';
 renderProducts=function(){
- const matching=products.filter(p=>(activeCategory==='all'||p.category===activeCategory)&&`${p.name} ${p.notes.join(' ')}`.toLocaleLowerCase('it').includes(catalogQuery));
+ const matching=products.filter(p=>(activeCategory==='all'||p.category===activeCategory)&&`${p.name} ${p.brand} ${p.notes.join(' ')} ${p.notes.map(LotusI18n.translate).join(' ')}`.toLocaleLowerCase(LotusI18n.locale).includes(catalogQuery));
  document.querySelector('#catalog-count').textContent=`${matching.length} varianti`;
  catalogHost.innerHTML=catalogCategories.map((category,index)=>{
   const entries=matching.filter(p=>p.category===category.id);
@@ -36,7 +36,7 @@ async function initializeCatalog(){
   controls.innerHTML=`<div class="catalog-filter-list" role="group" aria-label="Filtra per categoria"><button data-category="all" aria-pressed="true">Tutti</button>${data.categories.map(c=>`<button data-category="${c.id}" aria-pressed="false">${escapeHTML(c.name)}</button>`).join('')}</div><div class="catalog-search-row"><label>Cerca una fragranza<input type="search" id="catalog-search" placeholder="Nome, marchio o nota olfattiva…"/></label><span id="catalog-count" role="status" aria-live="polite"></span></div>`;
   catalogHost.before(controls);
   controls.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{activeCategory=b.dataset.category;controls.querySelectorAll('[data-category]').forEach(button=>button.setAttribute('aria-pressed',String(button===b)));renderProducts()});
-  controls.querySelector('#catalog-search').oninput=e=>{catalogQuery=e.target.value.trim().toLocaleLowerCase('it');renderProducts()};
+  controls.querySelector('#catalog-search').oninput=e=>{catalogQuery=e.target.value.trim().toLocaleLowerCase(LotusI18n.locale);renderProducts()};
   document.querySelector('#show-all').onclick=()=>{activeCategory='all';catalogQuery='';document.querySelector('#catalog-search').value='';controls.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category==='all')));renderProducts()};
   document.querySelector('#show-all').innerHTML='Tutte le fragranze <span>↗</span>';
   renderProducts();
