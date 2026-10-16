@@ -47,7 +47,7 @@ async function initializeCatalog(){
   function showSlide(){const p=selection[current];const photo=document.querySelector('#showcase-image');photo.src=p.image;photo.alt=p.name;document.querySelector('#showcase-name').textContent=p.name;document.querySelector('#showcase-position').textContent=`${String(current+1).padStart(2,'0')} / ${String(selection.length).padStart(2,'0')}`}
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   function stopSlides(){clearInterval(slideTimer)}
-  function startSlides(){stopSlides();if(!document.hidden&&!reducedMotion.matches)slideTimer=setInterval(()=>{current=(current+1)%selection.length;showSlide()},4000)}
+  function startSlides(){stopSlides();if(!document.hidden&&!reducedMotion.matches)slideTimer=setInterval(()=>{current=(current+1)%selection.length;showSlide()},2000)}
   document.querySelector('#showcase-previous').onclick=()=>{current=(current+selection.length-1)%selection.length;showSlide();startSlides()};
   document.querySelector('#showcase-next').onclick=()=>{current=(current+1)%selection.length;showSlide();startSlides()};showSlide();startSlides();
   hero.addEventListener('mouseenter',stopSlides);hero.addEventListener('mouseleave',startSlides);
