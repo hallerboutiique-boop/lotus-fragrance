@@ -14,7 +14,7 @@ Modificare `products.json`, oppure usare `catalog-editor.html` per preparare e s
 
 ## Verifica immagini e note (16 ottobre 2026)
 
-Ogni scheda contiene `source`, il collegamento alla pagina usata per verificare identità e note. Le immagini sono state confrontate visivamente in un provino a contatto prima della pubblicazione. Sono foto dei prodotti, non flaconi generati. La lieve animazione di inclinazione è un effetto applicato alla fotografia, non una ricostruzione 3D del retro del flacone.
+Ogni scheda contiene `source`, il collegamento alla pagina usata per verificare identità e note. Le immagini sono state confrontate visivamente in un provino a contatto prima della pubblicazione. Sono foto dei prodotti, non flaconi generati. I flaconi restano fermi e la vetrina cambia prodotto solo con i controlli manuali.
 
 - Lattafa: immagini dei singoli prodotti dal catalogo di Lattafa USA (`www.lattafa-usa.com/products.json`); per Oud for Glory usare `badee-al-oud-glory`, NON Honor & Glory. Fakhar Extrait è il flacone dorato, NON Fakhar Black.
 - Asdaaf Privé Rose: foto del singolo flacone da Lattafa Albania, `ameerat-al-arab-prive-rose` (seconda immagine); NON la versione rossa Ameerat Al Arab.
