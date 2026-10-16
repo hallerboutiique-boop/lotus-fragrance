@@ -1,9 +1,9 @@
 /* Device-sized layouts, loaded after the campaign styling. */
 html { scroll-padding-top: 24px; }
 img { max-width: 100%; }
-html body .topbar { height: 188px; }
-html body .brand-logo { width: 250px; height: 188px; }
-html body .brand-logo img { width: 250px; height: 188px; margin-top: 0; object-fit: contain; }
+html body .topbar { height: 240px; }
+html body .brand-logo { width: 250px; height: 240px; }
+html body .brand-logo img { width: 250px; height: 240px; margin-top: 0; object-fit: contain; }
 .hero > *, .product-grid > *, .product-bottom > *, footer > * { min-width: 0; }
 button, a, input { touch-action: manipulation; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
