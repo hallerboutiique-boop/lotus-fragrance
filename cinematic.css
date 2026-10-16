@@ -4,8 +4,17 @@ html body .brand-logo{width:240px;height:214px;top:50%;left:50%;transform:transl
 html body .brand-logo img{width:240px;height:214px;margin:0;object-fit:contain;filter:none;mix-blend-mode:normal}
 html body .topbar nav{margin:0;gap:23px}
 html body .hero{min-height:760px;background:#020202;color:#eeeae1}
-html body .hero-visual{background:#000 url('assets/cinematic-perfume.png') center center/contain no-repeat;min-height:760px}
-html body .hero-visual:before,html body .hero-visual:after,html body .hero-visual .hero-bottle,html body .hero-visual .hero-light,html body .hero-visual .halo{display:none}
+html body .hero-visual{background:#020202;min-height:760px}
+html body .hero-visual .hero-bottle{display:flex}
+html body .hero-visual .hero-light,html body .hero-visual .halo{display:none}
+html body .hero-visual:before,html body .feature-art:after{display:block;inset:-12% -25% 0 0;clip-path:polygon(87% 0,100% 0,40% 100%,0 100%);background:linear-gradient(135deg,transparent 20%,#ffe7af60 45%,#c7944020 65%,transparent 85%);filter:blur(17px);pointer-events:none}
+html body .hero-visual:after,html body .product-art:after,html body .feature-art:before{display:none}
+html body .product-art{height:280px;background:radial-gradient(ellipse at 58% 92%,#eac58245 0%,transparent 31%),linear-gradient(131deg,transparent 38%,#ffe4a54a 49%,#c48b2820 60%,transparent 70%),#020202;overflow:hidden}
+html body .product-art:before{inset:auto 0 0;height:38px;background:radial-gradient(ellipse at 56% 15%,#ffe8ba88,transparent 60%);transform:skewX(-24deg);filter:blur(4px)}
+html body .mini-bottle{background:linear-gradient(105deg,#020202 4%,#19140a 21%,#090806 45%,#342715 78%,#f2d49a 82%,#080705 86%);border:1px solid #ba975b;box-shadow:inset 2px 0 2px #ebc78288,inset -3px 0 3px #ffe6aeaa,12px 19px 20px #000c}
+html body .mini-bottle:before{background:linear-gradient(165deg,#090909 35%,#e7c482 38%,#1e190e 42%,#020202 80%);border-color:#967845}
+html body .mini-bottle:after{background:linear-gradient(90deg,#332614,#fff0c9,#5e4520);box-shadow:15px -2px 9px #ffe2a87d}
+html body .product-art .mini-bottle{box-shadow:inset 2px 0 2px #ebc78288,inset -3px 0 3px #ffe6aeaa,12px 19px 20px #000c}
 html body .hero-copy{padding-top:145px}
 @media(max-width:900px){html body .topbar nav{gap:13px}html body .brand-logo,html body .brand-logo img{width:180px}html body .topbar{height:190px}}
 @media(max-width:760px){html body .topbar{height:185px}html body .brand-logo{height:180px;width:190px}html body .brand-logo img{height:180px;width:190px}html body .header-actions{margin-left:auto}html body .hero-copy{padding-top:65px}html body .hero-visual{min-height:600px}}
