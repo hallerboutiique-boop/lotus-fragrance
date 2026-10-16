@@ -20,7 +20,7 @@ const catalogHost=document.querySelector('#product-grid');
 catalogHost.className='catalog-groups';
 catalogHost.innerHTML='<p role="status">Caricamento della collezione…</p>';
 renderProducts=function(){
- const matching=products.filter(p=>(activeCategory==='all'||p.category===activeCategory)&&`${p.name} ${p.brand} ${p.notes.join(' ')} ${p.notes.map(LotusI18n.translate).join(' ')}`.toLocaleLowerCase(LotusI18n.locale).includes(catalogQuery));
+ const matching=LotusSearch.search(products,catalogQuery,LotusI18n.translate).filter(p=>activeCategory==='all'||p.category===activeCategory);
  document.querySelector('#catalog-count').textContent=`${matching.length} varianti`;
  catalogHost.innerHTML=catalogCategories.map((category,index)=>{
   const entries=matching.filter(p=>p.category===category.id);
@@ -36,8 +36,31 @@ async function initializeCatalog(){
   controls.innerHTML=`<div class="catalog-filter-list" role="group" aria-label="Filtra per categoria"><button data-category="all" aria-pressed="true">Tutti</button>${data.categories.map(c=>`<button data-category="${c.id}" aria-pressed="false">${escapeHTML(c.name)}</button>`).join('')}</div><div class="catalog-search-row"><label>Cerca una fragranza<input type="search" id="catalog-search" placeholder="Nome, marchio o nota olfattiva…"/></label><span id="catalog-count" role="status" aria-live="polite"></span></div>`;
   catalogHost.before(controls);
   controls.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{activeCategory=b.dataset.category;controls.querySelectorAll('[data-category]').forEach(button=>button.setAttribute('aria-pressed',String(button===b)));renderProducts()});
-  controls.querySelector('#catalog-search').oninput=e=>{catalogQuery=e.target.value.trim().toLocaleLowerCase(LotusI18n.locale);renderProducts()};
-  document.querySelector('#show-all').onclick=()=>{activeCategory='all';catalogQuery='';document.querySelector('#catalog-search').value='';controls.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category==='all')));renderProducts()};
+  const searchRow=controls.querySelector('.catalog-search-row');searchRow.classList.add('smart-search');
+  document.querySelector('.topbar').after(searchRow);
+  const searchInput=searchRow.querySelector('input');searchInput.maxLength=120;searchInput.autocomplete='off';
+  searchInput.setAttribute('role','combobox');searchInput.setAttribute('aria-autocomplete','list');searchInput.setAttribute('aria-controls','search-suggestions');searchInput.setAttribute('aria-expanded','false');
+  const suggestions=document.createElement('ul');suggestions.id='search-suggestions';suggestions.className='search-suggestions';suggestions.setAttribute('role','listbox');suggestions.setAttribute('aria-label','Suggerimenti di ricerca');suggestions.hidden=true;searchRow.append(suggestions);
+  let selectedSuggestion=-1;
+  function hideSuggestions(){suggestions.hidden=true;searchInput.setAttribute('aria-expanded','false');searchInput.removeAttribute('aria-activedescendant');selectedSuggestion=-1}
+  function suggest(){
+   selectedSuggestion=-1;searchInput.removeAttribute('aria-activedescendant');
+   const matches=LotusSearch.search(products,searchInput.value,LotusI18n.translate).slice(0,6);
+   if(!searchInput.value.trim()){hideSuggestions();return}
+   suggestions.innerHTML=matches.length?matches.map((p,i)=>`<li role="presentation"><a role="option" aria-selected="false" id="search-option-${i}" href="${productURL(p)}"><img src="${escapeHTML(p.image)}" alt="" width="64" height="64"/><span><strong>${escapeHTML(p.name)}</strong><small>${p.notes.map(note=>escapeHTML(LotusI18n.translate(note))).join(' · ')}</small></span><span aria-hidden="true">↗</span></a></li>`).join(''):'<li role="presentation" class="search-no-results">Nessuna fragranza corrisponde alla ricerca.</li>';
+   suggestions.hidden=false;searchInput.setAttribute('aria-expanded','true');
+  }
+  searchInput.oninput=e=>{catalogQuery=e.target.value.trim();renderProducts();suggest()};
+  searchInput.addEventListener('focus',suggest);
+  searchInput.addEventListener('keydown',event=>{
+   const options=[...suggestions.querySelectorAll('a')];
+   if(event.key==='Escape'){hideSuggestions();return}
+   if(['ArrowDown','ArrowUp'].includes(event.key)&&options.length){event.preventDefault();suggestions.hidden=false;searchInput.setAttribute('aria-expanded','true');selectedSuggestion=(selectedSuggestion+(event.key==='ArrowDown'?1:-1)+options.length)%options.length;options.forEach((option,index)=>option.setAttribute('aria-selected',String(index===selectedSuggestion)));searchInput.setAttribute('aria-activedescendant',options[selectedSuggestion].id);options[selectedSuggestion].scrollIntoView({block:'nearest'})}
+   if(event.key==='Enter'){event.preventDefault();if(selectedSuggestion>=0&&options[selectedSuggestion])location.assign(options[selectedSuggestion].href);else{hideSuggestions();document.querySelector('#collezione').scrollIntoView({behavior:'smooth'})}}
+  });
+  document.addEventListener('pointerdown',event=>{if(!searchRow.contains(event.target))hideSuggestions()});
+  searchRow.addEventListener('focusout',event=>{if(!searchRow.contains(event.relatedTarget))hideSuggestions()});
+  document.querySelector('#show-all').onclick=()=>{activeCategory='all';catalogQuery='';document.querySelector('#catalog-search').value='';hideSuggestions();controls.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category==='all')));renderProducts()};
   document.querySelector('#show-all').innerHTML='Tutte le fragranze <span>↗</span>';
   renderProducts();
   document.querySelector('.collection .eyebrow').textContent=`${products.length} profumi arabi · ${catalogCategories.length} universi`;

@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict');
+const {normalize,search}=require('./catalog-search.js');
+const products=require('./products.json').products;
+assert.equal(normalize(' CAFÈ, 9PM! '),'cafe 9pm');
+assert.equal(search(products,'').length,9);
+for(const query of ['asad','ASAD','lattaffa asad'])assert.equal(search(products,query)[0].id,'asad',query);
+assert.ok(search(products,'asda').some(p=>p.id==='asad'),'Transposition tolerated without overriding exact brand prefixes');
+assert.equal(search(products,'yara tous')[0].id,'yara-tous');
+assert.equal(search(products,'9pm')[0].id,'9pm');
+assert.ok(search(products,'caffe').some(p=>p.id==='khamrah-qahwa'));
+assert.ok(search(products,'coffee',word=>word==='Caffè'?'Coffee':word).some(p=>p.id==='asad'));
+assert.ok(search(products,'mujer').every(p=>p.category==='arabi-donna'));
+assert.equal(search(products,'coccodrillo inesistente').length,0);
+assert.equal(search(products,'<script>alert(1)</script>').length,0);
+console.log('Ricerca: nomi, ranking, prefissi, accenti, refusi, note tradotte e nessun risultato verificati.');
