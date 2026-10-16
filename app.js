@@ -5,11 +5,17 @@ function renderProducts(){}
 function saveCart(){try{localStorage.setItem('lotus-bundle-cart',JSON.stringify(cart))}catch{}}
 function initializeCommerce(catalog,config){
  commerceCatalog=catalog;checkoutSettings=config;
- try{const saved=JSON.parse(localStorage.getItem('lotus-bundle-cart')||'[]');cart=Array.isArray(saved)?saved.slice(0,20).filter(line=>line&&LotusCommerce.validateBundle(line.offerId,line.fragranceIds,catalog).ok).map(line=>({offerId:line.offerId,fragranceIds:[...line.fragranceIds]})):[]}catch{cart=[]}
- saveCart();renderCart();
+ try{const saved=JSON.parse(localStorage.getItem('lotus-bundle-cart')||'[]');cart=Array.isArray(saved)?saved.slice(0,20).map(line=>LotusCommerce.validateLine(line,catalog)).filter(result=>result.ok).map(result=>result.line):[]}catch{cart=[]}
+ saveCart();renderCart();if(location.hash==='#carrello')openCart();
 }
 function addBundle(offerId,fragranceIds){
  const result=LotusCommerce.validateBundle(offerId,fragranceIds,commerceCatalog);
+ if(!result.ok)return result;
+ if(cart.length>=20)return {ok:false,error:'Puoi inserire al massimo 20 pacchetti per ordine.'};
+ cart.push(result.line);saveCart();renderCart();openCart();return result;
+}
+function addMystery(gender){
+ const result=LotusCommerce.validateLine({offerId:'mystery',gender},commerceCatalog);
  if(!result.ok)return result;
  if(cart.length>=20)return {ok:false,error:'Puoi inserire al massimo 20 pacchetti per ordine.'};
  cart.push(result.line);saveCart();renderCart();openCart();return result;
@@ -18,13 +24,16 @@ function renderCart(){
  const holder=document.querySelector('#cart-items'),button=document.querySelector('#checkout'),status=document.querySelector('#checkout-status');
  let valid=true,total=0;
  try{total=LotusCommerce.totalCents(cart,commerceCatalog)}catch{valid=false}
- document.querySelector('#cart-count').textContent=cart.reduce((sum,line)=>sum+line.fragranceIds.length,0);
+ document.querySelector('#cart-count').textContent=cart.reduce((sum,line)=>sum+(line.offerId==='mystery'?5:line.fragranceIds.length),0);
  holder.innerHTML=cart.length?cart.map((line,i)=>{
-  const result=LotusCommerce.validateBundle(line.offerId,line.fragranceIds,commerceCatalog);
+  const result=LotusCommerce.validateLine(line,commerceCatalog);
   if(!result.ok)return `<article class="cart-item"><p>${escapeCart(result.error)}</p><button data-index="${i}">Rimuovi</button></article>`;
-  return `<article class="cart-item"><h4>${escapeCart(result.offer.name)}</h4><ul>${result.selected.map(p=>`<li>${escapeCart(p.name)} · 10 ml</li>`).join('')}</ul><p>${euro(result.offer.priceCents/100)} · Spedizione inclusa</p><button data-index="${i}">Rimuovi</button></article>`;
- }).join(''):'<p class="empty">Scegli le tue fragranze nelle offerte Discovery.</p>';
+  if(line.offerId==='mystery')return `<article class="cart-item"><h4>Mystery Box · ${{men:'Uomo',women:'Donna',mix:'Mix'}[line.gender]}</h4><p>5 profumi da 10 ml scelti casualmente da noi al checkout.</p><p>${euro(49.9)} · Spedizione inclusa</p><button data-index="${i}">Rimuovi</button></article>`;
+  return `<article class="cart-item"><h4>${escapeCart(line.offerId==='box'?'Discovery Box':result.offer.name)}</h4><ul>${result.selected.map(p=>`<li>${escapeCart(p.name)} · 10 ml</li>`).join('')}</ul><p>${euro((line.offerId==='box'?result.offer.priceCents:result.selected.length*1490)/100)} · Spedizione inclusa</p><button data-index="${i}">Rimuovi</button></article>`;
+ }).join(''):'<p class="empty">Scegli i profumi dal catalogo oppure aggiungi una Mystery Box.</p>';
  holder.querySelectorAll('button').forEach(b=>b.onclick=()=>{cart.splice(Number(b.dataset.index),1);saveCart();renderCart()});
+ const discount=document.querySelector('#cart-discount');
+ if(discount){const savings=valid?LotusCommerce.quote(cart,commerceCatalog).savingsCents:0;discount.hidden=!savings;discount.textContent=savings?LotusI18n.translate('Sconto Tris automatico')+' · −'+euro(savings/100):''}
  document.querySelector('#cart-total').textContent=valid?euro(total/100):'Da verificare';
  button.disabled=!cart.length||!valid||!checkoutSettings.checkoutEndpoint;
  status.textContent=!valid?'Verifica le fragranze nel carrello.':!checkoutSettings.checkoutEndpoint?'Pagamento online non ancora attivo. Il carrello conserva la selezione, ma non vengono accettati pagamenti.':cart.length?'Pagamento sicuro online · spedizione inclusa':'Aggiungi un pacchetto per procedere.';
@@ -41,7 +50,7 @@ document.querySelector('#checkout').onclick=async()=>{
  try{
   LotusCommerce.totalCents(cart,commerceCatalog);button.disabled=true;status.textContent='Apertura del pagamento sicuro…';
   const endpoint=new URL(checkoutSettings.checkoutEndpoint,location.href);if(endpoint.protocol!=='https:')throw Error();
-  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:cart.map(line=>({offerId:line.offerId,fragranceIds:line.fragranceIds}))})});
+  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:cart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds})})});
   if(!response.ok)throw Error();const data=await response.json(),url=new URL(data.url);
   if(url.protocol!=='https:'||!checkoutSettings.checkoutAllowedHosts.includes(url.hostname))throw Error();
   location.assign(url.href);
