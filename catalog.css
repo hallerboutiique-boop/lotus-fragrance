@@ -40,6 +40,7 @@
 .image-notice { max-width:820px; color:#aaa; font:11px/1.8 Manrope,sans-serif; margin:0 0 28px; }
 .fragrance-dialog .image-notice { margin-top:24px; font-size:10px; }
 .miniature-collection { padding-top:70px; scroll-margin-top:24px; }
+html body .hero { background:var(--bg); }
 html body .catalog-showcase { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:20px; padding:48px 24px; background:var(--bg); }
 html body .catalog-showcase:before,html body .catalog-showcase:after { display:none; }
 .showcase-stage { width:min(100%,390px); aspect-ratio:1; background:var(--bg); overflow:hidden; display:grid; place-items:center; }
