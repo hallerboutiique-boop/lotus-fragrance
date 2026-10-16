@@ -41,9 +41,11 @@ async function initializeCatalog(){
   const searchToggle=document.createElement('button');searchToggle.type='button';searchToggle.id='search-toggle';searchToggle.className='search-toggle';searchToggle.setAttribute('aria-label','Cerca una fragranza');searchToggle.setAttribute('aria-expanded','false');searchToggle.setAttribute('aria-controls',searchRow.id);
   searchToggle.innerHTML='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>';
   topbar.querySelector('.header-actions').prepend(searchToggle);
-  const accountLink=document.createElement('a');accountLink.className='account-link';accountLink.href='account.html';accountLink.setAttribute('aria-label','Area clienti');accountLink.title='Area clienti';
+  const accountLink=document.createElement('a');accountLink.className='account-link';accountLink.href='account.html';accountLink.setAttribute('aria-label',LotusI18n.translate('Area clienti'));accountLink.title=LotusI18n.translate('Area clienti');
   accountLink.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.4-3.7 3.2-5.7 7-5.7s6.6 2 7 5.7"/></svg>';
   searchToggle.after(accountLink);
+  const placeAccountLink=()=>document.querySelector('.language-bar')?.prepend(accountLink);
+  if(!placeAccountLink())document.addEventListener('DOMContentLoaded',placeAccountLink,{once:true});
   const searchClose=document.createElement('button');searchClose.type='button';searchClose.className='search-close';searchClose.setAttribute('aria-label','Chiudi');searchClose.textContent='×';searchRow.append(searchClose);
   const searchInput=searchRow.querySelector('input');searchInput.maxLength=120;searchInput.autocomplete='off';searchInput.placeholder={it:'Cerca…',en:'Search…',de:'Suchen…',fr:'Chercher…',es:'Buscar…',ar:'بحث…'}[LotusI18n.language];
   searchInput.setAttribute('role','combobox');searchInput.setAttribute('aria-autocomplete','list');searchInput.setAttribute('aria-controls','search-suggestions');searchInput.setAttribute('aria-expanded','false');
