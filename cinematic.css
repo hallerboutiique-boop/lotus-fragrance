@@ -1,0 +1,11 @@
+/* Photographic theatrical lighting from the supplied campaign reference. */
+html body .topbar{height:220px;background:#000;display:flex;justify-content:space-between}
+html body .brand-logo{width:240px;height:214px;top:50%;left:50%;transform:translate(-50%,-50%);filter:none}
+html body .brand-logo img{width:240px;height:214px;margin:0;object-fit:contain;filter:none;mix-blend-mode:normal}
+html body .topbar nav{margin:0;gap:23px}
+html body .hero{min-height:760px;background:#020202;color:#eeeae1}
+html body .hero-visual{background:#000 url('assets/cinematic-perfume.png') center center/contain no-repeat;min-height:760px}
+html body .hero-visual:before,html body .hero-visual:after,html body .hero-visual .hero-bottle,html body .hero-visual .hero-light,html body .hero-visual .halo{display:none}
+html body .hero-copy{padding-top:145px}
+@media(max-width:900px){html body .topbar nav{gap:13px}html body .brand-logo,html body .brand-logo img{width:180px}html body .topbar{height:190px}}
+@media(max-width:760px){html body .topbar{height:185px}html body .brand-logo{height:180px;width:190px}html body .brand-logo img{height:180px;width:190px}html body .header-actions{margin-left:auto}html body .hero-copy{padding-top:65px}html body .hero-visual{min-height:600px}}
