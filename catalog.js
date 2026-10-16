@@ -6,7 +6,8 @@ const cardHTML=(p,miniature=false)=>{
  const variant=miniature?p.miniature:p;
  const image=miniature?variant.image:p.image;
  const name=p.name+(miniature?' · 10 ml':'');
- const price=Number.isFinite(variant.price)&&variant.price>0?euro(variant.price):'Prezzo da definire';
+ const amount=Number.isFinite(variant.price)&&variant.price>0?variant.price:miniature?LotusCommerce.offers.find(o=>o.id==='singolo').priceCents/100:null;
+ const price=amount?euro(amount):'Prezzo da definire';
  const href=productURL(p,miniature);
  return `<article class="fragrance-card"><a class="fragrance-photo" href="${href}" aria-label="Scopri ${escapeHTML(name)}"><img src="${escapeHTML(image)}" alt="${escapeHTML(name)}" loading="lazy" decoding="async" width="1000" height="1000"/></a><div class="fragrance-copy"><h4><a href="${href}">${escapeHTML(name)}</a></h4><p class="fragrance-price">${escapeHTML(price)}</p></div></article>`;
 };
@@ -29,7 +30,7 @@ renderProducts=function(){
 };
 async function initializeCatalog(){
  try{
-  const response=await fetch('products.json?v=single10-v4',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
+  const response=await fetch('products.json?v=offers1',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
   const data=await response.json();catalogCategories=data.categories;products.push(...data.products);
   const controls=document.createElement('div');controls.className='catalog-controls';
   controls.innerHTML=`<div class="catalog-filter-list" role="group" aria-label="Filtra per categoria"><button data-category="all" aria-pressed="true">Tutti</button>${data.categories.map(c=>`<button data-category="${c.id}" aria-pressed="false">${escapeHTML(c.name)}</button>`).join('')}</div><div class="catalog-search-row"><label>Cerca una fragranza<input type="search" id="catalog-search" placeholder="Nome, marchio o nota olfattiva…"/></label><span id="catalog-count" role="status" aria-live="polite"></span></div>`;

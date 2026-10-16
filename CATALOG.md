@@ -9,7 +9,7 @@ Modificare `products.json`, oppure usare `catalog-editor.html` per preparare e s
 - `price`: numero in euro, oppure `null`. Nessun prezzo è stato copiato dai produttori.
 - `size`: stringa del formato effettivamente venduto, oppure `null`.
 - `availability`: `available`, `unavailable`, `preorder`, oppure `null`.
-- Il carrello accetta solo prodotti con prezzo positivo, formato confermato e disponibilità `available`.
+- Il carrello accetta i pacchetti 10 ml definiti in `commerce-core.js`, con numero esatto di selezioni e disponibilità `miniature.availability === available`. Prezzi e regole checkout sono documentati in `CHECKOUT.md`.
 - Nome, descrizione, note, categoria e immagine sono modificabili nel medesimo file.
 
 ## Verifica immagini e note (16 ottobre 2026)
@@ -30,7 +30,7 @@ Su schermi fino a 760 px le griglie mostrano una sola scheda per riga. Le schede
 
 Correzione di scala: le miniature sono ridotte uniformemente, tappo incluso, a circa il 43–45% dell'altezza del flacone grande, mantenendo il rapporto larghezza/altezza e il piano d'appoggio comune. Non vengono trattate come confezioni reali misurate.
 
-Le versioni definitive senza riflessi sul pavimento, con base nera opaca e solo controluce dietro i flaconi, sono in `assets/products/matte-mini/`. La luce è scelta in base al flacone: oro/champagne per Asad, Oud for Glory, Fakhar Extrait e Nebras; bianco freddo per 9PM; ambra per Khamrah Qahwa e Yara Tous; rosa per Yara e Privé Rose; avorio per Eclaire. Le miniature sono ricostruzioni nello stile del grande, non atomizzatori generici. I dati `miniature.price`, `miniature.size` e `miniature.availability` si modificano in `products.json` o nell'editor locale, che include anche le righe 10 ml; prezzo e disponibilità restano null e la vendita delle miniature non è attivata.
+Le versioni definitive senza riflessi sul pavimento, con base nera opaca e solo controluce dietro i flaconi, sono in `assets/products/matte-mini/`. La luce è scelta in base al flacone: oro/champagne per Asad, Oud for Glory, Fakhar Extrait e Nebras; bianco freddo per 9PM; ambra per Khamrah Qahwa e Yara Tous; rosa per Yara e Privé Rose; avorio per Eclaire. Le miniature sono ricostruzioni nello stile del grande, non atomizzatori generici. I dati `miniature.price`, `miniature.size` e `miniature.availability` si modificano in `products.json` o nell'editor locale, che include anche le righe 10 ml; i campi prezzo restano invariati; tutte le 9 disponibilità 10 ml sono state confermate dal titolare. Offerte e carrello sono attivi, mentre gli incassi restano bloccati finché manca il backend live (vedi `CHECKOUT.md`).
 
 Ricerca online: trovati soprattutto travasi indipendenti, non miniature ufficiali corrispondenti da 10 ml. Non scambiare roll-on, oli, formati 5 ml o 12 ml per EDP originali da 10 ml.
 

@@ -1,0 +1,4 @@
+{
+  "checkoutEndpoint": null,
+  "checkoutAllowedHosts": ["checkout.stripe.com"]
+}

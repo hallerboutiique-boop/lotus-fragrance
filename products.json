@@ -30,7 +30,7 @@
       "miniature": {
         "size": "10 ml",
         "price": null,
-        "availability": null,
+        "availability": "available",
         "illustrative": true,
         "image": "assets/products/single-10ml/asad.webp"
       }
@@ -54,7 +54,7 @@
       "miniature": {
         "size": "10 ml",
         "price": null,
-        "availability": null,
+        "availability": "available",
         "illustrative": true,
         "image": "assets/products/single-10ml/afnan-9pm.webp"
       }
@@ -78,7 +78,7 @@
       "miniature": {
         "size": "10 ml",
         "price": null,
-        "availability": null,
+        "availability": "available",
         "illustrative": true,
         "image": "assets/products/single-10ml/badee-al-oud-glory.webp"
       }
@@ -102,7 +102,7 @@
       "miniature": {
         "size": "10 ml",
         "price": null,
-        "availability": null,
+        "availability": "available",
         "illustrative": true,
         "image": "assets/products/single-10ml/fakhar-extrait.webp"
       }
@@ -126,7 +126,7 @@
       "miniature": {
         "size": "10 ml",
         "price": null,
-        "availability": null,
+        "availability": "available",
         "illustrative": true,
         "image": "assets/products/single-10ml/khamrah-qahwa.webp"
       }
@@ -150,7 +150,7 @@
       "miniature": {
         "size": "10 ml",
         "price": null,
-        "availability": null,
+        "availability": "available",
         "illustrative": true,
         "image": "assets/products/single-10ml/yara.webp"
       }
@@ -174,7 +174,7 @@
       "miniature": {
         "size": "10 ml",
         "price": null,
-        "availability": null,
+        "availability": "available",
         "illustrative": true,
         "image": "assets/products/single-10ml/eclaire.webp"
       }
@@ -198,7 +198,7 @@
       "miniature": {
         "size": "10 ml",
         "price": null,
-        "availability": null,
+        "availability": "available",
         "illustrative": true,
         "image": "assets/products/single-10ml/prive-rose.webp"
       }
@@ -222,7 +222,7 @@
       "miniature": {
         "size": "10 ml",
         "price": null,
-        "availability": null,
+        "availability": "available",
         "illustrative": true,
         "image": "assets/products/single-10ml/yara-tous.webp"
       }
