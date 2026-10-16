@@ -37,12 +37,19 @@ async function initializeCatalog(){
   catalogHost.before(controls);
   controls.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{activeCategory=b.dataset.category;controls.querySelectorAll('[data-category]').forEach(button=>button.setAttribute('aria-pressed',String(button===b)));renderProducts()});
   const searchRow=controls.querySelector('.catalog-search-row');searchRow.classList.add('smart-search');
-  document.querySelector('.topbar').after(searchRow);
+  const topbar=document.querySelector('.topbar');searchRow.id='header-search-panel';searchRow.hidden=true;topbar.append(searchRow);
+  const searchToggle=document.createElement('button');searchToggle.type='button';searchToggle.id='search-toggle';searchToggle.className='search-toggle';searchToggle.setAttribute('aria-label','Cerca una fragranza');searchToggle.setAttribute('aria-expanded','false');searchToggle.setAttribute('aria-controls',searchRow.id);
+  searchToggle.innerHTML='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>';
+  topbar.querySelector('.header-actions').prepend(searchToggle);
+  const searchClose=document.createElement('button');searchClose.type='button';searchClose.className='search-close';searchClose.setAttribute('aria-label','Chiudi');searchClose.textContent='×';searchRow.append(searchClose);
   const searchInput=searchRow.querySelector('input');searchInput.maxLength=120;searchInput.autocomplete='off';
   searchInput.setAttribute('role','combobox');searchInput.setAttribute('aria-autocomplete','list');searchInput.setAttribute('aria-controls','search-suggestions');searchInput.setAttribute('aria-expanded','false');
   const suggestions=document.createElement('ul');suggestions.id='search-suggestions';suggestions.className='search-suggestions';suggestions.setAttribute('role','listbox');suggestions.setAttribute('aria-label','Suggerimenti di ricerca');suggestions.hidden=true;searchRow.append(suggestions);
   let selectedSuggestion=-1;
   function hideSuggestions(){suggestions.hidden=true;searchInput.setAttribute('aria-expanded','false');searchInput.removeAttribute('aria-activedescendant');selectedSuggestion=-1}
+  function closeSearch(restoreFocus=false){hideSuggestions();searchRow.hidden=true;searchToggle.setAttribute('aria-expanded','false');if(restoreFocus)searchToggle.focus()}
+  searchToggle.onclick=()=>{if(!searchRow.hidden){closeSearch();return}searchRow.hidden=false;searchToggle.setAttribute('aria-expanded','true');searchInput.focus()};
+  searchClose.onclick=()=>closeSearch(true);
   function suggest(){
    selectedSuggestion=-1;searchInput.removeAttribute('aria-activedescendant');
    const matches=LotusSearch.search(products,searchInput.value,LotusI18n.translate).slice(0,6);
@@ -54,11 +61,11 @@ async function initializeCatalog(){
   searchInput.addEventListener('focus',suggest);
   searchInput.addEventListener('keydown',event=>{
    const options=[...suggestions.querySelectorAll('a')];
-   if(event.key==='Escape'){hideSuggestions();return}
+   if(event.key==='Escape'){closeSearch(true);return}
    if(['ArrowDown','ArrowUp'].includes(event.key)&&options.length){event.preventDefault();suggestions.hidden=false;searchInput.setAttribute('aria-expanded','true');selectedSuggestion=(selectedSuggestion+(event.key==='ArrowDown'?1:-1)+options.length)%options.length;options.forEach((option,index)=>option.setAttribute('aria-selected',String(index===selectedSuggestion)));searchInput.setAttribute('aria-activedescendant',options[selectedSuggestion].id);options[selectedSuggestion].scrollIntoView({block:'nearest'})}
    if(event.key==='Enter'){event.preventDefault();if(selectedSuggestion>=0&&options[selectedSuggestion])location.assign(options[selectedSuggestion].href);else{hideSuggestions();document.querySelector('#collezione').scrollIntoView({behavior:'smooth'})}}
   });
-  document.addEventListener('pointerdown',event=>{if(!searchRow.contains(event.target))hideSuggestions()});
+  document.addEventListener('pointerdown',event=>{if(!searchRow.contains(event.target)&&!searchToggle.contains(event.target))closeSearch()});
   searchRow.addEventListener('focusout',event=>{if(!searchRow.contains(event.relatedTarget))hideSuggestions()});
   document.querySelector('#show-all').onclick=()=>{activeCategory='all';catalogQuery='';document.querySelector('#catalog-search').value='';hideSuggestions();controls.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category==='all')));renderProducts()};
   document.querySelector('#show-all').innerHTML='Tutte le fragranze <span>↗</span>';
