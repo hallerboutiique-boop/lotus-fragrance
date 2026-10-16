@@ -16,7 +16,7 @@
       "name": "Lattafa Asad",
       "brand": "Lattafa",
       "category": "arabi-uomo",
-      "image": "assets/products/studio/asad.webp",
+      "image": "assets/products/matte-mini/asad.webp",
       "description": "Speziato e ambrato: pepe nero, ananas e tabacco incontrano caffè, iris e patchouli, su un fondo di vaniglia, ambra e legni secchi.",
       "notes": [
         "Pepe nero",
@@ -26,14 +26,20 @@
       "source": "https://lattafa.com/product/asad/",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     },
     {
       "id": "9pm",
       "name": "Afnan 9PM",
       "brand": "Afnan",
       "category": "arabi-uomo",
-      "image": "assets/products/studio/afnan-9pm.webp",
+      "image": "assets/products/matte-mini/afnan-9pm.webp",
       "description": "Un'apertura di bergamotto, mela, lavanda e cannella lascia spazio a mughetto e fiori d'arancio. Vaniglia, tonka, ambra e patchouli ne scaldano il fondo.",
       "notes": [
         "Mela",
@@ -43,14 +49,20 @@
       "source": "https://afnan.com/products/9-pm",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     },
     {
       "id": "oud-glory",
       "name": "Lattafa Bade'e Al Oud Oud for Glory",
       "brand": "Lattafa",
       "category": "arabi-uomo",
-      "image": "assets/products/studio/badee-al-oud-glory.webp",
+      "image": "assets/products/matte-mini/badee-al-oud-glory.webp",
       "description": "Zafferano, noce moscata e lavanda aprono una composizione ambrata e legnosa. Oud e patchouli ne definiscono il cuore, con un fondo muschiato.",
       "notes": [
         "Zafferano",
@@ -60,14 +72,20 @@
       "source": "https://lattafa.com/product/badee-al-oud-oud-for-glory/",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     },
     {
       "id": "fakhar-extrait",
       "name": "Lattafa Fakhar Extrait",
       "brand": "Lattafa",
       "category": "arabi-uomo",
-      "image": "assets/products/studio/fakhar-extrait.webp",
+      "image": "assets/products/matte-mini/fakhar-extrait.webp",
       "description": "Pompelmo, pepe rosa e cardamomo introducono tuberosa, accordi solari e artemisia. Il fondo intreccia ambra, cashmeran, labdano e cuoio.",
       "notes": [
         "Pompelmo",
@@ -77,14 +95,20 @@
       "source": "https://www.lattafa-usa.com/products/fakhar-extrait",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     },
     {
       "id": "khamrah-qahwa",
       "name": "Lattafa Khamrah Qahwa",
       "brand": "Lattafa",
       "category": "arabi-uomo",
-      "image": "assets/products/studio/khamrah-qahwa.webp",
+      "image": "assets/products/matte-mini/khamrah-qahwa.webp",
       "description": "Cannella, cardamomo e zenzero avvolgono pralina e frutta candita. Caffè, vaniglia e fava tonka disegnano una scia gourmand calda e speziata.",
       "notes": [
         "Caffè",
@@ -94,14 +118,20 @@
       "source": "https://lattafa.com/product/khamrah-qahwa/",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     },
     {
       "id": "yara",
       "name": "Lattafa Yara",
       "brand": "Lattafa",
       "category": "arabi-donna",
-      "image": "assets/products/studio/yara.webp",
+      "image": "assets/products/matte-mini/yara.webp",
       "description": "Mandarino, eliotropio e orchidea aprono un cuore di frutti tropicali e accordi gourmand. Vaniglia, sandalo e muschio ne ammorbidiscono il fondo.",
       "notes": [
         "Orchidea",
@@ -111,14 +141,20 @@
       "source": "https://lattafa.com/product/yara/",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     },
     {
       "id": "eclaire",
       "name": "Lattafa Eclaire",
       "brand": "Lattafa",
       "category": "arabi-donna",
-      "image": "assets/products/studio/eclaire.webp",
+      "image": "assets/products/matte-mini/eclaire.webp",
       "description": "Un gourmand cremoso di caramello, latte e zucchero. Fiori bianchi e miele accompagnano un fondo di vaniglia, pralina e muschio.",
       "notes": [
         "Caramello",
@@ -128,14 +164,20 @@
       "source": "https://www.lattafa-usa.com/products/eclaire",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     },
     {
       "id": "prive-rose",
       "name": "Asdaaf Ameerat Al Arab Privé Rose",
       "brand": "Asdaaf",
       "category": "arabi-donna",
-      "image": "assets/products/studio/prive-rose.webp",
+      "image": "assets/products/matte-mini/prive-rose.webp",
       "description": "Fragola, uva e arancia incontrano un bouquet di rosa, gelsomino e gardenia. Muschio bianco, tonka, ambra e sandalo completano la composizione.",
       "notes": [
         "Fragola",
@@ -145,14 +187,20 @@
       "source": "https://lattafa.al/products/ameerat-al-arab-prive-rose",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     },
     {
       "id": "nebras",
       "name": "Lattafa Nebras",
       "brand": "Lattafa",
       "category": "arabi-donna",
-      "image": "assets/products/studio/nebras.webp",
+      "image": "assets/products/matte-mini/nebras.webp",
       "description": "Frutti rossi e mandarino introducono un cuore di vaniglia, cacao e rosa. Zucchero, fava tonka, ambra e muschio ne prolungano la dolcezza.",
       "notes": [
         "Frutti rossi",
@@ -162,14 +210,20 @@
       "source": "https://www.lattafa-usa.com/products/nebras",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     },
     {
       "id": "yara-tous",
       "name": "Lattafa Yara Tous",
       "brand": "Lattafa",
       "category": "arabi-donna",
-      "image": "assets/products/studio/yara-tous.webp",
+      "image": "assets/products/matte-mini/yara-tous.webp",
       "description": "Mango, cocco e frutto della passione danno un'impronta tropicale. Gelsomino, eliotropio e fiori d'arancio si posano su vaniglia, muschio e cashmeran.",
       "notes": [
         "Mango",
@@ -179,7 +233,13 @@
       "source": "https://lattafa.com/product/yara-tous/",
       "price": null,
       "size": null,
-      "availability": null
+      "availability": null,
+      "miniature": {
+        "size": "10 ml",
+        "price": null,
+        "availability": null,
+        "illustrative": true
+      }
     }
   ]
 }
