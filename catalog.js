@@ -40,8 +40,6 @@ async function initializeCatalog(){
   document.querySelector('#show-all').onclick=()=>{activeCategory='all';catalogQuery='';document.querySelector('#catalog-search').value='';controls.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category==='all')));renderProducts()};
   document.querySelector('#show-all').innerHTML='Tutte le fragranze <span>↗</span>';
   renderProducts();
-  const miniHost=document.querySelector('#miniature-grid');miniHost.className='catalog-groups';
-  miniHost.innerHTML=catalogCategories.map((c,index)=>categoryHTML(c,index,products.filter(p=>p.category===c.id),true)).join('');
   document.querySelector('.collection .eyebrow').textContent=`${products.length} profumi arabi · ${catalogCategories.length} universi`;
   const hero=document.querySelector('.hero-visual');hero.classList.add('catalog-showcase');hero.removeAttribute('aria-label');
   hero.innerHTML='<div class="showcase-stage"><img id="showcase-image" width="800" height="800" alt=""/></div><div class="showcase-caption"><span>LA SELEZIONE LOTUS</span><p id="showcase-name"></p><div class="showcase-actions"><button id="showcase-previous" aria-label="Profumo precedente">←</button><span id="showcase-position"></span><button id="showcase-next" aria-label="Profumo successivo">→</button></div></div>';
