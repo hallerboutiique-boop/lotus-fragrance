@@ -196,29 +196,6 @@
       }
     },
     {
-      "id": "nebras",
-      "name": "Lattafa Nebras",
-      "brand": "Lattafa",
-      "category": "arabi-donna",
-      "image": "assets/products/matte-mini/nebras.webp",
-      "description": "Frutti rossi e mandarino introducono un cuore di vaniglia, cacao e rosa. Zucchero, fava tonka, ambra e muschio ne prolungano la dolcezza.",
-      "notes": [
-        "Frutti rossi",
-        "Cacao",
-        "Vaniglia"
-      ],
-      "source": "https://www.lattafa-usa.com/products/nebras",
-      "price": null,
-      "size": null,
-      "availability": null,
-      "miniature": {
-        "size": "10 ml",
-        "price": null,
-        "availability": null,
-        "illustrative": true
-      }
-    },
-    {
       "id": "yara-tous",
       "name": "Lattafa Yara Tous",
       "brand": "Lattafa",

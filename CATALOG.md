@@ -1,6 +1,6 @@
 # Catalogo Lotus Fragrance
 
-Il catalogo contiene solo i 10 profumi arabi richiesti: cinque nella categoria uomo e cinque nella categoria donna. Le due categorie seguono la selezione del titolare; alcuni produttori presentano le relative fragranze come unisex. Le referenze europee sono state rimosse dal catalogo e dalla vetrina.
+Il catalogo contiene 9 profumi arabi: cinque nella categoria uomo e quattro nella categoria donna. Lattafa Nebras è stato rimosso dal catalogo, dalla vetrina e dalla selezione 10 ml su richiesta del titolare; le immagini restano archiviate. Le due categorie seguono la selezione del titolare; alcuni produttori presentano le relative fragranze come unisex. Le referenze europee sono state rimosse dal catalogo e dalla vetrina.
 
 ## Dati commerciali
 

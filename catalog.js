@@ -38,7 +38,7 @@ function showFragrance(id,miniature=false){
 productDialog.addEventListener('click',e=>{if(e.target===productDialog){const r=productDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)productDialog.close()}});
 async function initializeCatalog(){
  try{
-  const response=await fetch('products.json?v=matte-mini2',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
+  const response=await fetch('products.json?v=without-nebras3',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
   const data=await response.json();catalogCategories=data.categories;products.push(...data.products);
   const controls=document.createElement('div');controls.className='catalog-controls';
   controls.innerHTML=`<div class="catalog-filter-list" role="group" aria-label="Filtra per categoria"><button data-category="all" aria-pressed="true">Tutti</button>${data.categories.map(c=>`<button data-category="${c.id}" aria-pressed="false">${escapeHTML(c.name)}</button>`).join('')}</div><div class="catalog-search-row"><label>Cerca una fragranza<input type="search" id="catalog-search" placeholder="Nome, marchio o nota olfattiva…"/></label><span id="catalog-count" role="status" aria-live="polite"></span></div>`;
@@ -52,7 +52,7 @@ async function initializeCatalog(){
   const miniHost=document.querySelector('#miniature-grid');
   miniHost.innerHTML=products.map(p=>`<article class="fragrance-card"><button class="fragrance-photo" data-miniature="${p.id}" aria-label="Scopri ${escapeHTML(p.name)} in 10 ml"><img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)} con miniatura 10 ml illustrativa" loading="lazy" decoding="async" width="1024" height="1024"/><span>10 ml · concept</span></button><div class="fragrance-copy"><p class="fragrance-brand">${escapeHTML(p.brand)} · 10 ml</p><h4>${escapeHTML(p.name)}</h4><p class="fragrance-description">${escapeHTML(p.description)}</p>${commercialInfo(p.miniature)?`<p class="fragrance-commercial">${commercialInfo(p.miniature)}</p>`:''}${p.miniature.price===null||p.miniature.availability===null?'<p class="product-pending">Prezzo e disponibilità da confermare.</p>':''}<button class="fragrance-details" data-miniature="${p.id}">Scopri il formato 10 ml <span>↗</span></button></div></article>`).join('');
   miniHost.querySelectorAll('[data-miniature]').forEach(b=>b.onclick=()=>showFragrance(b.dataset.miniature,true));
-  document.querySelector('.collection .eyebrow').textContent='10 profumi arabi · 2 universi';
+  document.querySelector('.collection .eyebrow').textContent=`${products.length} profumi arabi · ${catalogCategories.length} universi`;
   const hero=document.querySelector('.hero-visual');hero.classList.add('catalog-showcase');hero.removeAttribute('aria-label');
   hero.innerHTML='<div class="showcase-stage"><img id="showcase-image" width="800" height="800" alt=""/></div><div class="showcase-caption"><span>LA SELEZIONE LOTUS</span><p id="showcase-name"></p><div class="showcase-actions"><button id="showcase-previous" aria-label="Profumo precedente">←</button><span id="showcase-position"></span><button id="showcase-next" aria-label="Profumo successivo">→</button></div></div>';
   const selection=products;let current=0;
