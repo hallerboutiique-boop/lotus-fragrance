@@ -43,10 +43,17 @@ async function initializeCatalog(){
   document.querySelector('.collection .eyebrow').textContent=`${products.length} profumi arabi · ${catalogCategories.length} universi`;
   const hero=document.querySelector('.hero-visual');hero.classList.add('catalog-showcase');hero.removeAttribute('aria-label');
   hero.innerHTML='<div class="showcase-stage"><img id="showcase-image" width="800" height="800" alt=""/></div><div class="showcase-caption"><span>LA SELEZIONE LOTUS</span><p id="showcase-name"></p><div class="showcase-actions"><button id="showcase-previous" aria-label="Profumo precedente">←</button><span id="showcase-position"></span><button id="showcase-next" aria-label="Profumo successivo">→</button></div></div>';
-  const selection=products;let current=0;
+  const selection=products;let current=0,slideTimer;
   function showSlide(){const p=selection[current];const photo=document.querySelector('#showcase-image');photo.src=p.image;photo.alt=p.name;document.querySelector('#showcase-name').textContent=p.name;document.querySelector('#showcase-position').textContent=`${String(current+1).padStart(2,'0')} / ${String(selection.length).padStart(2,'0')}`}
-  document.querySelector('#showcase-previous').onclick=()=>{current=(current+selection.length-1)%selection.length;showSlide()};
-  document.querySelector('#showcase-next').onclick=()=>{current=(current+1)%selection.length;showSlide()};showSlide();
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  function stopSlides(){clearInterval(slideTimer)}
+  function startSlides(){stopSlides();if(!document.hidden&&!reducedMotion.matches)slideTimer=setInterval(()=>{current=(current+1)%selection.length;showSlide()},4000)}
+  document.querySelector('#showcase-previous').onclick=()=>{current=(current+selection.length-1)%selection.length;showSlide();startSlides()};
+  document.querySelector('#showcase-next').onclick=()=>{current=(current+1)%selection.length;showSlide();startSlides()};showSlide();startSlides();
+  hero.addEventListener('mouseenter',stopSlides);hero.addEventListener('mouseleave',startSlides);
+  hero.addEventListener('focusin',stopSlides);hero.addEventListener('focusout',event=>{if(!hero.contains(event.relatedTarget))startSlides()});
+  document.addEventListener('visibilitychange',()=>document.hidden?stopSlides():startSlides());
+  reducedMotion.addEventListener('change',startSlides);
   for(const [selector,id] of [['.rose-art','yara'],['.smoke-art','asad']]){const p=products.find(p=>p.id===id);const element=document.querySelector(selector);element.classList.add('catalog-feature');element.innerHTML=`<img src="${p.image}" alt="${escapeHTML(p.name)}" loading="lazy" width="800" height="800"/><p>${escapeHTML(p.name)}</p>`}
  }catch(error){catalogHost.innerHTML='<p role="alert">Il catalogo non è momentaneamente disponibile. Ricarica la pagina per riprovare.</p>';console.error(error)}
 }
