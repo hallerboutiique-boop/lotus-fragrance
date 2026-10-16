@@ -42,13 +42,13 @@ async function initializeCatalog(){
   searchToggle.innerHTML='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>';
   topbar.querySelector('.header-actions').prepend(searchToggle);
   const searchClose=document.createElement('button');searchClose.type='button';searchClose.className='search-close';searchClose.setAttribute('aria-label','Chiudi');searchClose.textContent='×';searchRow.append(searchClose);
-  const searchInput=searchRow.querySelector('input');searchInput.maxLength=120;searchInput.autocomplete='off';
+  const searchInput=searchRow.querySelector('input');searchInput.maxLength=120;searchInput.autocomplete='off';searchInput.placeholder={it:'Cerca…',en:'Search…',de:'Suchen…',fr:'Chercher…',es:'Buscar…',ar:'بحث…'}[LotusI18n.language];
   searchInput.setAttribute('role','combobox');searchInput.setAttribute('aria-autocomplete','list');searchInput.setAttribute('aria-controls','search-suggestions');searchInput.setAttribute('aria-expanded','false');
   const suggestions=document.createElement('ul');suggestions.id='search-suggestions';suggestions.className='search-suggestions';suggestions.setAttribute('role','listbox');suggestions.setAttribute('aria-label','Suggerimenti di ricerca');suggestions.hidden=true;searchRow.append(suggestions);
   let selectedSuggestion=-1;
   function hideSuggestions(){suggestions.hidden=true;searchInput.setAttribute('aria-expanded','false');searchInput.removeAttribute('aria-activedescendant');selectedSuggestion=-1}
-  function closeSearch(restoreFocus=false){hideSuggestions();searchRow.hidden=true;searchToggle.setAttribute('aria-expanded','false');if(restoreFocus)searchToggle.focus()}
-  searchToggle.onclick=()=>{if(!searchRow.hidden){closeSearch();return}searchRow.hidden=false;searchToggle.setAttribute('aria-expanded','true');searchInput.focus()};
+  function closeSearch(restoreFocus=false){hideSuggestions();searchRow.hidden=true;topbar.classList.remove('search-open');searchToggle.setAttribute('aria-expanded','false');if(restoreFocus)searchToggle.focus()}
+  searchToggle.onclick=()=>{if(!searchRow.hidden){closeSearch();return}searchRow.hidden=false;topbar.classList.add('search-open');searchToggle.setAttribute('aria-expanded','true');searchInput.focus()};
   searchClose.onclick=()=>closeSearch(true);
   function suggest(){
    selectedSuggestion=-1;searchInput.removeAttribute('aria-activedescendant');
