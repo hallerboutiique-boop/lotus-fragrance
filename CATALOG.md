@@ -1,6 +1,6 @@
 # Catalogo Lotus Fragrance
 
-Le quattro categorie seguono la selezione del titolare, non una classificazione esclusiva di genere del produttore. Sono presenti 20 referenze e 21 varianti: Hypnotic Poison è distinto in Eau de Toilette ed Eau de Parfum. Y Le Parfum usa il flacone e le note della versione attuale (pino/geranio), non l'edizione 2021 tutta nera.
+Il catalogo contiene solo i 10 profumi arabi richiesti: cinque nella categoria uomo e cinque nella categoria donna. Le due categorie seguono la selezione del titolare; alcuni produttori presentano le relative fragranze come unisex. Le referenze europee sono state rimosse dal catalogo e dalla vetrina.
 
 ## Dati commerciali
 
@@ -19,12 +19,5 @@ Ogni scheda contiene `source`, il collegamento alla pagina usata per verificare 
 - Lattafa: immagini dei singoli prodotti dal catalogo di Lattafa USA (`www.lattafa-usa.com/products.json`); per Oud for Glory usare `badee-al-oud-glory`, NON Honor & Glory. Fakhar Extrait è il flacone dorato, NON Fakhar Black.
 - Asdaaf Privé Rose: foto del singolo flacone da Lattafa Albania, `ameerat-al-arab-prive-rose` (seconda immagine); NON la versione rossa Ameerat Al Arab.
 - Afnan 9PM: fotografia `9PM-Product-01` da afnan.com; NON 9PM Rebel, Elixir o Pour Femme.
-- Dior: packshot delle pagine ufficiali Sauvage Elixir, Hypnotic Poison EDT ed EDP. I due Hypnotic hanno immagini diverse, rispettivamente rosso brillante e rosso scuro.
-- Prada: packshot ufficiali Luna Rossa Black e Paradoxe Intense (non Paradoxe originale).
-- Yves Saint Laurent: packshot ufficiali Y Le Parfum attuale e Libre Le Parfum (non Libre EDP o Intense).
-- Jean Paul Gaultier: immagine editoriale ufficiale del flacone dorato Le Male Elixir, non Le Male Le Parfum né Elixir Absolu.
-- Emporio Armani: packshot ufficiale Stronger With You Intensely, non Absolutely o Parfum.
-- Carolina Herrera: packshot ufficiale Good Girl Blush Elixir sfumato nero/rosa, non Blush interamente rosa.
-- Valentino: packshot ufficiale Donna Born in Roma Eau de Parfum, non Intense, Coral Fantasy o Yellow Dream.
 
-I file WebP sono versioni ridimensionate delle fotografie sorgente. Nessuna dimensione del flacone raffigurato viene presentata come formato disponibile per la vendita.
+I file WebP in `assets/products/` sono versioni ridimensionate delle fotografie sorgente. Le versioni in `assets/products/studio/` sono rielaborazioni imagegen delle stesse foto, con fondo nero e luce da studio: l'identità del prodotto viene controllata prima della pubblicazione. Le fotografie sorgente restano conservate. Nessuna dimensione del flacone raffigurato viene presentata come formato disponibile per la vendita.

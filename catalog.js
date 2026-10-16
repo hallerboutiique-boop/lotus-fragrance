@@ -32,7 +32,7 @@ function showFragrance(id){
 productDialog.addEventListener('click',e=>{if(e.target===productDialog){const r=productDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)productDialog.close()}});
 async function initializeCatalog(){
  try{
-  const response=await fetch('products.json?v=20261016',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
+  const response=await fetch('products.json?v=arabi-studio2',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
   const data=await response.json();catalogCategories=data.categories;products.push(...data.products);
   const controls=document.createElement('div');controls.className='catalog-controls';
   controls.innerHTML=`<div class="catalog-filter-list" role="group" aria-label="Filtra per categoria"><button data-category="all" aria-pressed="true">Tutti</button>${data.categories.map(c=>`<button data-category="${c.id}" aria-pressed="false">${escapeHTML(c.name)}</button>`).join('')}</div><div class="catalog-search-row"><label>Cerca una fragranza<input type="search" id="catalog-search" placeholder="Nome, marchio o nota olfattiva…"/></label><span id="catalog-count" role="status" aria-live="polite"></span><button id="motion-toggle" aria-pressed="false">Pausa movimento Ⅱ</button></div>`;
@@ -45,7 +45,7 @@ async function initializeCatalog(){
   function syncMotion(){document.body.classList.toggle('catalog-motion-paused',motionPaused);const b=document.querySelector('#motion-toggle');b.textContent=motionPaused?'Attiva movimento ↻':'Pausa movimento Ⅱ';b.setAttribute('aria-pressed',String(motionPaused))}
   document.querySelector('#motion-toggle').onclick=()=>{motionPaused=!motionPaused;syncMotion()};syncMotion();
   renderProducts();
-  document.querySelector('.collection .eyebrow').textContent='20 profumi · 4 universi';
+  document.querySelector('.collection .eyebrow').textContent='10 profumi arabi · 2 universi';
   const hero=document.querySelector('.hero-visual');hero.classList.add('catalog-showcase');hero.removeAttribute('aria-label');
   hero.innerHTML='<div class="showcase-stage"><img id="showcase-image" width="800" height="800" alt=""/></div><div class="showcase-caption"><span>LA SELEZIONE LOTUS</span><p id="showcase-name"></p><div class="showcase-actions"><button id="showcase-previous" aria-label="Profumo precedente">←</button><span id="showcase-position"></span><button id="showcase-next" aria-label="Profumo successivo">→</button></div></div>';
   const selection=products;let current=0;

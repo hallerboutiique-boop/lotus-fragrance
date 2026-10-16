@@ -1,32 +1,185 @@
 {
   "updated": "2026-10-16",
   "categories": [
-    {"id":"arabi-uomo","name":"Profumi arabi da uomo"},
-    {"id":"arabi-donna","name":"Profumi arabi da donna"},
-    {"id":"europei-uomo","name":"Profumi europei di marca da uomo"},
-    {"id":"europei-donna","name":"Profumi europei di marca da donna"}
+    {
+      "id": "arabi-uomo",
+      "name": "Profumi arabi da uomo"
+    },
+    {
+      "id": "arabi-donna",
+      "name": "Profumi arabi da donna"
+    }
   ],
   "products": [
-    {"id":"asad","name":"Lattafa Asad","brand":"Lattafa","category":"arabi-uomo","image":"assets/products/asad.webp","description":"Speziato e ambrato: pepe nero, ananas e tabacco incontrano caffè, iris e patchouli, su un fondo di vaniglia, ambra e legni secchi.","notes":["Pepe nero","Caffè","Vaniglia"],"source":"https://lattafa.com/product/asad/","price":null,"size":null,"availability":null},
-    {"id":"9pm","name":"Afnan 9PM","brand":"Afnan","category":"arabi-uomo","image":"assets/products/afnan-9pm.webp","description":"Un'apertura di bergamotto, mela, lavanda e cannella lascia spazio a mughetto e fiori d'arancio. Vaniglia, tonka, ambra e patchouli ne scaldano il fondo.","notes":["Mela","Cannella","Fava tonka"],"source":"https://afnan.com/products/9-pm","price":null,"size":null,"availability":null},
-    {"id":"oud-glory","name":"Lattafa Bade'e Al Oud Oud for Glory","brand":"Lattafa","category":"arabi-uomo","image":"assets/products/badee-al-oud-glory.webp","description":"Zafferano, noce moscata e lavanda aprono una composizione ambrata e legnosa. Oud e patchouli ne definiscono il cuore, con un fondo muschiato.","notes":["Zafferano","Oud","Patchouli"],"source":"https://lattafa.com/product/badee-al-oud-oud-for-glory/","price":null,"size":null,"availability":null},
-    {"id":"fakhar-extrait","name":"Lattafa Fakhar Extrait","brand":"Lattafa","category":"arabi-uomo","image":"assets/products/fakhar-extrait.webp","description":"Pompelmo, pepe rosa e cardamomo introducono tuberosa, accordi solari e artemisia. Il fondo intreccia ambra, cashmeran, labdano e cuoio.","notes":["Pompelmo","Tuberosa","Cuoio"],"source":"https://www.lattafa-usa.com/products/fakhar-extrait","price":null,"size":null,"availability":null},
-    {"id":"khamrah-qahwa","name":"Lattafa Khamrah Qahwa","brand":"Lattafa","category":"arabi-uomo","image":"assets/products/khamrah-qahwa.webp","description":"Cannella, cardamomo e zenzero avvolgono pralina e frutta candita. Caffè, vaniglia e fava tonka disegnano una scia gourmand calda e speziata.","notes":["Caffè","Cardamomo","Pralina"],"source":"https://lattafa.com/product/khamrah-qahwa/","price":null,"size":null,"availability":null},
-    {"id":"yara","name":"Lattafa Yara","brand":"Lattafa","category":"arabi-donna","image":"assets/products/yara.webp","description":"Mandarino, eliotropio e orchidea aprono un cuore di frutti tropicali e accordi gourmand. Vaniglia, sandalo e muschio ne ammorbidiscono il fondo.","notes":["Orchidea","Frutti tropicali","Vaniglia"],"source":"https://lattafa.com/product/yara/","price":null,"size":null,"availability":null},
-    {"id":"eclaire","name":"Lattafa Eclaire","brand":"Lattafa","category":"arabi-donna","image":"assets/products/eclaire.webp","description":"Un gourmand cremoso di caramello, latte e zucchero. Fiori bianchi e miele accompagnano un fondo di vaniglia, pralina e muschio.","notes":["Caramello","Latte","Vaniglia"],"source":"https://www.lattafa-usa.com/products/eclaire","price":null,"size":null,"availability":null},
-    {"id":"prive-rose","name":"Asdaaf Ameerat Al Arab Privé Rose","brand":"Asdaaf","category":"arabi-donna","image":"assets/products/prive-rose.webp","description":"Fragola, uva e arancia incontrano un bouquet di rosa, gelsomino e gardenia. Muschio bianco, tonka, ambra e sandalo completano la composizione.","notes":["Fragola","Rosa","Sandalo"],"source":"https://lattafa.al/products/ameerat-al-arab-prive-rose","price":null,"size":null,"availability":null},
-    {"id":"nebras","name":"Lattafa Nebras","brand":"Lattafa","category":"arabi-donna","image":"assets/products/nebras.webp","description":"Frutti rossi e mandarino introducono un cuore di vaniglia, cacao e rosa. Zucchero, fava tonka, ambra e muschio ne prolungano la dolcezza.","notes":["Frutti rossi","Cacao","Vaniglia"],"source":"https://www.lattafa-usa.com/products/nebras","price":null,"size":null,"availability":null},
-    {"id":"yara-tous","name":"Lattafa Yara Tous","brand":"Lattafa","category":"arabi-donna","image":"assets/products/yara-tous.webp","description":"Mango, cocco e frutto della passione danno un'impronta tropicale. Gelsomino, eliotropio e fiori d'arancio si posano su vaniglia, muschio e cashmeran.","notes":["Mango","Cocco","Fiori d'arancio"],"source":"https://lattafa.com/product/yara-tous/","price":null,"size":null,"availability":null},
-    {"id":"sauvage-elixir","name":"Dior Sauvage Elixir","brand":"Dior","category":"europei-uomo","image":"assets/products/sauvage-elixir.webp","description":"Una composizione concentrata, speziata e legnosa: la freschezza aromatica della lavanda incontra un cuore di spezie e un accordo di legni ricchi.","notes":["Spezie","Lavanda","Legni"],"source":"https://www.dior.com/en_us/beauty/products/sauvage-elixir-C099700242.html","price":null,"size":null,"availability":null},
-    {"id":"y-le-parfum","name":"Yves Saint Laurent Y Le Parfum","brand":"Yves Saint Laurent","category":"europei-uomo","image":"assets/products/y-le-parfum.webp","description":"La versione attuale di Y Le Parfum accosta l'accordo fresco di pino notturno al geranio. Balsamo d'abete e patchouli ne definiscono la profondità legnosa.","notes":["Pino","Geranio","Patchouli"],"source":"https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-le-parfum/WW-507861YSL.html","price":null,"size":null,"availability":null},
-    {"id":"luna-rossa-black","name":"Prada Luna Rossa Black","brand":"Prada","category":"europei-uomo","image":"assets/products/luna-rossa-black.webp","description":"Bergamotto e angelica aprono un profilo ambrato e legnoso. Patchouli e cumarina accompagnano un fondo caldo di ambra legnosa.","notes":["Bergamotto","Patchouli","Ambra"],"source":"https://www.prada-beauty.com/fragrance/luna-rossa/luna-rossa-black-eau-de-parfum/MPL01369.html","price":null,"size":null,"availability":null},
-    {"id":"le-male-elixir","name":"Jean Paul Gaultier Le Male Elixir","brand":"Jean Paul Gaultier","category":"europei-uomo","image":"assets/products/le-male-elixir.webp","description":"La freschezza di menta e lavanda si scalda con il benzoino. La fava tonka aggiunge sfumature morbide che richiamano miele e tabacco.","notes":["Lavanda","Benzoino","Fava tonka"],"source":"https://www.jeanpaulgaultier.com/ww/en/fragrances/range-le-male/le-male-elixir-parfum","price":null,"size":null,"availability":null},
-    {"id":"stronger-intensely","name":"Emporio Armani Stronger With You Intensely","brand":"Emporio Armani","category":"europei-uomo","image":"assets/products/stronger-intensely.webp","description":"Una firma calda e speziata: pepe rosa e lavanda incontrano un accordo di castagna zuccherata. Vaniglia, legni ambrati e sfumature scamosciate danno profondità.","notes":["Pepe rosa","Vaniglia","Legni ambrati"],"source":"https://www.giorgioarmanibeauty-usa.com/fragrances/stronger-with-you-intensely-eau-de-parfum/ww-00180-arm.html","price":null,"size":null,"availability":null},
-    {"id":"paradoxe-intense","name":"Prada Paradoxe Intense","brand":"Prada","category":"europei-donna","image":"assets/products/paradoxe-intense.webp","description":"Gelsomino e accordi di neroli incontrano la profondità ambrata di Ambrofix e un accordo di muschio vegetale. Un contrasto floreale, intenso e avvolgente.","notes":["Gelsomino","Ambrofix","Muschio vegetale"],"source":"https://www.prada-beauty.com/fragrance/paradoxe/paradoxe-intense-eau-de-parfum/MPL01658.html","price":null,"size":null,"availability":null},
-    {"id":"libre-le-parfum","name":"Yves Saint Laurent Libre Le Parfum","brand":"Yves Saint Laurent","category":"europei-donna","image":"assets/products/libre-le-parfum.webp","description":"La tensione tra lavanda e fiori d'arancio si veste di calore. Un accordo di zafferano aggiunge una sfaccettatura speziata alla firma floreale di Libre.","notes":["Lavanda","Fiori d'arancio","Zafferano"],"source":"https://www.yslbeauty.com/int/fragrance/feminine-fragrance/libre/libre-le-parfum/WW-51020YSL.html","price":null,"size":null,"availability":null},
-    {"id":"hypnotic-poison-edt","name":"Dior Hypnotic Poison Eau de Toilette","brand":"Dior","category":"europei-donna","image":"assets/products/hypnotic-poison-edt.webp","description":"La versione Eau de Toilette intreccia mandorla amara, gelsomino e vaniglia. Un profilo ambrato, morbido e sensuale nel caratteristico flacone rosso.","notes":["Mandorla amara","Gelsomino","Vaniglia"],"source":"https://www.dior.com/en_us/beauty/products/hypnotic-poison-eau-de-toilette-F006341009.html","price":null,"size":null,"availability":null},
-    {"id":"hypnotic-poison-edp","name":"Dior Hypnotic Poison Eau de Parfum","brand":"Dior","category":"europei-donna","image":"assets/products/hypnotic-poison-edp.webp","description":"La versione Eau de Parfum unisce gelsomino sambac e fiori d'arancio a un carattere di liquirizia. Fava tonka e vaniglia ne completano la scia ambrata.","notes":["Liquirizia","Gelsomino sambac","Fava tonka"],"source":"https://www.dior.com/en_int/beauty/products/hypnotic-poison-eau-de-parfum-Y0083424.html","price":null,"size":null,"availability":null},
-    {"id":"good-girl-blush-elixir","name":"Carolina Herrera Good Girl Blush Elixir","brand":"Carolina Herrera","category":"europei-donna","image":"assets/products/good-girl-blush-elixir.webp","description":"Rosa e ylang-ylang incontrano una vaniglia cremosa e il carattere fumé del patchouli. Una composizione floreale ambrata nel flacone dégradé nero e rosa.","notes":["Rosa","Ylang-ylang","Patchouli"],"source":"https://www.carolinaherrera.com/uk/en/p-fragrance/good-girl-blush-elixir","price":null,"size":null,"availability":null},
-    {"id":"born-in-roma","name":"Valentino Donna Born in Roma Eau de Parfum","brand":"Valentino","category":"europei-donna","image":"assets/products/born-in-roma.webp","description":"Gelsomino sambac, cashmeran e vaniglia bourbon compongono una firma floreale ambrata. La luminosità del fiore incontra sfumature legnose e una dolcezza profonda.","notes":["Gelsomino sambac","Cashmeran","Vaniglia bourbon"],"source":"https://www.valentino-beauty.us/fragrances/fragrances-women/fragrances-women-born-in-roma/born-in-roma-donna-eau-de-parfum-3614272761445.html","price":null,"size":null,"availability":null}
+    {
+      "id": "asad",
+      "name": "Lattafa Asad",
+      "brand": "Lattafa",
+      "category": "arabi-uomo",
+      "image": "assets/products/studio/asad.webp",
+      "description": "Speziato e ambrato: pepe nero, ananas e tabacco incontrano caffè, iris e patchouli, su un fondo di vaniglia, ambra e legni secchi.",
+      "notes": [
+        "Pepe nero",
+        "Caffè",
+        "Vaniglia"
+      ],
+      "source": "https://lattafa.com/product/asad/",
+      "price": null,
+      "size": null,
+      "availability": null
+    },
+    {
+      "id": "9pm",
+      "name": "Afnan 9PM",
+      "brand": "Afnan",
+      "category": "arabi-uomo",
+      "image": "assets/products/studio/afnan-9pm.webp",
+      "description": "Un'apertura di bergamotto, mela, lavanda e cannella lascia spazio a mughetto e fiori d'arancio. Vaniglia, tonka, ambra e patchouli ne scaldano il fondo.",
+      "notes": [
+        "Mela",
+        "Cannella",
+        "Fava tonka"
+      ],
+      "source": "https://afnan.com/products/9-pm",
+      "price": null,
+      "size": null,
+      "availability": null
+    },
+    {
+      "id": "oud-glory",
+      "name": "Lattafa Bade'e Al Oud Oud for Glory",
+      "brand": "Lattafa",
+      "category": "arabi-uomo",
+      "image": "assets/products/studio/badee-al-oud-glory.webp",
+      "description": "Zafferano, noce moscata e lavanda aprono una composizione ambrata e legnosa. Oud e patchouli ne definiscono il cuore, con un fondo muschiato.",
+      "notes": [
+        "Zafferano",
+        "Oud",
+        "Patchouli"
+      ],
+      "source": "https://lattafa.com/product/badee-al-oud-oud-for-glory/",
+      "price": null,
+      "size": null,
+      "availability": null
+    },
+    {
+      "id": "fakhar-extrait",
+      "name": "Lattafa Fakhar Extrait",
+      "brand": "Lattafa",
+      "category": "arabi-uomo",
+      "image": "assets/products/studio/fakhar-extrait.webp",
+      "description": "Pompelmo, pepe rosa e cardamomo introducono tuberosa, accordi solari e artemisia. Il fondo intreccia ambra, cashmeran, labdano e cuoio.",
+      "notes": [
+        "Pompelmo",
+        "Tuberosa",
+        "Cuoio"
+      ],
+      "source": "https://www.lattafa-usa.com/products/fakhar-extrait",
+      "price": null,
+      "size": null,
+      "availability": null
+    },
+    {
+      "id": "khamrah-qahwa",
+      "name": "Lattafa Khamrah Qahwa",
+      "brand": "Lattafa",
+      "category": "arabi-uomo",
+      "image": "assets/products/studio/khamrah-qahwa.webp",
+      "description": "Cannella, cardamomo e zenzero avvolgono pralina e frutta candita. Caffè, vaniglia e fava tonka disegnano una scia gourmand calda e speziata.",
+      "notes": [
+        "Caffè",
+        "Cardamomo",
+        "Pralina"
+      ],
+      "source": "https://lattafa.com/product/khamrah-qahwa/",
+      "price": null,
+      "size": null,
+      "availability": null
+    },
+    {
+      "id": "yara",
+      "name": "Lattafa Yara",
+      "brand": "Lattafa",
+      "category": "arabi-donna",
+      "image": "assets/products/studio/yara.webp",
+      "description": "Mandarino, eliotropio e orchidea aprono un cuore di frutti tropicali e accordi gourmand. Vaniglia, sandalo e muschio ne ammorbidiscono il fondo.",
+      "notes": [
+        "Orchidea",
+        "Frutti tropicali",
+        "Vaniglia"
+      ],
+      "source": "https://lattafa.com/product/yara/",
+      "price": null,
+      "size": null,
+      "availability": null
+    },
+    {
+      "id": "eclaire",
+      "name": "Lattafa Eclaire",
+      "brand": "Lattafa",
+      "category": "arabi-donna",
+      "image": "assets/products/studio/eclaire.webp",
+      "description": "Un gourmand cremoso di caramello, latte e zucchero. Fiori bianchi e miele accompagnano un fondo di vaniglia, pralina e muschio.",
+      "notes": [
+        "Caramello",
+        "Latte",
+        "Vaniglia"
+      ],
+      "source": "https://www.lattafa-usa.com/products/eclaire",
+      "price": null,
+      "size": null,
+      "availability": null
+    },
+    {
+      "id": "prive-rose",
+      "name": "Asdaaf Ameerat Al Arab Privé Rose",
+      "brand": "Asdaaf",
+      "category": "arabi-donna",
+      "image": "assets/products/studio/prive-rose.webp",
+      "description": "Fragola, uva e arancia incontrano un bouquet di rosa, gelsomino e gardenia. Muschio bianco, tonka, ambra e sandalo completano la composizione.",
+      "notes": [
+        "Fragola",
+        "Rosa",
+        "Sandalo"
+      ],
+      "source": "https://lattafa.al/products/ameerat-al-arab-prive-rose",
+      "price": null,
+      "size": null,
+      "availability": null
+    },
+    {
+      "id": "nebras",
+      "name": "Lattafa Nebras",
+      "brand": "Lattafa",
+      "category": "arabi-donna",
+      "image": "assets/products/studio/nebras.webp",
+      "description": "Frutti rossi e mandarino introducono un cuore di vaniglia, cacao e rosa. Zucchero, fava tonka, ambra e muschio ne prolungano la dolcezza.",
+      "notes": [
+        "Frutti rossi",
+        "Cacao",
+        "Vaniglia"
+      ],
+      "source": "https://www.lattafa-usa.com/products/nebras",
+      "price": null,
+      "size": null,
+      "availability": null
+    },
+    {
+      "id": "yara-tous",
+      "name": "Lattafa Yara Tous",
+      "brand": "Lattafa",
+      "category": "arabi-donna",
+      "image": "assets/products/studio/yara-tous.webp",
+      "description": "Mango, cocco e frutto della passione danno un'impronta tropicale. Gelsomino, eliotropio e fiori d'arancio si posano su vaniglia, muschio e cashmeran.",
+      "notes": [
+        "Mango",
+        "Cocco",
+        "Fiori d'arancio"
+      ],
+      "source": "https://lattafa.com/product/yara-tous/",
+      "price": null,
+      "size": null,
+      "availability": null
+    }
   ]
 }

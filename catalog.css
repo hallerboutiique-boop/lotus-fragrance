@@ -16,11 +16,11 @@
 .category-heading small { margin-left:auto; color:#999; font:10px 'DM Mono',monospace; white-space:nowrap; }
 .fragrance-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:34px 24px; }
 .fragrance-card { min-width:0; border:1px solid #282828; background:#0b0b0b; display:flex; flex-direction:column; }
-.fragrance-photo { display:grid; place-items:center; position:relative; width:100%; aspect-ratio:1; padding:22px; border:0; background:#efefef; overflow:hidden; cursor:pointer; perspective:900px; }
+.fragrance-photo { display:grid; place-items:center; position:relative; width:100%; aspect-ratio:1; padding:0; border:0; background:#020202; overflow:hidden; cursor:pointer; perspective:900px; }
 .fragrance-photo img { width:100%; height:100%; object-fit:contain; min-height:0; max-height:100%; animation:fragrance-turn 10s ease-in-out infinite; }
 .fragrance-card:nth-child(2n) img { animation-delay:-3s; }
 .fragrance-card:nth-child(3n) img { animation-delay:-6s; }
-.fragrance-photo>span { position:absolute; bottom:12px; right:14px; color:#111; font:9px 'DM Mono',monospace; background:#ffffffdb; padding:8px 10px; }
+.fragrance-photo>span { position:absolute; bottom:12px; right:14px; color:#eee; font:9px 'DM Mono',monospace; background:#111c; border:1px solid #ffffff30; padding:8px 10px; }
 .fragrance-copy { display:flex; flex-direction:column; flex:1; padding:24px; }
 .fragrance-brand { font:10px 'DM Mono',monospace; color:#aaa; letter-spacing:.12em; text-transform:uppercase; margin:0 0 14px; }
 .fragrance-copy h4 { font:500 28px/1.08 'Cormorant Garamond',serif; margin:0 0 16px; color:#fff; }
@@ -32,7 +32,7 @@
 .catalog-empty { padding:30px 0; }
 .fragrance-dialog { width:min(1000px,94vw); padding:48px 30px 30px; background:#101010; color:#f4f4f2; }
 .fragrance-detail-layout { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:center; }
-.fragrance-detail-layout>img { width:100%; height:auto; max-height:60dvh; object-fit:contain; background:#eee; }
+.fragrance-detail-layout>img { width:100%; height:auto; max-height:60dvh; object-fit:contain; background:#020202; }
 .fragrance-detail-layout h2 { font-size:38px; }
 .fragrance-dialog .modal-close { color:#fff; min-width:44px; min-height:44px; }
 .fragrance-dialog p { color:#bbb; }
@@ -40,7 +40,7 @@
 .product-pending { font-size:11px!important; }
 html body .catalog-showcase { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:20px; padding:48px 24px; }
 html body .catalog-showcase:before { display:none; }
-.showcase-stage { width:min(100%,390px); aspect-ratio:1; perspective:1000px; background:#eee; overflow:hidden; display:grid; place-items:center; }
+.showcase-stage { width:min(100%,390px); aspect-ratio:1; perspective:1000px; background:#020202; overflow:hidden; display:grid; place-items:center; }
 .showcase-stage img { width:100%; height:100%; object-fit:contain; animation:fragrance-turn 10s ease-in-out infinite; }
 .showcase-caption { width:min(100%,390px); text-align:center; }
 .showcase-caption>span { font:9px 'DM Mono',monospace; color:#999; letter-spacing:.15em; }
@@ -49,7 +49,7 @@ html body .catalog-showcase:before { display:none; }
 .showcase-actions button { width:44px; height:44px; color:#fff; background:transparent; border:1px solid #444; cursor:pointer; }
 .showcase-actions span { font:10px 'DM Mono',monospace; color:#aaa; }
 html body .catalog-feature { display:flex; align-items:center; justify-content:center; flex-direction:column; background:#080808; padding:40px; gap:24px; }
-.catalog-feature>img { width:min(100%,360px); height:auto; object-fit:contain; background:#eee; }
+.catalog-feature>img { width:min(100%,360px); height:auto; object-fit:contain; background:#020202; }
 .catalog-feature>p { color:#ccc; font:500 24px 'Cormorant Garamond',serif; }
 html body .catalog-feature:after,html body .catalog-feature:before { display:none; }
 .catalog-motion-paused .fragrance-photo img,.catalog-motion-paused .showcase-stage img,.fragrance-card:not(.is-in-view) img,.fragrance-card:hover img,.fragrance-card:focus-within img { animation-play-state:paused; }
