@@ -31,7 +31,8 @@
         "size": "10 ml",
         "price": null,
         "availability": null,
-        "illustrative": true
+        "illustrative": true,
+        "image": "assets/products/single-10ml/asad.webp"
       }
     },
     {
@@ -54,7 +55,8 @@
         "size": "10 ml",
         "price": null,
         "availability": null,
-        "illustrative": true
+        "illustrative": true,
+        "image": "assets/products/single-10ml/afnan-9pm.webp"
       }
     },
     {
@@ -77,7 +79,8 @@
         "size": "10 ml",
         "price": null,
         "availability": null,
-        "illustrative": true
+        "illustrative": true,
+        "image": "assets/products/single-10ml/badee-al-oud-glory.webp"
       }
     },
     {
@@ -100,7 +103,8 @@
         "size": "10 ml",
         "price": null,
         "availability": null,
-        "illustrative": true
+        "illustrative": true,
+        "image": "assets/products/single-10ml/fakhar-extrait.webp"
       }
     },
     {
@@ -123,7 +127,8 @@
         "size": "10 ml",
         "price": null,
         "availability": null,
-        "illustrative": true
+        "illustrative": true,
+        "image": "assets/products/single-10ml/khamrah-qahwa.webp"
       }
     },
     {
@@ -146,7 +151,8 @@
         "size": "10 ml",
         "price": null,
         "availability": null,
-        "illustrative": true
+        "illustrative": true,
+        "image": "assets/products/single-10ml/yara.webp"
       }
     },
     {
@@ -169,7 +175,8 @@
         "size": "10 ml",
         "price": null,
         "availability": null,
-        "illustrative": true
+        "illustrative": true,
+        "image": "assets/products/single-10ml/eclaire.webp"
       }
     },
     {
@@ -192,7 +199,8 @@
         "size": "10 ml",
         "price": null,
         "availability": null,
-        "illustrative": true
+        "illustrative": true,
+        "image": "assets/products/single-10ml/prive-rose.webp"
       }
     },
     {
@@ -215,7 +223,8 @@
         "size": "10 ml",
         "price": null,
         "availability": null,
-        "illustrative": true
+        "illustrative": true,
+        "image": "assets/products/single-10ml/yara-tous.webp"
       }
     }
   ]

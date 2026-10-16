@@ -21,6 +21,8 @@
 .fragrance-copy { display:flex; flex-direction:column; flex:1; padding:24px; }
 .fragrance-brand { font:10px 'DM Mono',monospace; color:#aaa; letter-spacing:.12em; text-transform:uppercase; margin:0 0 14px; }
 .fragrance-copy h4 { font:500 28px/1.08 'Cormorant Garamond',serif; margin:0 0 16px; color:#fff; }
+.fragrance-copy h4 a { text-decoration:none; color:inherit; }
+.fragrance-price { margin:0; color:#ddd; font:12px/1.6 Manrope,sans-serif; }
 .fragrance-description { font:12px/1.8 Manrope,sans-serif; color:#aaa; margin:0 0 20px; }
 .fragrance-notes { display:flex; flex-wrap:wrap; list-style:none; padding:0; gap:7px; margin:0 0 24px; }
 .fragrance-notes li { font:9px/1.4 'DM Mono',monospace; border:1px solid #3c3c3c; color:#ccc; padding:7px 9px; }
@@ -56,3 +58,4 @@ html body .catalog-feature:after,html body .catalog-feature:before { display:non
 @media(max-width:1000px){.fragrance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fragrance-copy{padding:20px}.category-heading{flex-wrap:wrap}.category-heading small{margin-left:0}}
 @media(max-width:600px){.catalog-controls{margin-bottom:32px}.catalog-filter-list{display:grid;grid-template-columns:1fr 1fr}.catalog-filter-list button:first-child{grid-column:1/-1}.catalog-filter-list button{font-size:10px;text-align:left;padding:10px}.catalog-search-row{gap:10px}.catalog-search-row label{min-width:100%;max-width:none}.catalog-search-row input{font-size:16px}.category-heading{gap:10px}.category-heading h3{flex:1;font-size:30px}.category-heading small{width:100%;padding-left:28px}.fragrance-grid{gap:16px 10px}.fragrance-copy{padding:14px}.fragrance-copy h4{font-size:24px;overflow-wrap:anywhere}.fragrance-brand{font-size:8px;line-height:1.6}.fragrance-photo{padding:8px}.fragrance-description{font-size:11px;line-height:1.7}.fragrance-notes{gap:5px;margin-bottom:16px}.fragrance-notes li{font-size:8px;padding:5px}.fragrance-details{font-size:9px;line-height:1.7;gap:6px}.catalog-category{margin-bottom:52px}.fragrance-detail-layout{grid-template-columns:1fr;gap:24px}.fragrance-detail-layout>img{max-height:35dvh}.fragrance-detail-layout h2{font-size:32px}html body .catalog-showcase{min-height:0;padding:28px 0 48px}.showcase-stage{max-width:350px}.showcase-caption>p{font-size:26px}html body .catalog-feature{min-height:0;padding:40px 24px}}
 @media(max-width:360px){.fragrance-grid{grid-template-columns:minmax(0,1fr)}.fragrance-photo{aspect-ratio:1.15}.fragrance-description{font-size:12px}}
+@media(max-width:760px){.fragrance-grid{grid-template-columns:minmax(0,1fr);gap:24px}.fragrance-photo{aspect-ratio:1;padding:0}.fragrance-copy{padding:20px}.fragrance-copy h4{font-size:30px;margin-bottom:10px}.fragrance-price{font-size:13px}}

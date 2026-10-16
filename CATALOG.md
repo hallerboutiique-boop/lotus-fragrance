@@ -24,6 +24,10 @@ I file WebP in `assets/products/` sono versioni ridimensionate delle fotografie 
 
 ## Controluce e miniature 10 ml
 
+### Liste mobile e pagine prodotto
+
+Su schermi fino a 760 px le griglie mostrano una sola scheda per riga. Le schede contengono solo foto, nome e prezzo (oppure «Prezzo da definire»), senza descrizione, note o marchio separato. Uomo e donna sono divisi sia nel catalogo originale sia nella sezione 10 ml. Le descrizioni e note sono nelle pagine `product.html?id=...`; il parametro `&format=10ml` apre il formato piccolo. Le nuove immagini con il solo 10 ml sono in `assets/products/single-10ml/` e sono associate in `miniature.image` del JSON. Restano ricostruzioni illustrative; non dimostrano l'esistenza di confezioni ufficiali.
+
 Correzione di scala: le miniature sono ridotte uniformemente, tappo incluso, a circa il 43–45% dell'altezza del flacone grande, mantenendo il rapporto larghezza/altezza e il piano d'appoggio comune. Non vengono trattate come confezioni reali misurate.
 
 Le versioni definitive senza riflessi sul pavimento, con base nera opaca e solo controluce dietro i flaconi, sono in `assets/products/matte-mini/`. La luce è scelta in base al flacone: oro/champagne per Asad, Oud for Glory, Fakhar Extrait e Nebras; bianco freddo per 9PM; ambra per Khamrah Qahwa e Yara Tous; rosa per Yara e Privé Rose; avorio per Eclaire. Le miniature sono ricostruzioni nello stile del grande, non atomizzatori generici. I dati `miniature.price`, `miniature.size` e `miniature.availability` si modificano in `products.json` o nell'editor locale, che include anche le righe 10 ml; prezzo e disponibilità restano null e la vendita delle miniature non è attivata.
