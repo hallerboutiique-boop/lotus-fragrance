@@ -12,3 +12,4 @@ html[dir=rtl] .hero-copy h1{font-size:clamp(44px,5.3vw,82px);line-height:1.4}htm
 .topbar .header-actions{position:absolute;right:4.5vw;top:50%;transform:translateY(-50%)}
 @media(max-width:1100px){.topbar .language-bar,.topbar .header-actions{top:80px}}
 @media(max-width:760px){.language-bar{left:20px}.topbar .language-bar,.topbar .header-actions{top:66px}.topbar .header-actions{right:20px}html body .topbar .brand-logo{left:50%;right:auto;transform:translate(-50%,-50%)}.product-header{height:176px;padding-bottom:44px}.product-header>a:first-child{top:66px}.product-header>.language-bar{top:66px}.product-header>nav{position:absolute;bottom:0;left:20px;right:20px;justify-content:center;height:44px;align-items:center}html[dir=rtl] body .hero h1{font-size:44px;line-height:1.4}html[dir=rtl] .offer-card,html[dir=rtl] .product-layout{min-width:0}}
+@media(max-width:760px){.language-globe{width:26px;height:26px}}

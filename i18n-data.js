@@ -2,6 +2,9 @@
    Product and brand names are intentionally preserved. No remote translation service. */
 window.LotusTranslations = `
 Suggerimenti di ricerca|Search suggestions|Suchvorschläge|Suggestions de recherche|Sugerencias de búsqueda|اقتراحات البحث
+Seguici|Follow us|Folge uns|Suivez-nous|Síguenos|تابعنا
+Canali social|Social channels|Soziale Netzwerke|Réseaux sociaux|Redes sociales|قنوات التواصل الاجتماعي
+Link dei profili in arrivo|Profile links coming soon|Profil-Links folgen in Kürze|Liens des profils à venir|Enlaces a los perfiles próximamente|روابط الحسابات قريباً
 Nella selezione Donna una fragranza può ripetersi.|In the Women selection, one fragrance may be repeated.|Bei der Damenauswahl kann ein Duft doppelt enthalten sein.|Dans la sélection Femme, un parfum peut être présent deux fois.|En la selección Mujer, una fragancia puede repetirse.|في تشكيلة النساء قد يتكرر أحد العطور.
 Scegli il tuo formato|Choose your format|Wähle dein Format|Choisissez votre formule|Elige tu formato|اختر مجموعتك
 Tris|Trio|Trio|Trio|Trío|ثلاثية
