@@ -52,9 +52,10 @@
   const bar=document.createElement('div');bar.className='language-bar';bar.dataset.noTranslate='';
   const labels=['Lingua','Language','Sprache','Langue','Idioma','اللغة'];
   const select=document.createElement('select');select.id='site-language';select.setAttribute('aria-label',labels[column]);
+  const flag=document.createElement('span');flag.className='language-flag';flag.textContent=languages[column][1];flag.setAttribute('aria-hidden','true');
   for(const [code,flag,name] of languages){const option=new Option(`${flag} ${name}`,code);option.lang=code;option.dir=code==='ar'?'rtl':'ltr';option.selected=code===language;select.add(option)}
-  const label=document.createElement('label');label.htmlFor=select.id;label.textContent=labels[column];bar.append(label,select);
-  const banner=document.querySelector('.pocket-banner');if(banner)banner.after(bar);else document.body.prepend(bar);
+  bar.append(flag,select);
+  const header=document.querySelector('.topbar,.product-header');if(header)header.append(bar);else document.body.prepend(bar);
   select.addEventListener('change',()=>{
    // Reload intentionally keeps the existing handlers and cart state intact.
    try{localStorage.setItem('lotus-language',select.value)}catch{}
