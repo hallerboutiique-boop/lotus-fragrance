@@ -51,8 +51,9 @@ html body .catalog-showcase:before,html body .catalog-showcase:after { display:n
 .showcase-actions { display:flex; align-items:center; justify-content:center; gap:24px; }
 .showcase-actions button { width:44px; height:44px; color:#fff; background:transparent; border:1px solid #444; cursor:pointer; }
 .showcase-actions span { font:10px 'DM Mono',monospace; color:#aaa; }
-html body .catalog-feature { display:flex; align-items:center; justify-content:center; flex-direction:column; background:#080808; padding:40px; gap:24px; }
-.catalog-feature>img { width:min(100%,360px); height:auto; object-fit:contain; background:#020202; }
+html body .split-feature,html body .split-feature .feature-copy { background:var(--bg); }
+html body .catalog-feature { display:flex; align-items:center; justify-content:center; flex-direction:column; background:var(--bg); padding:40px; gap:24px; }
+.catalog-feature>img { width:min(100%,360px); height:auto; object-fit:contain; mix-blend-mode:lighten; mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent),linear-gradient(to bottom,transparent,#000 6%,#000 94%,transparent); mask-composite:intersect; }
 .catalog-feature>p { color:#ccc; font:500 24px 'Cormorant Garamond',serif; }
 html body .catalog-feature:after,html body .catalog-feature:before { display:none; }
 @media(min-width:1500px){.fragrance-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
