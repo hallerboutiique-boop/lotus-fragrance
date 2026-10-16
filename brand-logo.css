@@ -1,0 +1,9 @@
+html body .topbar .brand-logo,html body .product-header .brand-logo{width:min(35vw,390px);height:118px;overflow:visible;filter:none}
+html body .topbar .brand-logo img,html body .product-header .brand-logo img{display:block;width:100%;height:100%;margin:0;object-fit:contain;filter:none;mix-blend-mode:screen}
+html body footer .footer-mark img{width:min(230px,100%);height:auto;mix-blend-mode:screen;filter:none}
+html body .login img{display:block;width:min(100%,360px);height:auto;aspect-ratio:1910/310;object-fit:contain;margin:20px auto 0;mix-blend-mode:screen;filter:none}
+html body .admin-panel header img{width:260px;height:auto;aspect-ratio:1910/310;object-fit:contain;mix-blend-mode:screen;filter:none}
+html body .bar .brand img{display:block;width:min(300px,78vw);height:auto;mix-blend-mode:screen}
+@media(max-width:900px){html body .topbar .brand-logo{width:min(31vw,300px);height:100px}}
+@media(max-width:760px){html body .topbar .brand-logo,html body .product-header .brand-logo{width:min(54vw,220px);height:82px}}
+@media(max-width:760px){html body :is(.topbar,.product-header).search-open .brand-logo{left:16px;right:auto;width:112px;height:68px;transform:translateY(-50%)}html body :is(.topbar,.product-header).search-open .brand-logo img{width:100%;height:100%}}

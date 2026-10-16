@@ -2,7 +2,7 @@
 (async()=>{
  if(document.querySelector('.topbar'))return;
  let header=document.querySelector('.product-header');
- if(!header){header=document.createElement('header');header.className='product-header';header.innerHTML='<a href="index.html" aria-label="Lotus Fragrance"><img src="assets/lotus-logo.png" alt="Lotus Fragrance" width="140" height="140"/></a><nav><a href="index.html">Lotus Fragrance</a></nav>';document.body.prepend(header)}
+ if(!header){header=document.createElement('header');header.className='product-header';header.innerHTML='<a href="index.html" aria-label="Lotus Fragrance"><img src="assets/lotus-logo-new.jpg" alt="Lotus Fragrance" width="140" height="140"/></a><nav><a href="index.html">Lotus Fragrance</a></nav>';document.body.prepend(header)}
  header.querySelector('a').classList.add('brand-logo');
  const actions=document.createElement('div');actions.className='header-actions';header.append(actions);
  const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
