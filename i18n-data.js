@@ -45,8 +45,7 @@ Esplora la collezione|Explore the collection|Kollektion entdecken|Explorer la co
 La nostra visione|Our vision|Unsere Vision|Notre vision|Nuestra visión|رؤيتنا
 SCROLL TO DISCOVER|SCROLL TO DISCOVER|SCROLLEN UND ENTDECKEN|DÉFILEZ POUR DÉCOUVRIR|DESLIZA PARA DESCUBRIR|مرّر للاكتشاف
 ✦ Consegna in poche ore a Milano|✦ Delivery within hours in Milan|✦ Lieferung innerhalb weniger Stunden in Mailand|✦ Livraison en quelques heures à Milan|✦ Entrega en pocas horas en Milán|✦ توصيل خلال ساعات في ميلانو
-✦ Spedizione in 24 ore fuori Milano|✦ Dispatch within 24 hours outside Milan|✦ Versand innerhalb von 24 Stunden außerhalb Mailands|✦ Expédition sous 24 heures hors de Milan|✦ Envío en 24 horas fuera de Milán|✦ شحن خلال 24 ساعة خارج ميلانو
-✦ Campioncino omaggio con ogni ordine|✦ Complimentary sample with every order|✦ Gratisprobe zu jeder Bestellung|✦ Échantillon offert avec chaque commande|✦ Muestra de regalo con cada pedido|✦ عينة مجانية مع كل طلب
+✦ Spedizione in 24 ore in tutta Italia|✦ Dispatch within 24 hours across Italy|✦ Versand innerhalb von 24 Stunden in ganz Italien|✦ Expédition sous 24 heures dans toute l’Italie|✦ Envío en 24 horas a toda Italia|✦ شحن خلال 24 ساعة في جميع أنحاء إيطاليا
 L'arte dell'invisibile|The art of the invisible|Die Kunst des Unsichtbaren|L’art de l’invisible|El arte de lo invisible|فن ما لا يُرى
 Ogni essenza è un gesto.|Every essence is a gesture.|Jede Essenz ist eine Geste.|Chaque essence est un geste.|Cada esencia es un gesto.|كل جوهر لفتة.
 Ogni gesto,|Every gesture,|Jede Geste,|Chaque geste,|Cada gesto,|وكل لفتة،
