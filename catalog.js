@@ -30,7 +30,7 @@ renderProducts=function(){
 };
 async function initializeCatalog(){
  try{
-  const response=await fetch('products.json?v=offers1',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
+  const response=await fetch('products.json?v=prices-visible3',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
   const data=await response.json();catalogCategories=data.categories;products.push(...data.products);
   const controls=document.createElement('div');controls.className='catalog-controls';
   controls.innerHTML=`<div class="catalog-filter-list" role="group" aria-label="Filtra per categoria"><button data-category="all" aria-pressed="true">Tutti</button>${data.categories.map(c=>`<button data-category="${c.id}" aria-pressed="false">${escapeHTML(c.name)}</button>`).join('')}</div><div class="catalog-search-row"><label>Cerca una fragranza<input type="search" id="catalog-search" placeholder="Nome, marchio o nota olfattiva…"/></label><span id="catalog-count" role="status" aria-live="polite"></span></div>`;

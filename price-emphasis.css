@@ -1,0 +1,32 @@
+.fragrance-price {
+  color: #f4f4f2;
+  font: 600 20px/1.4 Manrope, sans-serif;
+  letter-spacing: .015em;
+}
+
+.product-price {
+  color: #fff;
+  font: 500 clamp(28px, 3.2vw, 36px)/1.1 'Cormorant Garamond', serif;
+  margin: 0 0 24px;
+}
+
+@media (max-width: 760px) {
+  html body .fragrance-card .fragrance-copy .fragrance-price {
+    display: block !important;
+    visibility: visible !important;
+    color: #fff !important;
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    width: max-content;
+    max-width: 100%;
+    margin: 10px 0 0;
+    padding: 7px 12px;
+    border-left: 2px solid #ddd;
+    background: #151515;
+  }
+
+  html body .product-price {
+    font-size: 34px !important;
+  }
+}

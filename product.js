@@ -3,7 +3,7 @@ const productMoney={format:value=>LotusI18n.money(value)};
 async function loadProduct(){
  const host=document.querySelector('#product-content');
  try{
-  const response=await fetch('products.json?v=offers1',{cache:'no-cache'});if(!response.ok)throw Error();
+  const response=await fetch('products.json?v=prices-visible3',{cache:'no-cache'});if(!response.ok)throw Error();
   const data=await response.json(),params=new URLSearchParams(location.search);
   const product=data.products.find(p=>p.id===params.get('id'));
   if(!product){document.title='Fragranza non trovata · Lotus Fragrance';host.innerHTML='<h1>Fragranza non trovata</h1><a class="back-link" href="index.html#collezione">← Torna al catalogo</a>';return;}
