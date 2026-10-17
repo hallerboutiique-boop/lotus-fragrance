@@ -35,8 +35,7 @@ Offerte|Offers|Angebote|Offres|Ofertas|العروض
 Apri carrello|Open basket|Warenkorb öffnen|Ouvrir le panier|Abrir carrito|فتح السلة
 Carrello|Basket|Warenkorb|Panier|Carrito|السلة
 Chiudi|Close|Schließen|Fermer|Cerrar|إغلاق
-Milano · Italia|Milan · Italy|Mailand · Italien|Milan · Italie|Milán · Italia|ميلانو · إيطاليا
-Milano, Italia|Milan, Italy|Mailand, Italien|Milan, Italie|Milán, Italia|ميلانو، إيطاليا
+Fragranze selezionate|Curated fragrances|Ausgewählte Düfte|Parfums sélectionnés|Fragancias seleccionadas|عطور مختارة
 Lascia che il|Let your|Lass deinen|Laissez votre|Deja que tu|دع
 profumo|fragrance|Duft|parfum|perfume|عطرك
 parli.|speak.|sprechen.|s’exprimer.|hable.|يتحدث.
@@ -130,7 +129,7 @@ Privacy|Privacy|Datenschutz|Confidentialité|Privacidad|الخصوصية
 Privacy policy|Privacy policy|Datenschutzerklärung|Politique de confidentialité|Política de privacidad|سياسة الخصوصية
 Termini e condizioni|Terms and conditions|Allgemeine Geschäftsbedingungen|Conditions générales|Términos y condiciones|الشروط والأحكام
 Resi e rimborsi|Returns and refunds|Rückgabe und Erstattung|Retours et remboursements|Devoluciones y reembolsos|الإرجاع والاسترداد
-© 2026 Lotus Fragrance · P. IVA da inserire · Milano, Italia|© 2026 Lotus Fragrance · VAT number to be added · Milan, Italy|© 2026 Lotus Fragrance · USt-IdNr. noch einzutragen · Mailand, Italien|© 2026 Lotus Fragrance · N° de TVA à renseigner · Milan, Italie|© 2026 Lotus Fragrance · N.º de IVA pendiente · Milán, Italia|© 2026 Lotus Fragrance · رقم ضريبة القيمة المضافة يُضاف لاحقاً · ميلانو، إيطاليا
+© 2026 Lotus Fragrance|© 2026 Lotus Fragrance|© 2026 Lotus Fragrance|© 2026 Lotus Fragrance|© 2026 Lotus Fragrance|© 2026 Lotus Fragrance
 Preferenze cookie|Cookie preferences|Cookie-Einstellungen|Préférences des cookies|Preferencias de cookies|تفضيلات ملفات الارتباط
 La tua privacy|Your privacy|Deine Privatsphäre|Votre vie privée|Tu privacidad|خصوصيتك
 Usiamo solo cookie necessari finché non scegli diversamente. Puoi modificare la scelta in ogni momento.|We use only necessary cookies unless you choose otherwise. You can change your choice at any time.|Wir verwenden nur notwendige Cookies, solange du nichts anderes wählst. Du kannst deine Wahl jederzeit ändern.|Nous utilisons uniquement les cookies nécessaires tant que vous n’en décidez pas autrement. Vous pouvez modifier votre choix à tout moment.|Solo usamos cookies necesarias hasta que elijas otra opción. Puedes cambiar tu elección en cualquier momento.|نستخدم ملفات الارتباط الضرورية فقط ما لم تختر غير ذلك. يمكنك تغيير اختيارك في أي وقت.
@@ -254,5 +253,5 @@ Un unico spazio per i tuoi ordini e le tue fragranze preferite.|One place for yo
 Accesso clienti in attivazione|Customer accounts coming soon|Kundenkonto wird eingerichtet|Espace client en cours d’activation|Acceso de clientes en preparación|حساب العملاء قيد التفعيل
 Stiamo preparando la registrazione e il tracciamento degli ordini. Al momento non è ancora possibile creare un account o consultare un codice di tracciamento da questa pagina.|We’re preparing customer registration and order tracking. You can’t yet create an account or check a tracking code on this page.|Wir bereiten die Kundenregistrierung und Sendungsverfolgung vor. Derzeit kannst du auf dieser Seite noch kein Konto erstellen oder einen Tracking-Code prüfen.|Nous préparons l’inscription des clients et le suivi des commandes. Il n’est pas encore possible de créer un compte ou de consulter un code de suivi sur cette page.|Estamos preparando el registro de clientes y el seguimiento de pedidos. Por ahora no puedes crear una cuenta ni consultar un código de seguimiento en esta página.|نعمل على إعداد تسجيل العملاء وتتبع الطلبات. لا يمكنك حالياً إنشاء حساب أو الاطلاع على رمز التتبع من هذه الصفحة.
 Torna alla collezione|Back to the collection|Zur Kollektion|Retour à la collection|Volver a la colección|العودة إلى المجموعة
-© 2026 Lotus Fragrance · Milano, Italia|© 2026 Lotus Fragrance · Milan, Italy|© 2026 Lotus Fragrance · Mailand, Italien|© 2026 Lotus Fragrance · Milan, Italie|© 2026 Lotus Fragrance · Milán, Italia|© 2026 لوتس للعطور · ميلانو، إيطاليا
+© 2026 Lotus Fragrance|© 2026 Lotus Fragrance|© 2026 Lotus Fragrance|© 2026 Lotus Fragrance|© 2026 Lotus Fragrance|© 2026 Lotus Fragrance
 `.trim().split('\n').map(row => row.split('|'));
