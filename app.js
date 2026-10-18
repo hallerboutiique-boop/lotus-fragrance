@@ -50,7 +50,8 @@ document.querySelector('#checkout').onclick=async()=>{
  try{
   LotusCommerce.totalCents(cart,commerceCatalog);button.disabled=true;status.textContent='Apertura del pagamento sicuro…';
   const endpoint=new URL(checkoutSettings.checkoutEndpoint,location.href);if(endpoint.protocol!=='https:')throw Error();
-  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:cart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds})})});
+  const requestId=globalThis.crypto?.randomUUID?.()||('lf-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':requestId},body:JSON.stringify({items:cart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds})})});
   if(!response.ok)throw Error();const data=await response.json(),url=new URL(data.url);
   if(url.protocol!=='https:'||!checkoutSettings.checkoutAllowedHosts.includes(url.hostname))throw Error();
   location.assign(url.href);
