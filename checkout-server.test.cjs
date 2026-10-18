@@ -29,7 +29,7 @@ async function main() {
   assert.equal(fields.get('line_items[0][price_data][unit_amount]'), '3290');
   assert.equal(fields.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
   assert.equal(fields.get('shipping_address_collection[allowed_countries][0]'), 'IT');
-  assert.equal(fields.get('payment_method_types[0]'), 'card');
+  assert.equal(fields.has('payment_method_types[0]'), false);
 
   const server = createServer({ env: { CHECKOUT_ENABLED: 'false' } });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));

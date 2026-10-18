@@ -82,7 +82,6 @@ async function createSession({ items, stripeKey, requestId, stripeFetch = fetch 
   fields.set('locale', 'auto');
   fields.set('success_url', `${SITE_ORIGIN}/order-confirmation.html?session_id={CHECKOUT_SESSION_ID}`);
   fields.set('cancel_url', `${SITE_ORIGIN}/index.html?lang=it#carrello`);
-  fields.set('payment_method_types[0]', 'card');
   fields.set('shipping_address_collection[allowed_countries][0]', 'IT');
   fields.set('shipping_options[0][shipping_rate_data][type]', 'fixed_amount');
   fields.set('shipping_options[0][shipping_rate_data][fixed_amount][amount]', '0');
@@ -107,6 +106,13 @@ async function createSession({ items, stripeKey, requestId, stripeFetch = fetch 
   });
   const result = await response.json().catch(() => ({}));
   if (!response.ok || typeof result.url !== 'string' || !result.url.startsWith('https://checkout.stripe.com/')) {
+    console.error('Stripe checkout request rejected', {
+      status: response.status,
+      errorType: result?.error?.type || 'unknown',
+      errorCode: result?.error?.code || 'unknown',
+      errorParam: result?.error?.param || 'unknown',
+      stripeRequestId: response.headers.get('request-id') || 'unknown'
+    });
     throw Object.assign(new Error('Stripe non ha creato la sessione di pagamento'), { status: 502 });
   }
   return { url: result.url };

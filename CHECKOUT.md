@@ -6,9 +6,9 @@ Il titolare ha confermato disponibili tutti i 9 profumi in formato 10 ml. È sta
 
 ## Stato reale
 
-Le offerte e il carrello funzionano. Il backend dedicato è stato predisposto e distribuito come app Fly `lotus-fragrance-checkout` (`https://lotus-fragrance-checkout.fly.dev`), distinta dalle altre app dell'account. L'endpoint è in modalità disattivata (`CHECKOUT_ENABLED=false`) e non ha una chiave Stripe configurata; `commerce-config.json` conserva `checkoutEndpoint: null`, quindi il sito non accetta pagamenti. L'hosting statico GitHub Pages non contiene segreti né logica di pagamento.
+Le offerte e il carrello funzionano. Il backend dedicato è distribuito come app Fly `lotus-fragrance-checkout` (`https://lotus-fragrance-checkout.fly.dev`), distinta dalle altre app dell'account. La chiave `sk_test_...` è conservata come secret Fly; una sessione Stripe Checkout test è stata creata con successo. L'endpoint è però nuovamente disattivato (`CHECKOUT_ENABLED=false`) e `commerce-config.json` mantiene `checkoutEndpoint: null`, quindi il sito non accetta pagamenti. L'hosting statico GitHub Pages non contiene segreti né logica di pagamento.
 
-Il backend usa il catalogo come fonte server-side, convalida ID/disponibilità, ricalcola i totali, applica il Tris ogni 3 flaconi e assegna i prodotti Mystery sul server. Invia a Stripe Checkout solo l'importo ricalcolato, pagamento carta online, indirizzo di spedizione in Italia e spedizione a zero. I test locali sono in `checkout-server.test.cjs`.
+Il backend usa il catalogo come fonte server-side, convalida ID/disponibilità, ricalcola i totali, applica il Tris ogni 3 flaconi e assegna i prodotti Mystery sul server. Invia a Stripe Checkout solo l'importo ricalcolato, metodi online disponibili nell'account, indirizzo di spedizione in Italia e spedizione a zero. I test locali sono in `checkout-server.test.cjs`.
 
 Prima di attivare incassi reali restano obbligatori: prova completa con chiave `sk_test_...`, verifica degli ordini e della preparazione, configurazione della notifica webhook e completamento delle informazioni legali e della privacy per Stripe/hosting. **Non impostare una chiave `sk_live_...` finché questi controlli non sono completati.** La chiave va salvata come secret Fly, mai nel repository o nel browser. Il tracciamento automatico della spedizione non è incluso in questo backend.
 
