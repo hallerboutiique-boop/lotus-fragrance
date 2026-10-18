@@ -35,8 +35,8 @@ function renderCart(){
  const discount=document.querySelector('#cart-discount');
  if(discount){const savings=valid?LotusCommerce.quote(cart,commerceCatalog).savingsCents:0;discount.hidden=!savings;discount.textContent=savings?LotusI18n.translate('Sconto Tris automatico')+' · −'+euro(savings/100):''}
  document.querySelector('#cart-total').textContent=valid?euro(total/100):'Da verificare';
- button.disabled=!cart.length||!valid||!checkoutSettings.checkoutEndpoint;
- status.textContent=!valid?'Verifica le fragranze nel carrello.':!checkoutSettings.checkoutEndpoint?'Pagamento online non ancora attivo. Il carrello conserva la selezione, ma non vengono accettati pagamenti.':cart.length?'Pagamento sicuro online · spedizione inclusa':'Aggiungi un pacchetto per procedere.';
+ button.disabled=!cart.length||!valid;
+ status.textContent=!valid?'Verifica le fragranze nel carrello.':!checkoutSettings.checkoutEndpoint?'Rivedi l’ordine nel checkout; il pagamento online non è ancora attivo.':cart.length?'Rivedi l’ordine e prosegui al pagamento sicuro':'Aggiungi un pacchetto per procedere.';
 }
 const drawer=document.querySelector('#cart-drawer'),scrim=document.querySelector('#scrim');
 function openCart(){drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');scrim.classList.add('active');document.body.style.overflow='hidden';document.querySelector('#close-cart').focus()}
@@ -44,18 +44,6 @@ document.querySelector('#cart-button').onclick=openCart;
 function closeCart(){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');scrim.classList.remove('active');document.body.style.overflow='';document.querySelector('#cart-button').focus()}
 document.querySelector('#close-cart').onclick=closeCart;scrim.onclick=closeCart;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeCart()});
-document.querySelector('#checkout').onclick=async()=>{
- const button=document.querySelector('#checkout'),status=document.querySelector('#checkout-status');
- if(button.disabled||!cart.length||!checkoutSettings.checkoutEndpoint)return;
- try{
-  LotusCommerce.totalCents(cart,commerceCatalog);button.disabled=true;status.textContent='Apertura del pagamento sicuro…';
-  const endpoint=new URL(checkoutSettings.checkoutEndpoint,location.href);if(endpoint.protocol!=='https:')throw Error();
-  const requestId=globalThis.crypto?.randomUUID?.()||('lf-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
-  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':requestId},body:JSON.stringify({items:cart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds})})});
-  if(!response.ok)throw Error();const data=await response.json(),url=new URL(data.url);
-  if(url.protocol!=='https:'||!checkoutSettings.checkoutAllowedHosts.includes(url.hostname))throw Error();
-  location.assign(url.href);
- }catch{renderCart();status.textContent='Impossibile aprire il pagamento. Nessun pagamento è stato effettuato; riprova più tardi.'}
-};
+document.querySelector('#checkout').onclick=()=>{if(!document.querySelector('#checkout').disabled)location.assign('checkout.html')};
 renderCart();
 const cookie=document.querySelector('#cookie-banner');if(localStorage.getItem('lotus-cookie-choice'))cookie.hidden=true;['#accept-cookies','#reject-cookies'].forEach(id=>document.querySelector(id).onclick=()=>{localStorage.setItem('lotus-cookie-choice',id==='#accept-cookies'?'accepted':'necessary');cookie.hidden=true});document.querySelector('#cookie-settings').onclick=e=>{e.preventDefault();cookie.hidden=false};

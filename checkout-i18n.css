@@ -1,0 +1,1 @@
+.checkout-header{position:relative}.checkout-header .language-bar{left:auto;right:clamp(150px,22vw,260px);top:50%;height:42px;transform:translateY(-50%)}@media(max-width:700px){.checkout-header .language-bar{left:auto;right:160px;top:50%;transform:translateY(-50%)}.checkout-header .language-bar .language-toggle{width:36px;height:38px;min-width:36px}}

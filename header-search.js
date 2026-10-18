@@ -13,7 +13,7 @@
   const searchToggle=document.createElement('button');searchToggle.type='button';searchToggle.id='search-toggle';searchToggle.className='search-toggle';searchToggle.setAttribute('aria-label','Cerca una fragranza');searchToggle.setAttribute('aria-expanded','false');searchToggle.setAttribute('aria-controls',searchRow.id);
   searchToggle.innerHTML='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>';
   topbar.querySelector('.header-actions').prepend(searchToggle);
-  const accountLink=document.createElement('a');accountLink.className='account-link';accountLink.href='account.html';accountLink.setAttribute('aria-label',LotusI18n.translate('Area clienti'));accountLink.title=LotusI18n.translate('Area clienti');
+  const accountLink=document.createElement('a');accountLink.className='account-link';accountLink.href='https://lotus-fragrance-accounts.fly.dev/';accountLink.setAttribute('aria-label',LotusI18n.translate('Area clienti'));accountLink.title=LotusI18n.translate('Area clienti');
   accountLink.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.4-3.7 3.2-5.7 7-5.7s6.6 2 7 5.7"/></svg>';
   searchToggle.after(accountLink);
   const placeAccountLink=()=>document.querySelector('.language-bar')?.prepend(accountLink);

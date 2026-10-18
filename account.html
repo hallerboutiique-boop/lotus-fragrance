@@ -6,29 +6,32 @@
   <script src="i18n-data.js?v=account1"></script>
   <script src="i18n.js?v=5"></script>
   <link rel="stylesheet" href="i18n.css?v=9">
-  <link rel="stylesheet" href="header-search.css?v=account-globe1">
   <link rel="stylesheet" href="brand-logo.css?v=4">
   <link rel="stylesheet" href="account-page.css?v=1">
-  <script defer src="catalog-search.js?v=1"></script>
-  <script defer src="header-search.js?v=account-globe1"></script>
+  <link rel="stylesheet" href="account.css?v=1">
+  <script defer src="account.js?v=1"></script>
   <title>Area clienti · Lotus Fragrance</title>
 </head>
 <body>
   <header class="product-header">
-    <a class="brand-logo" href="index.html" aria-label="Lotus Fragrance"><img src="assets/lotus-logo-new.jpg" alt="Lotus Fragrance" width="140" height="140"></a>
-    <nav aria-label="Principale"><a href="index.html">Torna allo shop</a></nav>
+    <a class="brand-logo" href="https://lotusfragrance.shop/" aria-label="Lotus Fragrance"><img src="/assets/lotus-logo.png" alt="Lotus Fragrance" width="140" height="140"></a>
+    <nav aria-label="Principale"><a href="https://lotusfragrance.shop/">Torna allo shop</a></nav>
   </header>
   <main class="account-main">
     <div class="account-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.4-3.7 3.2-5.7 7-5.7s6.6 2 7 5.7"/></svg></div>
     <p class="eyebrow">LOTUS FRAGRANCE · CLIENTI</p>
     <h1>La tua <em>area clienti</em></h1>
     <p class="account-intro">Un unico spazio per i tuoi ordini e le tue fragranze preferite.</p>
-    <section class="account-notice" aria-labelledby="account-status-title">
-      <span class="status-light" aria-hidden="true"></span>
-      <div><h2 id="account-status-title">Accesso clienti in attivazione</h2>
-      <p>Stiamo preparando la registrazione e il tracciamento degli ordini. Al momento non è ancora possibile creare un account o consultare un codice di tracciamento da questa pagina.</p></div>
+    <section class="account-panel" id="auth-panel" aria-labelledby="auth-title">
+      <div class="account-tabs" role="tablist" aria-label="Accesso clienti"><button type="button" role="tab" id="login-tab" aria-selected="true" aria-controls="login-form">Accedi</button><button type="button" role="tab" id="register-tab" aria-selected="false" aria-controls="register-form">Crea un account</button></div>
+      <form id="login-form" class="account-form"><h2 id="auth-title">Bentornato</h2><label>Email<input name="email" type="email" autocomplete="email" maxlength="254" required></label><label>Password<input name="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" required></label><button class="account-submit" type="submit">Accedi</button><button type="button" id="recover-toggle" class="text-button">Hai dimenticato la password?</button><p class="form-status" role="status" aria-live="polite"></p></form>
+      <form id="register-form" class="account-form" hidden><h2>Crea il tuo profilo</h2><label>Email<input name="email" type="email" autocomplete="email" maxlength="254" required></label><label>Password <small>(almeno 12 caratteri)</small><input name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" required></label><label>Ripeti la password<input name="confirmPassword" type="password" autocomplete="new-password" minlength="12" maxlength="128" required></label><button class="account-submit" type="submit">Registrati</button><p class="form-status" role="status" aria-live="polite"></p></form>
+      <div id="recovery-card" class="recovery-card" hidden><h3>Codice di recupero</h3><p>Salvalo subito in un luogo sicuro: serve per reimpostare la password e non verrà mostrato di nuovo.</p><code id="recovery-code"></code><button type="button" id="copy-recovery">Copia codice</button></div>
+      <form id="recover-form" class="account-form" hidden><h2>Reimposta la password</h2><label>Email<input name="email" type="email" autocomplete="email" required></label><label>Codice di recupero<input name="recoveryCode" autocomplete="one-time-code" required></label><label>Nuova password <small>(almeno 12 caratteri)</small><input name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" required></label><button class="account-submit" type="submit">Reimposta password</button><button type="button" id="recover-cancel" class="text-button">Torna all'accesso</button><p class="form-status" role="status" aria-live="polite"></p></form>
+      <section id="profile-panel" hidden aria-labelledby="profile-title"><div class="profile-heading"><div><p class="eyebrow">PROFILO CLIENTE</p><h2 id="profile-title">I tuoi dati</h2><p id="profile-email"></p></div><button type="button" id="logout-button" class="text-button">Esci</button></div><form id="profile-form" class="account-form profile-form"><label>Nome e cognome<input name="fullName" autocomplete="name" maxlength="100"></label><label>Telefono<input name="phone" type="tel" autocomplete="tel" maxlength="30"></label><label>Indirizzo<input name="address" autocomplete="street-address" maxlength="160"></label><div class="profile-row"><label>Città<input name="city" autocomplete="address-level2" maxlength="100"></label><label>CAP<input name="postalCode" autocomplete="postal-code" maxlength="20"></label></div><button class="account-submit" type="submit">Salva i dati del profilo</button><p class="form-status" role="status" aria-live="polite"></p></form><div class="orders-note"><h3>Ordini e tracciamento</h3><p>Il profilo è pronto per i tuoi dati. La cronologia ordini e i codici di tracking verranno mostrati quando sarà collegata la conferma webhook del pagamento e la gestione delle spedizioni.</p></div><button type="button" id="delete-account-toggle" class="text-button delete-account-toggle">Elimina il mio account</button><form id="delete-account-form" class="account-form" hidden><label>Conferma con la tua password<input name="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" required></label><button class="account-submit delete-account-submit" type="submit">Elimina definitivamente l’account</button><p class="form-status" role="status" aria-live="polite"></p></form></section>
+      <p class="account-privacy">Registrandoti, i dati vengono usati per gestire il profilo e gli ordini. Consulta la <a href="https://lotusfragrance.shop/privacy.html">Privacy</a>.</p>
     </section>
-    <a class="back-to-shop" href="index.html">Torna alla collezione <span aria-hidden="true">→</span></a>
+    <a class="back-to-shop" href="https://lotusfragrance.shop/">Torna alla collezione <span aria-hidden="true">→</span></a>
   </main>
   <footer class="account-footer">© 2026 Lotus Fragrance</footer>
 </body>

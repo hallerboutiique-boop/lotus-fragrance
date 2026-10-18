@@ -19,7 +19,7 @@ for(const [index,language] of ['it','en','de','fr','es','ar'].entries()){
  if(language!=='it')for(const source of ['3 flaconi · 10 ml ciascuno','Fragranza 1','Scegli tutte le 3 fragranze.','9 profumi arabi · 2 universi','Totale · spedizione inclusa'])assert.notEqual(api.translate(source),source);
  assert.equal(api.translate('Lattafa · Profumi arabi da uomo'),language==='it'?'Lattafa · Profumi arabi da uomo':'Lattafa · '+api.translate('Profumi arabi da uomo'));
 }
-for(const file of ['index.html','product.html','admin.html','catalog-editor.html']){
- const html=fs.readFileSync(__dirname+'/'+file,'utf8');assert.ok(html.includes('src="i18n-data.js?v=search1"'));assert.ok(html.includes('src="i18n.js?v=4"'));assert.ok(html.includes('href="i18n.css?v=5"'));
+for(const file of ['index.html','product.html','admin.html','catalog-editor.html','account.html','checkout.html']){
+ const html=fs.readFileSync(__dirname+'/'+file,'utf8');assert.match(html,/src="i18n-data\.js\?v=[^"]+"/);assert.match(html,/src="i18n\.js\?v=[^"]+"/);assert.match(html,/href="i18n\.css\?v=[^"]+"/);
 }
 console.log('i18n: six complete dictionaries, nine product descriptions/notes, dynamic messages, RTL, EUR and page integration passed.');

@@ -1,0 +1,44 @@
+'use strict';
+const escapeCheckout=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const checkoutMoney=cents=>window.LotusI18n?LotusI18n.money(cents/100):new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(cents/100);
+const itemsNode=document.querySelector('#checkout-items'),totalNode=document.querySelector('#checkout-total'),button=document.querySelector('#checkout-pay'),statusNode=document.querySelector('#checkout-status');
+let checkoutCart=[],checkoutCatalog=[],checkoutConfig={};
+async function initializeCheckout(){
+ try{
+  const [productsResponse,configResponse]=await Promise.all([fetch('products.json',{cache:'no-cache'}),fetch('commerce-config.json',{cache:'no-cache'})]);
+  if(!productsResponse.ok||!configResponse.ok)throw Error();
+  checkoutCatalog=(await productsResponse.json()).products;checkoutConfig=await configResponse.json();
+  const saved=JSON.parse(localStorage.getItem('lotus-bundle-cart')||'[]');
+  checkoutCart=Array.isArray(saved)?saved.slice(0,20).map(line=>LotusCommerce.validateLine(line,checkoutCatalog)).filter(result=>result.ok).map(result=>result.line):[];
+  renderCheckout();
+ }catch{itemsNode.innerHTML='<p role="alert">Non riesco a caricare il carrello. Torna allo shop e riprova.</p>';statusNode.textContent='Checkout non disponibile.'}
+}
+function renderCheckout(){
+ if(!checkoutCart.length){itemsNode.innerHTML='<p>Il carrello è vuoto. Torna allo shop per scegliere le fragranze.</p>';totalNode.textContent=checkoutMoney(0);button.disabled=true;statusNode.textContent='Aggiungi prima una fragranza o una Mystery Box.';return}
+ let quote;try{quote=LotusCommerce.quote(checkoutCart,checkoutCatalog)}catch{itemsNode.innerHTML='<p role="alert">Una selezione non è più disponibile. Torna al carrello per aggiornarla.</p>';totalNode.textContent='—';button.disabled=true;return}
+ let index=0;
+ const productRows=checkoutCart.map(line=>{
+  const result=LotusCommerce.validateLine(line,checkoutCatalog);
+  if(line.offerId==='mystery')return `<article class="checkout-row"><div class="mystery-thumb" aria-hidden="true">◇</div><div><h3>Mystery Box · ${{men:'Uomo',women:'Donna',mix:'Mix'}[line.gender]}</h3><p>5 fragranze da 10 ml scelte casualmente · Spedizione inclusa</p></div><strong>€49,90</strong></article>`;
+  return result.selected.map((product,position)=>{const price=line.offerId==='box'?Math.round(result.offer.priceCents/result.selected.length):1490;return `<article class="checkout-row"><img src="${escapeCheckout(product.miniature.image)}" alt="${escapeCheckout(product.name)}" width="68" height="76"><div><h3>${escapeCheckout(product.name)}</h3><p>Formato tascabile · 10 ml${line.offerId==='tris'?' · Tris':''}</p></div><strong>${checkoutMoney(price)}</strong></article>`}).join('');
+ }).join('');
+ const discountRow=quote.savingsCents?`<article class="checkout-row checkout-discount"><div class="mystery-thumb" aria-hidden="true">−</div><div><h3>Sconto Tris automatico</h3><p>Applicato al checkout</p></div><strong>−${checkoutMoney(quote.savingsCents)}</strong></article>`:'';
+ itemsNode.innerHTML=productRows+discountRow;
+ totalNode.textContent=checkoutMoney(quote.totalCents);
+ const endpoint=typeof checkoutConfig.checkoutEndpoint==='string'?checkoutConfig.checkoutEndpoint:'';
+ button.disabled=!endpoint;
+ if(!endpoint){statusNode.textContent='Pagamento online temporaneamente non attivo. Nessun addebito verrà effettuato.';return}
+ try{const url=new URL(endpoint,location.href);button.disabled=url.protocol!=='https:'||!checkoutConfig.checkoutAllowedHosts?.includes(url.hostname)}catch{button.disabled=true}
+ statusNode.textContent=button.disabled?'Checkout non configurato in modo sicuro.':'Proseguendo, inserirai indirizzo e metodo di pagamento nella pagina Stripe protetta.';
+}
+button.addEventListener('click',async()=>{
+ if(button.disabled)return;
+ button.disabled=true;statusNode.textContent='Apertura del pagamento sicuro…';
+ try{
+  const endpoint=new URL(checkoutConfig.checkoutEndpoint,location.href);
+  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':globalThis.crypto.randomUUID()},body:JSON.stringify({items:checkoutCart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds})})});
+  if(!response.ok)throw Error();const data=await response.json(),url=new URL(data.url);
+  if(url.protocol!=='https:'||!checkoutConfig.checkoutAllowedHosts?.includes(url.hostname))throw Error();location.assign(url.href);
+ }catch{statusNode.textContent='Pagamento non disponibile al momento. Nessun addebito è stato effettuato.';button.disabled=false}
+});
+initializeCheckout();

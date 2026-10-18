@@ -1,0 +1,9 @@
+FROM node:24-bookworm-slim
+WORKDIR /app
+ENV NODE_ENV=production PORT=8080
+COPY account-server.cjs account.html account.js account.css account-page.css brand-logo.css i18n.js i18n-data.js i18n.css ./
+COPY assets/lotus-logo.png ./assets/lotus-logo.png
+RUN mkdir -p /data && chown node:node /data
+USER node
+EXPOSE 8080
+CMD ["node", "account-server.cjs"]

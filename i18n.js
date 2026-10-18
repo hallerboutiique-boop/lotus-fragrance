@@ -63,7 +63,7 @@
   document.addEventListener('click',event=>{if(!bar.contains(event.target))close()});
   bar.addEventListener('keydown',event=>{if(event.key==='Escape'){close();toggle.focus()}if(event.key==='ArrowDown'&&event.target===toggle){event.preventDefault();menu.hidden=false;toggle.setAttribute('aria-expanded','true');menu.querySelector('button').focus()}});
   select.hidden=true;bar.append(toggle,menu,select);
-  const header=document.querySelector('.topbar,.product-header');if(header)header.append(bar);else document.body.prepend(bar);
+  const header=document.querySelector('.topbar,.product-header,.checkout-header');if(header)header.append(bar);else document.body.prepend(bar);
   select.addEventListener('change',()=>choose(select.value));
   localize(document);
   const observer=new MutationObserver(records=>{
