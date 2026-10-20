@@ -82,7 +82,7 @@ function priceCart(items) {
     const names = group.products.map(p => p.name).join(', ');
     return group.offerId === 'mystery' ? `Mystery ${group.gender}: ${names}` : names;
   }).join(' · ');
-  return { totalCents, summary: summary.slice(0, 4500), regularCount, trisCount, mysteryCount };
+  return { totalCents, summary: summary.slice(0, 4500), itemIds: selected.flatMap(group => group.products.map(product => product.id)), regularCount, trisCount, mysteryCount };
 }
 
 async function createSession({ items, stripeKey, requestId, stripeFetch = fetch }) {
@@ -106,6 +106,10 @@ async function createSession({ items, stripeKey, requestId, stripeFetch = fetch 
   fields.set('metadata[regular_count]', String(quote.regularCount));
   fields.set('metadata[tris_count]', String(quote.trisCount));
   fields.set('metadata[mystery_count]', String(quote.mysteryCount));
+  // Product indices keep the complete, randomly resolved selection inside Stripe's
+  // 500-character metadata value limit; the order service expands them to names.
+  const productIds = catalog.map(product => product.id);
+  fields.set('metadata[item_ids]', quote.itemIds.map(id => productIds.indexOf(id).toString(36)).join(','));
   const response = await stripeFetch('https://api.stripe.com/v1/checkout/sessions', {
     method: 'POST',
     headers: {
@@ -146,6 +150,23 @@ function createServer({ env = process.env, stripeFetch = fetch } = {}) {
     const url = new URL(req.url, 'http://localhost');
     if (req.method === 'GET' && url.pathname === '/healthz') return json(res, 200, { ok: true });
     if (origin && origin !== SITE_ORIGIN) return json(res, 403, { error: 'Origine non consentita' });
+    if (req.method === 'GET' && url.pathname === '/order-status') {
+      const sessionId = url.searchParams.get('session_id') || '';
+      if (!/^cs_(?:test|live)_[A-Za-z0-9]+$/.test(sessionId)) return json(res, 400, { error: 'Sessione non valida' });
+      if (!env.STRIPE_SECRET_KEY || !/^sk_(test|live)_/.test(env.STRIPE_SECRET_KEY)) return json(res, 503, { error: 'Stato ordine non disponibile' });
+      try {
+        const response = await stripeFetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, {
+          headers: { authorization: `Bearer ${env.STRIPE_SECRET_KEY}` }
+        });
+        const session = await response.json().catch(() => ({}));
+        if (response.status === 404) return json(res, 404, { error: 'Ordine non trovato' });
+        if (!response.ok || session.id !== sessionId) return json(res, 502, { error: 'Stato ordine non disponibile' });
+        const status = session.payment_status === 'paid' ? 'paid' : session.status === 'expired' ? 'expired' : 'pending';
+        return json(res, 200, { status, totalCents: Number.isSafeInteger(session.amount_total) ? session.amount_total : null, currency: String(session.currency || 'eur').toUpperCase() });
+      } catch {
+        return json(res, 502, { error: 'Stato ordine non disponibile' });
+      }
+    }
     if (req.method !== 'POST' || url.pathname !== '/checkout') return json(res, 404, { error: 'Non trovato' });
     if (env.CHECKOUT_ENABLED !== 'true') return json(res, 503, { error: 'Pagamento temporaneamente non disponibile' });
     if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) return json(res, 415, { error: 'Formato non supportato' });

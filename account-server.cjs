@@ -1,22 +1,35 @@
 'use strict';
 const http=require('node:http');
 const {DatabaseSync}=require('node:sqlite');
-const {randomBytes,createHash,scrypt,timingSafeEqual}=require('node:crypto');
+const {randomBytes,createHash,createHmac,scrypt,timingSafeEqual}=require('node:crypto');
 const {promisify}=require('node:util');
 const {readFileSync,mkdirSync}=require('node:fs');
 const path=require('node:path');
+const orderCatalog=JSON.parse(readFileSync(path.join(__dirname,'products.json'),'utf8')).products;
 const derive=promisify(scrypt);
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const token=()=>randomBytes(32).toString('base64url');
 const TTL=7*24*60*60*1000;
-function createAccountServer({databasePath,origin,secure=true,trustFly=false,rateLimit=30}={}){
+function verifyStripeSignature(payload,header,secret,now=Math.floor(Date.now()/1000)){
+ if(!secret||!Buffer.isBuffer(payload)||typeof header!=='string')return false;
+ const values=header.split(',').map(part=>part.split('=',2));
+ const timestamp=Number(values.find(([key])=>key==='t')?.[1]);
+ if(!Number.isInteger(timestamp)||Math.abs(now-timestamp)>300)return false;
+ const expected=createHmac('sha256',secret).update(`${timestamp}.`).update(payload).digest();
+ return values.filter(([key])=>key==='v1').some(([,value])=>{if(!/^[a-f0-9]{64}$/i.test(value||''))return false;const actual=Buffer.from(value,'hex');return actual.length===expected.length&&timingSafeEqual(actual,expected)});
+}
+async function rawBody(req,limit=1024*1024){const chunks=[];let length=0;for await(const chunk of req){length+=chunk.length;if(length>limit)throw Error('BODY_LIMIT');chunks.push(chunk)}return Buffer.concat(chunks,length)}
+function createAccountServer({databasePath,origin,secure=true,trustFly=false,rateLimit=30,stripeWebhookSecret=process.env.STRIPE_WEBHOOK_SECRET}={}){
  if(!databasePath||!origin)throw Error('Database and origin are required');
  if(databasePath!==':memory:')mkdirSync(path.dirname(databasePath),{recursive:true,mode:0o700});
  const db=new DatabaseSync(databasePath,{timeout:5000});
  db.exec(`PRAGMA journal_mode=WAL;PRAGMA foreign_keys=ON;
  CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,email TEXT UNIQUE NOT NULL,password TEXT NOT NULL,recovery TEXT NOT NULL,created INTEGER NOT NULL,full_name TEXT NOT NULL DEFAULT '',phone TEXT NOT NULL DEFAULT '',address TEXT NOT NULL DEFAULT '',city TEXT NOT NULL DEFAULT '',postal_code TEXT NOT NULL DEFAULT '');
  CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,expires INTEGER NOT NULL);
- CREATE TABLE IF NOT EXISTS limits(key TEXT PRIMARY KEY,count INTEGER NOT NULL,expires INTEGER NOT NULL);`);
+ CREATE TABLE IF NOT EXISTS limits(key TEXT PRIMARY KEY,count INTEGER NOT NULL,expires INTEGER NOT NULL);
+ CREATE TABLE IF NOT EXISTS orders(stripe_session_id TEXT PRIMARY KEY,email TEXT NOT NULL,total_cents INTEGER NOT NULL,currency TEXT NOT NULL,items_summary TEXT NOT NULL,status TEXT NOT NULL,tracking_code TEXT NOT NULL DEFAULT '',recipient_name TEXT NOT NULL DEFAULT '',address_line1 TEXT NOT NULL DEFAULT '',address_line2 TEXT NOT NULL DEFAULT '',city TEXT NOT NULL DEFAULT '',postal_code TEXT NOT NULL DEFAULT '',country TEXT NOT NULL DEFAULT '',created INTEGER NOT NULL,updated INTEGER NOT NULL);
+ CREATE INDEX IF NOT EXISTS orders_email_created ON orders(email,created DESC);
+ CREATE TABLE IF NOT EXISTS stripe_events(id TEXT PRIMARY KEY,created INTEGER NOT NULL);`);
  const profileColumns=new Set(db.prepare('PRAGMA table_info(users)').all().map(column=>column.name));
  for(const [name,definition] of [['full_name',"TEXT NOT NULL DEFAULT ''"],['phone',"TEXT NOT NULL DEFAULT ''"],['address',"TEXT NOT NULL DEFAULT ''"],['city',"TEXT NOT NULL DEFAULT ''"],['postal_code',"TEXT NOT NULL DEFAULT ''"]])if(!profileColumns.has(name))db.exec(`ALTER TABLE users ADD COLUMN ${name} ${definition}`);
  const cookieName=secure?'__Host-lotus-session':'lotus-session';
@@ -42,10 +55,35 @@ function createAccountServer({databasePath,origin,secure=true,trustFly=false,rat
   try{
    const pathname=new URL(req.url,origin).pathname;
    if(pathname==='/health'&&req.method==='GET'){db.prepare('SELECT 1').get();return send(200,{ok:true})}
+   if(pathname==='/api/stripe-webhook'&&req.method==='POST'){
+    const secret=stripeWebhookSecret;
+    if(!secret)return send(503,{error:'webhook_not_configured'});
+    const raw=await rawBody(req);if(!verifyStripeSignature(raw,req.headers['stripe-signature'],secret))return send(400,{error:'invalid_signature'});
+    let event;try{event=JSON.parse(raw.toString('utf8'))}catch{return send(400,{error:'invalid_event'})}
+    if(!event?.id||event.livemode!==true)return send(400,{error:'invalid_event'});
+    if(!['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type))return send(200,{received:true});
+    const checkout=event.data?.object;
+    if(checkout?.object!=='checkout.session'||checkout.payment_status!=='paid')return send(200,{received:true});
+    const email=String(checkout.customer_details?.email||checkout.customer_email||'').trim().toLowerCase();
+    const total=checkout.amount_total,itemCodes=String(checkout.metadata?.item_ids||'').split(','),shipping=checkout.shipping_details||checkout.shipping||{},address=shipping.address||{};
+    const itemIds=itemCodes.map(code=>/^[0-9a-z]$/.test(code)?orderCatalog[parseInt(code,36)]?.id:null);
+    if(!/^\S+@\S+\.\S+$/.test(email)||!Number.isSafeInteger(total)||total<1||!itemCodes.length||itemIds.some(id=>!id)||typeof checkout.id!=='string')return send(400,{error:'invalid_order'});
+    const summary=itemIds.map(id=>orderCatalog.find(product=>product.id===id).name).join(' · ').slice(0,4500);
+    db.exec('BEGIN IMMEDIATE');try{
+     const inserted=db.prepare('INSERT OR IGNORE INTO stripe_events(id,created) VALUES(?,?)').run(event.id,Date.now());
+     if(inserted.changes===0){db.exec('COMMIT');return send(200,{received:true,deduplicated:true})}
+     const now=Date.now();
+     db.prepare(`INSERT INTO orders(stripe_session_id,email,total_cents,currency,items_summary,status,recipient_name,address_line1,address_line2,city,postal_code,country,created,updated)
+      VALUES(?,?,?,?,?,'paid',?,?,?,?,?,?,?,?) ON CONFLICT(stripe_session_id) DO UPDATE SET email=excluded.email,total_cents=excluded.total_cents,currency=excluded.currency,items_summary=excluded.items_summary,status='paid',recipient_name=excluded.recipient_name,address_line1=excluded.address_line1,address_line2=excluded.address_line2,city=excluded.city,postal_code=excluded.postal_code,country=excluded.country,updated=excluded.updated`)
+      .run(checkout.id,email,total,String(checkout.currency||'eur').toUpperCase(),summary,String(shipping.name||checkout.customer_details?.name||'').slice(0,160),String(address.line1||'').slice(0,160),String(address.line2||'').slice(0,160),String(address.city||'').slice(0,100),String(address.postal_code||'').slice(0,20),String(address.country||'').slice(0,2),now,now);
+     db.exec('COMMIT');return send(200,{received:true});
+    }catch(error){db.exec('ROLLBACK');throw error}
+   }
    if(req.method==='GET'&&staticFiles[pathname]){const file=staticFiles[pathname];res.setHeader('Content-Type',file.endsWith('.html')?'text/html; charset=utf-8':file.endsWith('.js')?'text/javascript; charset=utf-8':file.endsWith('.css')?'text/css; charset=utf-8':'image/png');return res.end(readFileSync(path.join(__dirname,file)))}
    if(!pathname.startsWith('/api/'))return send(404,{error:'not_found'});
    if(req.method==='GET'&&pathname==='/api/me'){const user=session(req);return send(user?200:401,user?{user:{email:user.email,created:user.created}}:{error:'unauthorized'})}
    if(req.method==='GET'&&pathname==='/api/profile'){const current=session(req);if(!current)return send(401,{error:'unauthorized'});const profile=db.prepare('SELECT email,created,full_name,phone,address,city,postal_code FROM users WHERE id=?').get(current.id);return send(200,{profile})}
+   if(req.method==='GET'&&pathname==='/api/orders'){const current=session(req);if(!current)return send(401,{error:'unauthorized'});const orders=db.prepare('SELECT stripe_session_id,total_cents,currency,items_summary,status,tracking_code,created,updated FROM orders WHERE email=? ORDER BY created DESC LIMIT 100').all(current.email);return send(200,{orders:orders.map(order=>({id:order.stripe_session_id,totalCents:order.total_cents,currency:order.currency,itemsSummary:order.items_summary,status:order.status,trackingCode:order.tracking_code||null,created:order.created,updated:order.updated}))})}
    if(req.method!=='POST')return send(405,{error:'method'});
    // Same-origin JSON requests only; do not enable wildcard CORS.
    if(req.headers.origin!==origin||!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))return send(403,{error:'origin'});
@@ -108,5 +146,5 @@ function createAccountServer({databasePath,origin,secure=true,trustFly=false,rat
  server.requestTimeout=15000;server.headersTimeout=10000;server.on('close',()=>db.close());
  return server;
 }
-module.exports={createAccountServer};
+module.exports={createAccountServer,verifyStripeSignature};
 if(require.main===module){const origin=process.env.PUBLIC_ORIGIN;if(!origin?.startsWith('https://'))throw Error('HTTPS PUBLIC_ORIGIN required');createAccountServer({databasePath:process.env.DATABASE_PATH||'/data/accounts.sqlite',origin,trustFly:true}).listen(Number(process.env.PORT||8080),'0.0.0.0',()=>console.log('Lotus account service ready'))}
