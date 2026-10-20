@@ -11,8 +11,10 @@
   <link rel="stylesheet" href="i18n.css?v=10">
   <link rel="stylesheet" href="checkout.css?v=1">
   <link rel="stylesheet" href="checkout-i18n.css?v=1">
+  <link rel="stylesheet" href="assistant.css?v=1">
   <script defer src="commerce-core.js?v=standard-cart-1"></script>
   <script defer src="checkout.js?v=standard-cart-1"></script>
+  <script defer src="assistant.js?v=1"></script>
 </head>
 <body>
   <header class="checkout-header"><a href="index.html" aria-label="Lotus Fragrance, torna allo shop"><img src="assets/lotus-logo-new.jpg" alt="Lotus Fragrance" width="220" height="90"></a><a class="continue-shopping" href="index.html#collezione">Continua lo shopping</a></header>
@@ -24,5 +26,9 @@
     </div>
   </main>
   <footer class="checkout-footer"><a href="privacy.html">Privacy</a><a href="terms.html">Termini e condizioni</a><a href="returns.html">Resi e rimborsi</a></footer>
+  <section class="lotus-assistant" id="lotus-assistant" aria-label="Assistente virtuale Lotus" data-open="false">
+    <button class="assistant-launcher" id="assistant-launcher" type="button" aria-expanded="false" aria-controls="assistant-panel"><span class="assistant-launcher-avatar" aria-hidden="true">👩🏻‍💼</span><span class="assistant-launcher-label">Ti aiuto?</span></button>
+    <div class="assistant-panel" id="assistant-panel" aria-hidden="true"><header class="assistant-head"><span class="assistant-avatar" aria-hidden="true">👩🏻‍💼</span><div><strong>Mira</strong><small>Assistente virtuale · Lotus</small></div><button id="assistant-close" type="button" aria-label="Chiudi assistente">×</button></header><div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions text"></div><div class="assistant-chips" aria-label="Suggerimenti"><button type="button" data-assistant-prompt="Consigliami un profumo">Consigliami un profumo</button><button type="button" data-assistant-prompt="Apri il carrello">Apri carrello</button></div><form class="assistant-form" id="assistant-form"><label class="visually-hidden" for="assistant-input">Scrivi un messaggio</label><input id="assistant-input" maxlength="180" autocomplete="off" placeholder="Es. aggiungi Lattafa Asad" required><button type="submit" aria-label="Invia messaggio">↑</button></form><p class="assistant-disclaimer">Sono un assistente automatico. I messaggi restano in questa pagina e non vengono inviati.</p></div>
+  </section>
 </body>
 </html>

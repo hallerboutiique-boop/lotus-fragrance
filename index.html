@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="i18n.css?v=9"/>
     <link rel="stylesheet" href="header-search.css?v=account-globe1"/>
     <link rel="stylesheet" href="cart.css?v=1"/>
+    <link rel="stylesheet" href="assistant.css?v=1"/>
     <link rel="stylesheet" href="top-menu.css?v=1"/>
     <link rel="stylesheet" href="brand-logo.css?v=4"/>
     <link rel="stylesheet" href="social-links.css?v=2"/>
@@ -58,6 +59,16 @@
       <section class="split-feature reverse" id="uomo"><div class="feature-copy"><p class="eyebrow">Per lui</p><h2>Profondità<br>allo stato<br><em>puro.</em></h2><p>Note minerali, cuoio, incenso e agrumi freddi. Per la presenza che non ha bisogno di alzare la voce.</p><a href="#collezione" class="button outline">Scopri uomo <span>→</span></a></div><div class="feature-art smoke-art"><div class="spotlight"></div><div class="feature-bottle smoke"><i></i><b>LOTUS</b><small>OBSIDIAN<br>HOUR</small></div></div></section>
     </main>
     <aside class="cart-drawer" id="cart-drawer" aria-label="Carrello" aria-hidden="true"><div class="drawer-head"><h2>La tua selezione</h2><button id="close-cart" aria-label="Chiudi">×</button></div><div id="cart-items"><p class="empty">Scegli i profumi dal catalogo oppure aggiungi una Mystery Box.</p></div><p id="cart-discount" class="cart-discount" hidden></p><div class="cart-total"><span>Totale · spedizione inclusa</span><strong id="cart-total">€0,00</strong></div><button class="button dark checkout" id="checkout" disabled>Pagamento online <span>→</span></button><p class="checkout-status" id="checkout-status" role="status" aria-live="polite">Pagamento online non ancora attivo.</p><p class="payment-note">Solo pagamento online · Spedizione inclusa</p></aside><div class="scrim" id="scrim"></div>
+    <section class="lotus-assistant" id="lotus-assistant" aria-label="Assistente virtuale Lotus" data-open="false">
+      <button class="assistant-launcher" id="assistant-launcher" type="button" aria-expanded="false" aria-controls="assistant-panel"><span class="assistant-launcher-avatar" aria-hidden="true">👩🏻‍💼</span><span class="assistant-launcher-label">Ti aiuto?</span></button>
+      <div class="assistant-panel" id="assistant-panel" aria-hidden="true">
+        <header class="assistant-head"><span class="assistant-avatar" aria-hidden="true">👩🏻‍💼</span><div><strong>Mira</strong><small>Assistente virtuale · Lotus</small></div><button id="assistant-close" type="button" aria-label="Chiudi assistente">×</button></header>
+        <div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
+        <div class="assistant-chips" aria-label="Suggerimenti"><button type="button" data-assistant-prompt="Consigliami un profumo">Consigliami un profumo</button><button type="button" data-assistant-prompt="Apri il carrello">Apri carrello</button></div>
+        <form class="assistant-form" id="assistant-form"><label class="visually-hidden" for="assistant-input">Scrivi un messaggio</label><input id="assistant-input" maxlength="180" autocomplete="off" placeholder="Es. aggiungi Lattafa Asad" required><button type="submit" aria-label="Invia messaggio">↑</button></form>
+        <p class="assistant-disclaimer">Sono un assistente automatico. I messaggi restano in questa pagina e non vengono inviati.</p>
+      </div>
+    </section>
     <footer id="footer">
       <div class="footer-mark"><img src="assets/lotus-logo-new.jpg" alt="Lotus Fragrance" /></div>
       <div class="footer-utility"><a href="admin.html">Accesso admin</a><a href="privacy.html#cookie">Preferenze cookie</a></div>
@@ -70,6 +81,6 @@
       <p class="copyright">© 2026 Lotus Fragrance</p>
     </footer>
     <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Preferenze cookie"><div><p class="eyebrow">La tua privacy</p><p>Usiamo solo cookie necessari finché non scegli diversamente. Puoi modificare la scelta in ogni momento.</p><a href="privacy.html#cookie">Leggi la privacy policy</a></div><div><button class="button outline" id="reject-cookies">Solo necessari</button><button class="button dark" id="accept-cookies">Accetta tutti</button></div></div>
-    <script src="commerce-core.js?v=standard-cart-1"></script><script src="app.js?v=standard-cart-1"></script>
+    <script src="commerce-core.js?v=standard-cart-1"></script><script src="app.js?v=standard-cart-1"></script><script src="assistant.js?v=1"></script>
   </body>
 </html>
