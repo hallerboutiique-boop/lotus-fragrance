@@ -8,3 +8,12 @@
 .assistant-head .assistant-avatar{width:72px;height:72px;font-size:46px}
 .assistant-launcher-avatar img,.assistant-avatar img{display:block;width:100%;height:100%;border-radius:inherit;object-fit:cover}
 @media(max-width:760px){.assistant-launcher{padding:7px 13px 7px 7px}.assistant-launcher-avatar{width:54px;height:54px;font-size:34px}.assistant-panel{width:min(390px,calc(100vw - 24px));height:min(550px,calc(100dvh - 90px))}}
+.assistant-launcher{gap:14px;padding:10px 22px 10px 10px;min-height:94px}
+.assistant-launcher-avatar{width:74px;height:74px}
+.assistant-launcher-label{font-size:15px;font-weight:600;letter-spacing:.045em}
+.assistant-panel{width:min(440px,calc(100vw - 28px));height:min(620px,calc(100dvh - 110px))}
+.assistant-head{gap:15px;padding:17px 19px}
+.assistant-head .assistant-avatar{width:108px;height:108px}
+.assistant-head strong{font-size:25px}
+.assistant-head small{font-size:11px}
+@media(max-width:760px){.lotus-assistant{right:10px;bottom:10px}.assistant-launcher{gap:10px;min-height:78px;padding:7px 15px 7px 7px}.assistant-launcher-avatar{width:62px;height:62px}.assistant-launcher-label{font-size:14px}.assistant-panel{right:0;bottom:86px;width:min(440px,calc(100vw - 20px));height:min(620px,calc(100dvh - 110px))}.assistant-head .assistant-avatar{width:88px;height:88px}}
