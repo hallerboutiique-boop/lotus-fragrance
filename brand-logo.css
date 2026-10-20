@@ -5,5 +5,5 @@ html body .login img{display:block;width:min(100%,360px);height:auto;aspect-rati
 html body .admin-panel header img{width:260px;height:auto;aspect-ratio:1910/310;object-fit:contain;mix-blend-mode:screen;filter:none}
 html body .bar .brand img{display:block;width:min(300px,78vw);height:auto;mix-blend-mode:screen}
 @media(max-width:900px){html body .topbar .brand-logo{width:min(31vw,300px);height:100px}}
-@media(max-width:760px){html body .topbar .brand-logo,html body .product-header .brand-logo{left:50%;width:clamp(128px,40vw,160px);height:82px}}
-@media(max-width:760px){html body :is(.topbar,.product-header).search-open .brand-logo{left:50%;right:auto;width:clamp(128px,40vw,160px);height:82px;transform:translate(-50%,-50%)}html body :is(.topbar,.product-header).search-open .brand-logo img{width:100%;height:100%}}
+@media(max-width:760px){html body .topbar .brand-logo,html body .product-header .brand-logo{left:20px;width:clamp(184px,52vw,220px);height:96px}}
+@media(max-width:760px){html body :is(.topbar,.product-header).search-open .brand-logo{left:50%;right:auto;width:clamp(184px,52vw,220px);height:96px;transform:translate(-50%,-50%)}html body :is(.topbar,.product-header).search-open .brand-logo img{width:100%;height:100%}}
