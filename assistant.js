@@ -2,13 +2,14 @@
 (()=>{
  const root=document.querySelector('#lotus-assistant');if(!root)return;
  const checkoutPage=!!document.querySelector('#checkout-items');
- const panel=document.querySelector('#assistant-panel'),launcher=document.querySelector('#assistant-launcher'),messages=document.querySelector('#assistant-messages'),form=document.querySelector('#assistant-form'),input=document.querySelector('#assistant-input');
- let greeted=false;
+ const panel=document.querySelector('#assistant-panel'),launcher=document.querySelector('#assistant-launcher'),messages=document.querySelector('#assistant-messages'),form=document.querySelector('#assistant-form'),input=document.querySelector('#assistant-input'),toneChoice=document.querySelector('#assistant-tone-choice');
+ let greeted=false,tone='neutral',toneSelected=false;
  const catalogNow=()=>checkoutPage?checkoutCatalog:commerceCatalog;
  const cartNow=()=>checkoutPage?checkoutCart:cart;
  function syncCart(){if(checkoutPage){try{localStorage.setItem('lotus-bundle-cart',JSON.stringify(checkoutCart))}catch{}renderCheckout()}else{saveCart();renderCart()}}
  function say(text,who='assistant'){const node=document.createElement('p');node.className='assistant-message'+(who==='user'?' user':'');node.textContent=text;messages.append(node);messages.scrollTop=messages.scrollHeight}
- function toggle(force){const open=typeof force==='boolean'?force:root.dataset.open!=='true';root.dataset.open=String(open);panel.setAttribute('aria-hidden',String(!open));launcher.setAttribute('aria-expanded',String(open));if(open&&!greeted){greeted=true;say('Ciao, sono Stella, l’assistente virtuale di Lotus Fragrance. Posso consigliarti una fragranza o modificare il carrello. Prova: “aggiungi Lattafa Asad”, “Mystery Box donna”, “rimuovi l’ultima voce” o “svuota il carrello”.')}if(open)input.focus()}
+ function toggle(force){const open=typeof force==='boolean'?force:root.dataset.open!=='true';root.dataset.open=String(open);panel.setAttribute('aria-hidden',String(!open));launcher.setAttribute('aria-expanded',String(open));if(open&&!greeted){greeted=true;say('Ciao, sono Stella, l’assistente virtuale di Lotus Fragrance. Posso consigliarti una fragranza o modificare il carrello. Come preferisci che mi rivolga a te?');toneChoice.hidden=false}if(open)input.focus()}
+ toneChoice.addEventListener('click',event=>{const button=event.target.closest('[data-assistant-tone]');if(!button)return;tone=button.dataset.assistantTone;toneSelected=true;toneChoice.hidden=true;say(tone==='woman'?'Perfetto, userò un tono professionale e diretto.':tone==='man'?'Perfetto, sarò più calorosa e un po’ giocosa, sempre con rispetto.':'Va bene, manterrò un tono cortese e neutro.')});
  launcher.addEventListener('click',()=>toggle());document.querySelector('#assistant-close').addEventListener('click',()=>toggle(false));
  function normal(value){return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
  function findProduct(text){const query=normal(text);return (catalogNow()||[]).filter(product=>query.includes(normal(product.name))||query.split(' ').some(word=>word.length>2&&normal(product.id)===word)).sort((a,b)=>normal(b.name).length-normal(a.name).length)[0]}
@@ -41,7 +42,7 @@
   if(product)return `${product.name}: ${product.description} Note in evidenza: ${product.notes.join(', ')}. Vuoi aggiungerlo? Scrivi “aggiungi ${product.name}”.`;
   return 'Posso consigliarti profumi, aggiungere una fragranza da 10 ml, inserire una Mystery Box Uomo/Donna/Mix, rimuovere l’ultima voce o svuotare il carrello. Per una fragranza specifica scrivi il suo nome.';
  }
- async function submit(text){const value=text.trim();if(!value)return;say(value,'user');input.value='';if(!catalogNow().length){try{const response=await fetch('products.json');if(response.ok){const loaded=(await response.json()).products;if(checkoutPage)checkoutCatalog=loaded;else commerceCatalog=loaded}}catch{}}say(respond(value))}
+ async function submit(text){const value=text.trim();if(!value)return;say(value,'user');input.value='';if(!catalogNow().length){try{const response=await fetch('products.json');if(response.ok){const loaded=(await response.json()).products;if(checkoutPage)checkoutCatalog=loaded;else commerceCatalog=loaded}}catch{}}const response=respond(value);say(toneSelected&&tone==='man'?(findProduct(value)?`Ottima scelta, hai gusto 😉 ${response}`:`Con piacere 😊 ${response}`):response)}
  form.addEventListener('submit',event=>{event.preventDefault();submit(input.value)});
  root.querySelectorAll('[data-assistant-prompt]').forEach(button=>button.addEventListener('click',()=>submit(button.dataset.assistantPrompt)));
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&root.dataset.open==='true')toggle(false)});

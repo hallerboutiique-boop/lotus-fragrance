@@ -16,4 +16,9 @@
 .assistant-head .assistant-avatar{width:108px;height:108px}
 .assistant-head strong{font-size:25px}
 .assistant-head small{font-size:11px}
+.assistant-tone-choice{display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding:0 14px 12px;color:#d8d0c1;font-size:11px}
+.assistant-tone-choice[hidden]{display:none}
+.assistant-tone-choice span{flex-basis:100%;margin-bottom:2px}
+.assistant-tone-choice button{padding:8px 11px;border:1px solid #776747;border-radius:999px;background:#111;color:#eee;font:11px Manrope,sans-serif;cursor:pointer}
+.assistant-tone-choice button:hover{background:#2a2419}
 @media(max-width:760px){.lotus-assistant{right:10px;bottom:10px}.assistant-launcher{gap:10px;min-height:78px;padding:7px 15px 7px 7px}.assistant-launcher-avatar{width:62px;height:62px}.assistant-launcher-label{font-size:14px}.assistant-panel{right:0;bottom:86px;width:min(440px,calc(100vw - 20px));height:min(620px,calc(100dvh - 110px))}.assistant-head .assistant-avatar{width:88px;height:88px}}

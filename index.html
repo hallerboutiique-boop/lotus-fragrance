@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="i18n.css?v=9"/>
     <link rel="stylesheet" href="header-search.css?v=account-globe1"/>
     <link rel="stylesheet" href="cart.css?v=1"/>
-    <link rel="stylesheet" href="assistant.css?v=stella-large-1"/>
+    <link rel="stylesheet" href="assistant.css?v=stella-personality-1"/>
     <link rel="stylesheet" href="top-menu.css?v=1"/>
     <link rel="stylesheet" href="brand-logo.css?v=mobile-size-5"/>
     <link rel="stylesheet" href="social-links.css?v=2"/>
@@ -64,6 +64,7 @@
       <div class="assistant-panel" id="assistant-panel" aria-hidden="true">
         <header class="assistant-head"><span class="assistant-avatar" aria-hidden="true"><img src="assets/assistant-stella.jpg?v=stella-2" alt=""></span><div><strong>Stella</strong><small>Assistente virtuale · Lotus</small></div><button id="assistant-close" type="button" aria-label="Chiudi assistente">×</button></header>
         <div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
+        <div class="assistant-tone-choice" id="assistant-tone-choice" hidden aria-label="Scegli il tono dell'assistente"><span>Come preferisci che mi rivolga a te?</span><button type="button" data-assistant-tone="woman">Donna</button><button type="button" data-assistant-tone="man">Uomo</button><button type="button" data-assistant-tone="neutral">Neutro</button></div>
         <div class="assistant-chips" aria-label="Suggerimenti"><button type="button" data-assistant-prompt="Consigliami un profumo">Consigliami un profumo</button><button type="button" data-assistant-prompt="Apri il carrello">Apri carrello</button></div>
         <form class="assistant-form" id="assistant-form"><label class="visually-hidden" for="assistant-input">Scrivi un messaggio</label><input id="assistant-input" maxlength="180" autocomplete="off" placeholder="Es. aggiungi Lattafa Asad" required><button type="submit" aria-label="Invia messaggio">↑</button></form>
         <p class="assistant-disclaimer">Sono un assistente automatico. I messaggi restano in questa pagina e non vengono inviati.</p>
@@ -81,6 +82,6 @@
       <p class="copyright">© 2026 Lotus Fragrance</p>
     </footer>
     <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Preferenze cookie"><div><p class="eyebrow">La tua privacy</p><p>Usiamo solo cookie necessari finché non scegli diversamente. Puoi modificare la scelta in ogni momento.</p><a href="privacy.html#cookie">Leggi la privacy policy</a></div><div><button class="button outline" id="reject-cookies">Solo necessari</button><button class="button dark" id="accept-cookies">Accetta tutti</button></div></div>
-    <script src="commerce-core.js?v=standard-cart-1"></script><script src="app.js?v=checkout-live1"></script><script src="assistant.js?v=1"></script>
+    <script src="commerce-core.js?v=standard-cart-1"></script><script src="app.js?v=checkout-live1"></script><script src="assistant.js?v=tone-choice-1"></script>
   </body>
 </html>
