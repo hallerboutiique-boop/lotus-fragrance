@@ -17,16 +17,16 @@ async function loadProduct(){
   const status={available:'Disponibile',unavailable:'Non disponibile',preorder:'Preordine'}[variant.availability]||'Disponibilità da confermare';
   document.title=title+' · Lotus Fragrance';
   host.innerHTML=`<a class="back-link" href="index.html#${back}">← Torna alla collezione</a><div class="product-layout"><figure class="product-photo"><img src="${escapeProduct(variant.image)}" alt="${escapeProduct(title)}" width="1000" height="1000"/><figcaption>${mini?'Miniatura 10 ml: ricostruzione illustrativa, non confezione ufficiale verificata.':'Immagine rielaborata con luce da studio. La miniatura affiancata è una ricostruzione illustrativa, non una confezione ufficiale verificata.'}</figcaption></figure><section aria-labelledby="product-title"><p class="product-brand">${escapeProduct(product.brand)} · ${escapeProduct(category?.name)}</p><h1 id="product-title">${escapeProduct(title)}</h1><p class="product-price">${escapeProduct(price)}</p><nav class="format-links" aria-label="Scegli formato"><a href="${href}" ${!mini?'aria-current="page"':''}>Confezione normale</a><a href="${href}&format=10ml" ${mini?'aria-current="page"':''}>Formato tascabile · 10 ml</a></nav><p class="format-links"><a href="index.html#offerte">Singolo, Tris e Mystery Box · 10 ml</a></p><h2>La fragranza</h2><p class="product-description">${escapeProduct(product.description)}</p><h2>Note olfattive</h2><ul class="product-notes">${product.notes.map(n=>`<li>${escapeProduct(n)}</li>`).join('')}</ul><p class="product-status">${escapeProduct(variant.size||'Formato da confermare')} · ${escapeProduct(status)}</p><a class="source-link" href="${escapeProduct(product.source)}" target="_blank" rel="noopener noreferrer">Scheda della fragranza · fonte ↗</a></section></div>`;
-  if(mini&&variant.availability==='available'){
+  if((mini&&variant.availability==='available')||(!mini&&amount)){
    const purchase=document.createElement('div');purchase.className='product-purchase';
-   purchase.innerHTML='<button type="button" id="add-product">Aggiungi al carrello · 10 ml</button><p>Ogni 3 profumi da 10 ml scelti dal catalogo, il prezzo Tris si applica automaticamente al checkout.</p><p id="product-cart-status" role="status"></p>';
+   purchase.innerHTML=mini?'<button type="button" id="add-product">Aggiungi al carrello · 10 ml</button><p>Ogni 3 profumi da 10 ml scelti dal catalogo, il prezzo Tris si applica automaticamente al checkout.</p><p id="product-cart-status" role="status"></p>':'<button type="button" id="add-product">Aggiungi al carrello · confezione normale</button><p>Disponibilità da confermare prima dell’ordine.</p><p id="product-cart-status" role="status"></p>';
    host.querySelector('.product-price').after(purchase);
    purchase.querySelector('button').onclick=()=>{
     try{
      const saved=JSON.parse(localStorage.getItem('lotus-bundle-cart')||'[]');
      const lines=Array.isArray(saved)?saved.slice(0,20).map(line=>LotusCommerce.validateLine(line,data.products)).filter(r=>r.ok).map(r=>r.line):[];
      if(lines.length>=20){purchase.querySelector('[role="status"]').textContent=LotusI18n.translate('Puoi inserire al massimo 20 pacchetti per ordine.');return}
-     const result=LotusCommerce.validateBundle('singolo',[product.id],data.products);if(!result.ok)throw Error();
+     const result=mini?LotusCommerce.validateBundle('singolo',[product.id],data.products):LotusCommerce.validateLine({offerId:'standard',fragranceIds:[product.id]},data.products);if(!result.ok)throw Error();
      lines.push(result.line);localStorage.setItem('lotus-bundle-cart',JSON.stringify(lines));
      location.assign('index.html?lang='+LotusI18n.language+'#carrello');
     }catch{purchase.querySelector('[role="status"]').textContent=LotusI18n.translate('Impossibile salvare il carrello. Consenti la memorizzazione nel browser e riprova.')}

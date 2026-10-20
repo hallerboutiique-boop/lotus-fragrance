@@ -10,6 +10,7 @@ async function main() {
   assert.equal(priceCart([{ offerId: 'singolo', fragranceIds: ['asad'] }]).totalCents, 1490);
   assert.equal(priceCart([{ offerId: 'mystery', gender: 'women' }]).totalCents, 4990);
   assert.throws(() => priceCart([{ offerId: 'singolo', fragranceIds: ['not-a-product'] }]));
+  assert.throws(() => priceCart([{ offerId: 'standard', fragranceIds: ['asad'] }]), /non disponibile/);
   assert.throws(() => priceCart([{ offerId: 'mystery', gender: 'invalid' }]));
 
   let request;

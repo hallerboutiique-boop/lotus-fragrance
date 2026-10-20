@@ -59,13 +59,24 @@ function priceCart(items) {
       mysteryCount += 1;
       continue;
     }
+    if (line?.offerId === 'standard') {
+      if (!Array.isArray(line.fragranceIds) || line.fragranceIds.length !== 1) throw Object.assign(new Error('Confezione normale non valida'), { status: 400 });
+      const product = catalog.find(p => p.id === line.fragranceIds[0]);
+      if (!product || product.availability !== 'available' || !Number.isFinite(product.price) || product.price <= 0) throw Object.assign(new Error('Confezione normale non disponibile'), { status: 400 });
+      const priceCents = Math.round(product.price * 100);
+      if (!Number.isSafeInteger(priceCents)) throw Object.assign(new Error('Prezzo non valido'), { status: 400 });
+      regularCount += 0;
+      selected.push({ offerId: 'standard', products: [product], priceCents });
+      continue;
+    }
     const valid = commerce.validateBundle(line?.offerId, line?.fragranceIds, catalog);
     if (!valid.ok) throw Object.assign(new Error(valid.error), { status: 400 });
     regularCount += valid.selected.length;
     selected.push({ offerId: line.offerId, products: valid.selected });
   }
   const trisCount = Math.floor(regularCount / 3);
-  const totalCents = regularCount * SINGLE_CENTS - trisCount * (3 * SINGLE_CENTS - 3290) + mysteryCount * MYSTERY_CENTS;
+  const standardCents = selected.filter(group => group.offerId === 'standard').reduce((sum, group) => sum + group.priceCents, 0);
+  const totalCents = regularCount * SINGLE_CENTS - trisCount * (3 * SINGLE_CENTS - 3290) + mysteryCount * MYSTERY_CENTS + standardCents;
   if (!Number.isSafeInteger(totalCents) || totalCents < 1) throw Object.assign(new Error('Totale non valido'), { status: 400 });
   const summary = selected.map(group => {
     const names = group.products.map(p => p.name).join(', ');

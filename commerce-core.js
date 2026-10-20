@@ -20,11 +20,18 @@
    if(!pool.length||(line.gender==='mix'&&!['arabi-uomo','arabi-donna'].every(c=>pool.some(p=>p.category===c))))return {ok:false,error:'Selezione Mystery Box non disponibile.'};
    return {ok:true,line:{offerId:'mystery',gender:line.gender},offer:offers[2],selected:[]};
   }
+  if(line?.offerId==='standard'){
+   if(!Array.isArray(line.fragranceIds)||line.fragranceIds.length!==1||typeof line.fragranceIds[0]!=='string')return {ok:false,error:'Scegli una confezione normale.'};
+   const product=catalog.find(p=>p.id===line.fragranceIds[0]);
+   if(!product||!Number.isFinite(product.price)||product.price<=0)return {ok:false,error:'Prezzo della confezione normale da confermare.'};
+   const offer={id:'standard',name:'Confezione normale',count:1,priceCents:Math.round(product.price*100)};
+   return {ok:true,line:{offerId:'standard',fragranceIds:[product.id]},offer,selected:[product],availabilityConfirmed:product.availability==='available'};
+  }
   return validateBundle(line?.offerId,line?.fragranceIds,catalog);
  }
  function quote(cart,catalog){
   let baseCents=0,regularCount=0;
-  for(const line of cart){const result=validateLine(line,catalog);if(!result.ok)throw Error(result.error);if(['singolo','tris'].includes(result.offer.id)&&line.offerId!=='mystery'){regularCount+=result.selected.length;baseCents+=result.selected.length*1490}else baseCents+=result.offer.priceCents;}
+  for(const line of cart){const result=validateLine(line,catalog);if(!result.ok)throw Error(result.error);if(line.offerId==='standard'){baseCents+=result.offer.priceCents;continue}if(['singolo','tris'].includes(result.offer.id)&&line.offerId!=='mystery'){regularCount+=result.selected.length;baseCents+=result.selected.length*1490}else baseCents+=result.offer.priceCents;}
   const trisCount=Math.floor(regularCount/3),savingsCents=trisCount*(3*1490-3290),totalCents=baseCents-savingsCents;
   if(!Number.isSafeInteger(totalCents))throw Error('Totale non valido');
   return {baseCents,totalCents,savingsCents,trisCount,regularCount};

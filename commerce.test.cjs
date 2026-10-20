@@ -16,6 +16,12 @@ assert.equal(validateBundle('box',['asad','yara','9pm','eclaire','prive-rose'],c
 assert.equal(validateBundle('singolo',['nebras'],catalog).ok,false);
 assert.equal(validateBundle('fake',['asad'],catalog).ok,false);
 assert.equal(validateBundle('tris','asad',catalog).ok,false);
+const standardLine={offerId:'standard',fragranceIds:['asad']};
+assert.equal(validateLine(standardLine,catalog).ok,true,'Confezione normale con prezzo noto si può aggiungere al carrello');
+assert.equal(validateLine(standardLine,catalog).availabilityConfirmed,false,'Disponibilità standard non viene inventata');
+assert.equal(totalCents([standardLine],catalog),5900,'Prezzo standard letto dal catalogo');
+assert.equal(totalCents([standardLine,{offerId:'singolo',fragranceIds:['asad']}],catalog),7390,'Formato standard escluso dallo sconto Tris');
+assert.equal(validateLine({offerId:'standard',fragranceIds:['fake']},catalog).ok,false);
 for(const availability of [null,'unavailable','preorder']){
  const changed=catalog.map(p=>p.id==='asad'?{...p,miniature:{...p.miniature,availability}}:p);
  assert.equal(validateBundle('singolo',['asad'],changed).ok,false);
