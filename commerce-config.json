@@ -1,4 +1,4 @@
 {
-  "checkoutEndpoint": null,
+  "checkoutEndpoint": "https://lotus-fragrance-checkout.fly.dev/checkout",
   "checkoutAllowedHosts": ["checkout.stripe.com"]
 }

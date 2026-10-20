@@ -1,7 +1,7 @@
 'use strict';
 const escapeCheckout=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const checkoutMoney=cents=>window.LotusI18n?LotusI18n.money(cents/100):new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(cents/100);
-const itemsNode=document.querySelector('#checkout-items'),totalNode=document.querySelector('#checkout-total'),button=document.querySelector('#checkout-pay'),statusNode=document.querySelector('#checkout-status');
+const itemsNode=document.querySelector('#checkout-items'),totalNode=document.querySelector('#checkout-total'),button=document.querySelector('#checkout-pay'),statusNode=document.querySelector('#checkout-status'),legalCheckbox=document.querySelector('#checkout-legal');
 let checkoutCart=[],checkoutCatalog=[],checkoutConfig={};
 async function initializeCheckout(){
  try{
@@ -26,17 +26,19 @@ function renderCheckout(){
  itemsNode.innerHTML=productRows+discountRow;
  totalNode.textContent=checkoutMoney(quote.totalCents);
  const endpoint=typeof checkoutConfig.checkoutEndpoint==='string'?checkoutConfig.checkoutEndpoint:'';
- button.disabled=!endpoint;
- if(!endpoint){statusNode.textContent='Pagamento online temporaneamente non attivo. Nessun addebito verrà effettuato.';return}
- try{const url=new URL(endpoint,location.href);button.disabled=url.protocol!=='https:'||!checkoutConfig.checkoutAllowedHosts?.includes(url.hostname)}catch{button.disabled=true}
- statusNode.textContent=button.disabled?'Checkout non configurato in modo sicuro.':'Proseguendo, inserirai indirizzo e metodo di pagamento nella pagina Stripe protetta.';
+ const unconfirmedStandard=checkoutCart.some(line=>line.offerId==='standard'&&line.fragranceIds.some(id=>checkoutCatalog.find(product=>product.id===id)?.availability!=='available'));
+ let endpointSafe=false;
+ try{const url=new URL(endpoint,location.href);endpointSafe=url.protocol==='https:'&&url.pathname==='/checkout'&&url.hostname==='lotus-fragrance-checkout.fly.dev'}catch{}
+ button.disabled=!endpointSafe||!legalCheckbox.checked||unconfirmedStandard;
+ statusNode.textContent=!endpointSafe?'Pagamento online temporaneamente non disponibile.':unconfirmedStandard?'La disponibilità della confezione normale non è confermata: rimuovila dal carrello o scegli il formato da 10 ml.':!legalCheckbox.checked?'Accetta i Termini e condizioni per proseguire.':'Checkout online attivo: inserirai indirizzo e metodo di pagamento nella pagina Stripe protetta.';
 }
+legalCheckbox.addEventListener('change',renderCheckout);
 button.addEventListener('click',async()=>{
  if(button.disabled)return;
  button.disabled=true;statusNode.textContent='Apertura del pagamento sicuro…';
  try{
   const endpoint=new URL(checkoutConfig.checkoutEndpoint,location.href);
-  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':globalThis.crypto.randomUUID()},body:JSON.stringify({items:checkoutCart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds})})});
+  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':globalThis.crypto.randomUUID()},body:JSON.stringify({legalAccepted:legalCheckbox.checked,items:checkoutCart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds})})});
   if(!response.ok)throw Error();const data=await response.json(),url=new URL(data.url);
   if(url.protocol!=='https:'||!checkoutConfig.checkoutAllowedHosts?.includes(url.hostname))throw Error();location.assign(url.href);
  }catch{statusNode.textContent='Pagamento non disponibile al momento. Nessun addebito è stato effettuato.';button.disabled=false}

@@ -36,7 +36,7 @@ function renderCart(){
  if(discount){const savings=valid?LotusCommerce.quote(cart,commerceCatalog).savingsCents:0;discount.hidden=!savings;discount.textContent=savings?LotusI18n.translate('Sconto Tris automatico')+' · −'+euro(savings/100):''}
  document.querySelector('#cart-total').textContent=valid?euro(total/100):'Da verificare';
  button.disabled=!cart.length||!valid;
- status.textContent=!valid?'Verifica le fragranze nel carrello.':!checkoutSettings.checkoutEndpoint?'Rivedi l’ordine nel checkout; il pagamento online non è ancora attivo.':cart.length?'Rivedi l’ordine e prosegui al pagamento sicuro':'Aggiungi un pacchetto per procedere.';
+ status.textContent=!valid?'Verifica le fragranze nel carrello.':!checkoutSettings.checkoutEndpoint?'Pagamento online momentaneamente non disponibile.':cart.length?'Rivedi l’ordine e prosegui al pagamento sicuro':'Aggiungi un pacchetto per procedere.';
 }
 const drawer=document.querySelector('#cart-drawer'),scrim=document.querySelector('#scrim');
 function openCart(){drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');scrim.classList.add('active');document.body.style.overflow='hidden';document.querySelector('#close-cart').focus()}

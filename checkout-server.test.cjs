@@ -18,6 +18,7 @@ async function main() {
     items: three,
     stripeKey: 'sk_test_unit_test',
     requestId: 'request-idempotency-123',
+    legalAccepted: true,
     stripeFetch: async (url, options) => {
       request = { url, options };
       return { ok: true, json: async () => ({ url: 'https://checkout.stripe.com/c/pay/cs_test_example' }) };
@@ -31,12 +32,34 @@ async function main() {
   assert.equal(fields.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
   assert.equal(fields.get('shipping_address_collection[allowed_countries][0]'), 'IT');
   assert.equal(fields.get('metadata[item_ids]'), '0,1,2');
+  assert.equal(fields.get('metadata[legal_accepted]'), 'true');
   assert.equal(fields.has('payment_method_types[0]'), false);
+  const restrictedSession = await createSession({
+    items: three,
+    stripeKey: 'rk_live_unit_test',
+    requestId: 'restricted-key-request-123',
+    legalAccepted: true,
+    stripeFetch: async () => ({ ok: true, json: async () => ({ url: 'https://checkout.stripe.com/c/pay/cs_live_example' }) })
+  });
+  assert.equal(restrictedSession.url, 'https://checkout.stripe.com/c/pay/cs_live_example');
 
   const statusServer = createServer({ env: { CHECKOUT_ENABLED: 'false', STRIPE_SECRET_KEY: 'sk_test_unit_test' }, stripeFetch: async url => {
     assert.equal(url, 'https://api.stripe.com/v1/checkout/sessions/cs_test_example');
     return { ok: true, status: 200, json: async () => ({ id: 'cs_test_example', payment_status: 'paid', amount_total: 3290, currency: 'eur', customer_details: { email: 'private@example.com' } }) };
   } });
+  const consentServer = createServer({ env: { CHECKOUT_ENABLED: 'true', STRIPE_SECRET_KEY: 'sk_test_unit_test' }, stripeFetch: async () => ({ ok: true, json: async () => ({ url: 'https://checkout.stripe.com/c/pay/cs_test_example' }) }) });
+  await new Promise(resolve => consentServer.listen(0, '127.0.0.1', resolve));
+  try {
+    const endpoint = `http://127.0.0.1:${consentServer.address().port}/checkout`;
+    const headers = { 'content-type': 'application/json', origin: 'https://lotusfragrance.shop', 'idempotency-key': 'request-idempotency-123' };
+    const missingConsent = await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify({ items: three }) });
+    assert.equal(missingConsent.status, 400);
+    const consented = await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify({ items: three, legalAccepted: true }) });
+    assert.equal(consented.status, 200);
+    assert.equal((await consented.json()).url, 'https://checkout.stripe.com/c/pay/cs_test_example');
+  } finally {
+    await new Promise(resolve => consentServer.close(resolve));
+  }
   const server = statusServer;
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   try {

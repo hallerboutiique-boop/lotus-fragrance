@@ -7,7 +7,7 @@ primary_region = "fra"
 [env]
   PORT = "8080"
   SITE_ORIGIN = "https://lotusfragrance.shop"
-  CHECKOUT_ENABLED = "false"
+  CHECKOUT_ENABLED = "true"
 
 [http_service]
   internal_port = 8080

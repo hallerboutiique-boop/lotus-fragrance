@@ -85,8 +85,9 @@ function priceCart(items) {
   return { totalCents, summary: summary.slice(0, 4500), itemIds: selected.flatMap(group => group.products.map(product => product.id)), regularCount, trisCount, mysteryCount };
 }
 
-async function createSession({ items, stripeKey, requestId, stripeFetch = fetch }) {
-  if (!stripeKey || !/^sk_(test|live)_/.test(stripeKey)) throw Object.assign(new Error('Stripe non configurato'), { status: 503 });
+async function createSession({ items, stripeKey, requestId, legalAccepted, stripeFetch = fetch }) {
+  if (!stripeKey || !/^(?:sk_(?:test|live)_|rk_live_)/.test(stripeKey)) throw Object.assign(new Error('Stripe non configurato'), { status: 503 });
+  if (legalAccepted !== true) throw Object.assign(new Error('Conferma la presa visione delle condizioni'), { status: 400 });
   const quote = priceCart(items);
   const fields = new URLSearchParams();
   fields.set('mode', 'payment');
@@ -106,6 +107,8 @@ async function createSession({ items, stripeKey, requestId, stripeFetch = fetch 
   fields.set('metadata[regular_count]', String(quote.regularCount));
   fields.set('metadata[tris_count]', String(quote.trisCount));
   fields.set('metadata[mystery_count]', String(quote.mysteryCount));
+  fields.set('metadata[legal_accepted]', 'true');
+  fields.set('metadata[legal_version]', '2026-10-21');
   // Product indices keep the complete, randomly resolved selection inside Stripe's
   // 500-character metadata value limit; the order service expands them to names.
   const productIds = catalog.map(product => product.id);
@@ -153,7 +156,7 @@ function createServer({ env = process.env, stripeFetch = fetch } = {}) {
     if (req.method === 'GET' && url.pathname === '/order-status') {
       const sessionId = url.searchParams.get('session_id') || '';
       if (!/^cs_(?:test|live)_[A-Za-z0-9]+$/.test(sessionId)) return json(res, 400, { error: 'Sessione non valida' });
-      if (!env.STRIPE_SECRET_KEY || !/^sk_(test|live)_/.test(env.STRIPE_SECRET_KEY)) return json(res, 503, { error: 'Stato ordine non disponibile' });
+      if (!env.STRIPE_SECRET_KEY || !/^(?:sk_(?:test|live)_|rk_live_)/.test(env.STRIPE_SECRET_KEY)) return json(res, 503, { error: 'Stato ordine non disponibile' });
       try {
         const response = await stripeFetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, {
           headers: { authorization: `Bearer ${env.STRIPE_SECRET_KEY}` }
@@ -174,7 +177,7 @@ function createServer({ env = process.env, stripeFetch = fetch } = {}) {
       const requestId = String(req.headers['idempotency-key'] || '');
       if (!/^[a-zA-Z0-9_-]{12,80}$/.test(requestId)) throw Object.assign(new Error('Richiesta non valida'), { status: 400 });
       const body = await parseBody(req);
-      const result = await createSession({ items: body.items, stripeKey: env.STRIPE_SECRET_KEY, requestId, stripeFetch });
+      const result = await createSession({ items: body.items, stripeKey: env.STRIPE_SECRET_KEY, requestId, legalAccepted: body.legalAccepted, stripeFetch });
       return json(res, 200, result);
     } catch (error) {
       return json(res, error.status || 500, { error: error.status ? error.message : 'Errore temporaneo del pagamento' });

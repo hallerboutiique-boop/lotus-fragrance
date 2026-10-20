@@ -9,11 +9,11 @@
   <script src="i18n-data.js?v=account2"></script>
   <script src="i18n.js?v=6"></script>
   <link rel="stylesheet" href="i18n.css?v=10">
-  <link rel="stylesheet" href="checkout.css?v=1">
+  <link rel="stylesheet" href="checkout.css?v=checkout-live1">
   <link rel="stylesheet" href="checkout-i18n.css?v=1">
-  <link rel="stylesheet" href="assistant.css?v=1">
+  <link rel="stylesheet" href="assistant.css?v=blonde-2">
   <script defer src="commerce-core.js?v=standard-cart-1"></script>
-  <script defer src="checkout.js?v=standard-cart-1"></script>
+  <script defer src="checkout.js?v=checkout-live1"></script>
   <script defer src="assistant.js?v=1"></script>
 </head>
 <body>
@@ -22,13 +22,13 @@
     <div class="checkout-title"><p class="eyebrow">LOTUS FRAGRANCE · ORDINE</p><h1>Il tuo <em>checkout</em></h1><p>Controlla la selezione prima di proseguire al pagamento sicuro.</p></div>
     <div class="checkout-layout">
       <section class="checkout-order" aria-labelledby="order-title"><div class="section-title"><h2 id="order-title">Riepilogo</h2><a href="index.html#carrello">Modifica carrello</a></div><div id="checkout-items" aria-live="polite"><p>Caricamento ordine…</p></div><div class="checkout-total"><span>Totale ordine</span><strong id="checkout-total">—</strong></div><p class="shipping-included">Spedizione inclusa</p></section>
-      <aside class="checkout-next"><div class="secure-mark" aria-hidden="true">◇</div><h2>Pagamento protetto</h2><p>Pagherai nella pagina sicura di Stripe. Lì potrai inserire i dati di spedizione e scegliere tra i metodi disponibili per il tuo ordine.</p><button id="checkout-pay" type="button" disabled>Procedi al pagamento <span aria-hidden="true">→</span></button><p id="checkout-status" class="checkout-status" role="status" aria-live="polite">Pagamento online temporaneamente non attivo. Nessun addebito verrà effettuato.</p><a class="account-shortcut" href="https://lotus-fragrance-accounts.fly.dev/">Accedi o crea il tuo profilo cliente</a></aside>
+      <aside class="checkout-next"><div class="secure-mark" aria-hidden="true">◇</div><h2>Pagamento protetto</h2><p>Pagherai nella pagina sicura di Stripe. Lì potrai inserire i dati di spedizione e scegliere tra i metodi disponibili per il tuo ordine.</p><label class="checkout-legal"><input id="checkout-legal" type="checkbox"><span>Accetto i <a href="terms.html" target="_blank" rel="noopener">Termini e condizioni</a> e confermo di aver letto le informazioni su <a href="returns.html" target="_blank" rel="noopener">resi</a> e <a href="privacy.html" target="_blank" rel="noopener">privacy</a>.</span></label><button id="checkout-pay" type="button" disabled>Procedi al pagamento <span aria-hidden="true">→</span></button><p id="checkout-status" class="checkout-status" role="status" aria-live="polite">Carica il carrello e accetta i Termini e condizioni per proseguire.</p><a class="account-shortcut" href="https://lotus-fragrance-accounts.fly.dev/">Accedi o crea il tuo profilo cliente</a></aside>
     </div>
   </main>
   <footer class="checkout-footer"><a href="privacy.html">Privacy</a><a href="terms.html">Termini e condizioni</a><a href="returns.html">Resi e rimborsi</a></footer>
   <section class="lotus-assistant" id="lotus-assistant" aria-label="Assistente virtuale Lotus" data-open="false">
-    <button class="assistant-launcher" id="assistant-launcher" type="button" aria-expanded="false" aria-controls="assistant-panel"><span class="assistant-launcher-avatar" aria-hidden="true">👩🏻‍💼</span><span class="assistant-launcher-label">Ti aiuto?</span></button>
-    <div class="assistant-panel" id="assistant-panel" aria-hidden="true"><header class="assistant-head"><span class="assistant-avatar" aria-hidden="true">👩🏻‍💼</span><div><strong>Mira</strong><small>Assistente virtuale · Lotus</small></div><button id="assistant-close" type="button" aria-label="Chiudi assistente">×</button></header><div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions text"></div><div class="assistant-chips" aria-label="Suggerimenti"><button type="button" data-assistant-prompt="Consigliami un profumo">Consigliami un profumo</button><button type="button" data-assistant-prompt="Apri il carrello">Apri carrello</button></div><form class="assistant-form" id="assistant-form"><label class="visually-hidden" for="assistant-input">Scrivi un messaggio</label><input id="assistant-input" maxlength="180" autocomplete="off" placeholder="Es. aggiungi Lattafa Asad" required><button type="submit" aria-label="Invia messaggio">↑</button></form><p class="assistant-disclaimer">Sono un assistente automatico. I messaggi restano in questa pagina e non vengono inviati.</p></div>
+    <button class="assistant-launcher" id="assistant-launcher" type="button" aria-expanded="false" aria-controls="assistant-panel"><span class="assistant-launcher-avatar" aria-hidden="true">👱🏼‍♀️</span><span class="assistant-launcher-label">Mira · Ti aiuto?</span></button>
+    <div class="assistant-panel" id="assistant-panel" aria-hidden="true"><header class="assistant-head"><span class="assistant-avatar" aria-hidden="true">👱🏼‍♀️</span><div><strong>Mira</strong><small>Assistente virtuale · Lotus</small></div><button id="assistant-close" type="button" aria-label="Chiudi assistente">×</button></header><div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions text"></div><div class="assistant-chips" aria-label="Suggerimenti"><button type="button" data-assistant-prompt="Consigliami un profumo">Consigliami un profumo</button><button type="button" data-assistant-prompt="Apri il carrello">Apri carrello</button></div><form class="assistant-form" id="assistant-form"><label class="visually-hidden" for="assistant-input">Scrivi un messaggio</label><input id="assistant-input" maxlength="180" autocomplete="off" placeholder="Es. aggiungi Lattafa Asad" required><button type="submit" aria-label="Invia messaggio">↑</button></form><p class="assistant-disclaimer">Sono un assistente automatico. I messaggi restano in questa pagina e non vengono inviati.</p></div>
   </section>
 </body>
 </html>
