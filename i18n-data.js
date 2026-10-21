@@ -4,9 +4,13 @@ window.LotusTranslations = `
 Suggerimenti di ricerca|Search suggestions|Suchvorschläge|Suggestions de recherche|Sugerencias de búsqueda|اقتراحات البحث
 Seguici|Follow us|Folge uns|Suivez-nous|Síguenos|تابعنا
 Metodi di pagamento|Payment methods|Zahlungsmethoden|Modes de paiement|Métodos de pago|طرق الدفع
+Carte|Cards|Karten|Cartes|Tarjetas|البطاقات
+Altri metodi|Other methods|Weitere Methoden|Autres moyens|Otros métodos|طرق أخرى
+Carte accettate|Accepted cards|Akzeptierte Karten|Cartes acceptées|Tarjetas aceptadas|البطاقات المقبولة
+Altri metodi di pagamento accettati|Other accepted payment methods|Weitere akzeptierte Zahlungsmethoden|Autres moyens de paiement acceptés|Otros métodos de pago aceptados|طرق الدفع الأخرى المقبولة
 Pagamento sicuro tramite Stripe|Secure payment through Stripe|Sichere Zahlung über Stripe|Paiement sécurisé via Stripe|Pago seguro a través de Stripe|دفع آمن عبر Stripe
 Pagamento sicuro con Stripe|Secure payment with Stripe|Sichere Zahlung mit Stripe|Paiement sécurisé avec Stripe|Pago seguro con Stripe|دفع آمن عبر Stripe
-I metodi abilitati per il tuo ordine vengono mostrati nella pagina di pagamento.|The payment methods enabled for your order are shown on the checkout page.|Die für deine Bestellung verfügbaren Zahlungsmethoden werden beim Checkout angezeigt.|Les moyens de paiement disponibles pour votre commande sont indiqués sur la page de paiement.|Los métodos de pago disponibles para tu pedido se muestran en la página de pago.|تظهر وسائل الدفع المتاحة لطلبك في صفحة الدفع.
+La disponibilità dipende da paese, importo e valuta: il checkout mostra solo i metodi applicabili.|Availability depends on country, amount and currency; checkout shows only applicable methods.|Die Verfügbarkeit hängt von Land, Betrag und Währung ab; beim Checkout werden nur passende Zahlungsmethoden angezeigt.|La disponibilité dépend du pays, du montant et de la devise : le paiement affiche uniquement les moyens applicables.|La disponibilidad depende del país, el importe y la moneda: el pago muestra solo los métodos aplicables.|يعتمد التوفر على البلد والمبلغ والعملة؛ وتعرض صفحة الدفع الوسائل المناسبة فقط.
 Canali social|Social channels|Soziale Netzwerke|Réseaux sociaux|Redes sociales|قنوات التواصل الاجتماعي
 Link dei profili in arrivo|Profile links coming soon|Profil-Links folgen in Kürze|Liens des profils à venir|Enlaces a los perfiles próximamente|روابط الحسابات قريباً
 Nella selezione Donna una fragranza può ripetersi.|In the Women selection, one fragrance may be repeated.|Bei der Damenauswahl kann ein Duft doppelt enthalten sein.|Dans la sélection Femme, un parfum peut être présent deux fois.|En la selección Mujer, una fragancia puede repetirse.|في تشكيلة النساء قد يتكرر أحد العطور.
