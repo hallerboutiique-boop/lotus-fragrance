@@ -1,0 +1,187 @@
+/* A consistent centered editorial layout across customer-facing pages. */
+.hero-copy,
+.intro,
+.section-heading,
+.service-strip,
+.offers-section,
+.offer-card,
+.offer-kicker,
+.offer-price,
+.offer-shipping,
+.offer-instruction,
+.catalog-category,
+.category-heading,
+.fragrance-copy,
+.showcase-caption,
+.feature-copy,
+.delivery,
+.delivery-grid article,
+.journal,
+.dashboard,
+.dash-head,
+.metrics article,
+.dashboard-grid article,
+footer,
+.cart-drawer,
+.cookie-banner,
+.assistant-head > div,
+.assistant-messages,
+.assistant-disclaimer,
+.product-layout > section,
+.product-photo figcaption,
+.back-link,
+.checkout-title,
+.checkout-order,
+.checkout-next,
+.checkout-footer,
+.doc,
+.account-main,
+.account-footer,
+.order-confirmation main {
+  text-align: center;
+}
+
+footer {
+  justify-items: center;
+}
+
+.hero-cta,
+.section-heading,
+.topbar nav,
+.product-header nav,
+.format-links,
+.category-heading,
+.offer-kicker,
+.checkout-footer,
+.actions {
+  justify-content: center;
+}
+
+.hero-copy,
+.feature-copy {
+  align-items: center;
+}
+
+.lede,
+.feature-copy > p:not(.eyebrow),
+.offers-intro,
+.intro > p:last-child,
+.dashboard-note {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.delivery-grid article,
+.metrics article,
+.dashboard-grid article {
+  text-align: center;
+}
+
+.category-heading {
+  flex-wrap: wrap;
+}
+
+.fragrance-copy,
+.fragrance-copy h4,
+.fragrance-copy .fragrance-price,
+.offer-card .offer-selection-status,
+.checkout-row h3,
+.checkout-row p,
+.checkout-total,
+.shipping-included,
+.checkout-status,
+.payment-note,
+.cart-item,
+.cart-item p,
+.cart-item h4,
+.cart-product-list span,
+.account-form label,
+.account-notice,
+.form-status,
+.assistant-message,
+.search-suggestions strong,
+.search-suggestions small,
+.search-no-results,
+.assistant-chips,
+.doc h1,
+.doc h2,
+.doc h3,
+.doc p,
+.doc li,
+.doc address,
+.doc .links,
+.product-brand,
+.product-price,
+.product-description,
+.product-status,
+.product-notes,
+.product-notes li {
+  text-align: center;
+}
+
+.cart-product-list a {
+  justify-content: center;
+}
+
+.cart-mystery-preview,
+.account-mark,
+.secure-mark {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cart-total {
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.checkout-total {
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.doc ul,
+.doc ol {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+.cookie-banner {
+  justify-content: center;
+}
+
+.cart-drawer .checkout {
+  justify-content: center;
+  gap: 10px;
+}
+
+@media (max-width: 760px) {
+  .hero-copy,
+  .feature-copy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-cta {
+    flex-wrap: wrap;
+  }
+
+  .service-strip {
+    justify-content: center;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .section-heading {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .profile-heading {
+    justify-content: center;
+    text-align: center;
+  }
+}
