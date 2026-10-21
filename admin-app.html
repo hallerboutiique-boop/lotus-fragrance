@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="dark">
+  <title>Area operativa · Lotus Fragrance</title>
+  <link rel="stylesheet" href="/admin-app.css">
+  <script defer src="/admin-app.js"></script>
+</head>
+<body>
+  <main id="login-view" class="login-view">
+    <div class="login-card">
+      <a class="wordmark" href="https://lotusfragrance.shop/" aria-label="Lotus Fragrance">LOTUS <span>FRAGRANCE</span></a>
+      <p class="eyebrow">Area riservata</p>
+      <h1>Benvenuto<br><i>nel tuo atelier.</i></h1>
+      <form id="login-form">
+        <label for="admin-password">Password amministrativa</label>
+        <input id="admin-password" type="password" autocomplete="current-password" required>
+        <button class="button button-light" type="submit">Accedi <span>↗</span></button>
+        <p id="login-error" class="message" aria-live="polite"></p>
+      </form>
+      <a class="back-link" href="https://lotusfragrance.shop/">← Torna al negozio</a>
+    </div>
+  </main>
+
+  <div id="dashboard" class="app-shell" hidden>
+    <aside class="sidebar">
+      <a class="wordmark" href="/admin.html">LOTUS <span>FRAGRANCE</span></a>
+      <p class="sidebar-label">GESTIONE NEGOZIO</p>
+      <nav aria-label="Sezioni dashboard">
+        <button class="nav-item active" data-view="overview"><span>◫</span> Panoramica</button>
+        <button class="nav-item" data-view="orders"><span>▤</span> Ordini <b id="nav-orders">0</b></button>
+        <button class="nav-item" data-view="products"><span>✳</span> Catalogo</button>
+      </nav>
+      <div class="sidebar-bottom"><span class="online-dot"></span> Dati collegati al negozio<br><a href="https://lotusfragrance.shop/" target="_blank" rel="noreferrer">Apri Lotus Fragrance ↗</a></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div><span class="eyebrow">LOTUS FRAGRANCE · OPERATIONS</span><div id="today-date" class="today-date"></div></div>
+        <div class="top-actions"><span class="admin-badge"><span class="online-dot"></span> Admin</span><button id="refresh" class="icon-button" aria-label="Aggiorna dati" title="Aggiorna">↻</button><button id="logout" class="logout-button">Esci</button></div>
+      </header>
+
+      <section class="view active" id="view-overview">
+        <div class="page-heading"><div><p class="eyebrow">PANORAMICA</p><h1>Buongiorno, <i>Lotus.</i></h1></div><p class="data-note">Dati reali registrati dal negozio.<br>Nessuna metrica dimostrativa.</p></div>
+        <div class="metric-grid">
+          <article class="metric-card"><span>Ricavi ordini online · EUR</span><strong id="metric-revenue">—</strong><small>Pagamenti Stripe registrati</small></article>
+          <article class="metric-card"><span>Ordini registrati</span><strong id="metric-orders">—</strong><small id="metric-today">— oggi</small></article>
+          <article class="metric-card"><span>Da evadere</span><strong id="metric-fulfil">—</strong><small>Pagati o in preparazione</small></article>
+          <article class="metric-card"><span>Clienti con ordini</span><strong id="metric-customers">—</strong><small>Indirizzi email unici</small></article>
+        </div>
+        <section class="panel"><div class="panel-heading"><div><p class="eyebrow">ATTIVITÀ RECENTE</p><h2>Ultimi ordini</h2></div><button class="text-button" data-open-view="orders">Tutti gli ordini ↗</button></div><div id="recent-orders" class="orders-list"></div></section>
+        <p id="dashboard-message" class="dashboard-message" aria-live="polite"></p>
+      </section>
+
+      <section class="view" id="view-orders">
+        <div class="page-heading"><div><p class="eyebrow">EVASIONE E TRACKING</p><h1>Gli <i>ordini.</i></h1></div><button id="export-orders" class="button button-outline">Esporta CSV ↓</button></div>
+        <p class="section-intro">Aggiorna lo stato e inserisci il codice di tracciamento. Le modifiche vengono salvate nel database ordini.</p>
+        <div id="all-orders" class="orders-list"></div>
+      </section>
+
+      <section class="view" id="view-products">
+        <div class="page-heading"><div><p class="eyebrow">PRODOTTI PUBBLICATI</p><h1>Il <i>catalogo.</i></h1></div></div>
+        <p class="section-intro">Riepilogo del catalogo in pubblicazione. Campi non impostati nel negozio sono indicati come tali, senza inventare stock o formati.</p>
+        <div class="catalog-table-wrap"><table class="catalog-table"><thead><tr><th>Fragranza</th><th>Categoria</th><th>Formato standard</th><th>10 ml</th><th>Disponibilità</th></tr></thead><tbody id="catalog-rows"></tbody></table></div>
+      </section>
+      <footer class="footer-note">Lotus Fragrance · Area operativa protetta</footer>
+    </main>
+  </div>
+</body>
+</html>

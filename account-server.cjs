@@ -19,13 +19,15 @@ function verifyStripeSignature(payload,header,secret,now=Math.floor(Date.now()/1
  return values.filter(([key])=>key==='v1').some(([,value])=>{if(!/^[a-f0-9]{64}$/i.test(value||''))return false;const actual=Buffer.from(value,'hex');return actual.length===expected.length&&timingSafeEqual(actual,expected)});
 }
 async function rawBody(req,limit=1024*1024){const chunks=[];let length=0;for await(const chunk of req){length+=chunk.length;if(length>limit)throw Error('BODY_LIMIT');chunks.push(chunk)}return Buffer.concat(chunks,length)}
-function createAccountServer({databasePath,origin,secure=true,trustFly=false,rateLimit=30,stripeWebhookSecret=process.env.STRIPE_WEBHOOK_SECRET}={}){
+function createAccountServer({databasePath,origin,secure=true,trustFly=false,rateLimit=30,stripeWebhookSecret=process.env.STRIPE_WEBHOOK_SECRET,adminPasswordHash=process.env.ADMIN_PASSWORD_HASH}={}){
  if(!databasePath||!origin)throw Error('Database and origin are required');
  if(databasePath!==':memory:')mkdirSync(path.dirname(databasePath),{recursive:true,mode:0o700});
  const db=new DatabaseSync(databasePath,{timeout:5000});
  db.exec(`PRAGMA journal_mode=WAL;PRAGMA foreign_keys=ON;
  CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,email TEXT UNIQUE NOT NULL,password TEXT NOT NULL,recovery TEXT NOT NULL,created INTEGER NOT NULL,full_name TEXT NOT NULL DEFAULT '',phone TEXT NOT NULL DEFAULT '',address TEXT NOT NULL DEFAULT '',city TEXT NOT NULL DEFAULT '',postal_code TEXT NOT NULL DEFAULT '');
  CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,expires INTEGER NOT NULL);
+ CREATE TABLE IF NOT EXISTS admin_sessions(token TEXT PRIMARY KEY,expires INTEGER NOT NULL);
+ CREATE TABLE IF NOT EXISTS admin_credentials(id INTEGER PRIMARY KEY CHECK(id=1),password TEXT NOT NULL);
  CREATE TABLE IF NOT EXISTS limits(key TEXT PRIMARY KEY,count INTEGER NOT NULL,expires INTEGER NOT NULL);
  CREATE TABLE IF NOT EXISTS orders(stripe_session_id TEXT PRIMARY KEY,email TEXT NOT NULL,total_cents INTEGER NOT NULL,currency TEXT NOT NULL,items_summary TEXT NOT NULL,status TEXT NOT NULL,tracking_code TEXT NOT NULL DEFAULT '',recipient_name TEXT NOT NULL DEFAULT '',address_line1 TEXT NOT NULL DEFAULT '',address_line2 TEXT NOT NULL DEFAULT '',city TEXT NOT NULL DEFAULT '',postal_code TEXT NOT NULL DEFAULT '',country TEXT NOT NULL DEFAULT '',created INTEGER NOT NULL,updated INTEGER NOT NULL);
  CREATE INDEX IF NOT EXISTS orders_email_created ON orders(email,created DESC);
@@ -33,19 +35,25 @@ function createAccountServer({databasePath,origin,secure=true,trustFly=false,rat
  const profileColumns=new Set(db.prepare('PRAGMA table_info(users)').all().map(column=>column.name));
  for(const [name,definition] of [['full_name',"TEXT NOT NULL DEFAULT ''"],['phone',"TEXT NOT NULL DEFAULT ''"],['address',"TEXT NOT NULL DEFAULT ''"],['city',"TEXT NOT NULL DEFAULT ''"],['postal_code',"TEXT NOT NULL DEFAULT ''"]])if(!profileColumns.has(name))db.exec(`ALTER TABLE users ADD COLUMN ${name} ${definition}`);
  const cookieName=secure?'__Host-lotus-session':'lotus-session';
+ const adminCookieName=secure?'__Host-lotus-admin':'lotus-admin';
  const cookie=(value,age=TTL/1000)=>`${cookieName}=${value}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${age}${secure?'; Secure':''}`;
+ const adminCookie=(value,age=8*60*60)=>`${adminCookieName}=${value}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${age}${secure?'; Secure':''}`;
  async function encodePassword(password){const salt=randomBytes(16).toString('hex');const key=await derive(password,salt,64,{N:32768,r:8,p:1,maxmem:64*1024*1024});return salt+':'+key.toString('hex')}
  async function checkPassword(password,encoded){const [salt,key]=encoded.split(':');const actual=await derive(password,salt,64,{N:32768,r:8,p:1,maxmem:64*1024*1024});return timingSafeEqual(actual,Buffer.from(key,'hex'))}
+ const configuredAdminHash=adminPasswordHash||'';
+ if(/^[a-f0-9]{32}:[a-f0-9]{128}$/i.test(configuredAdminHash))db.prepare('INSERT OR IGNORE INTO admin_credentials(id,password) VALUES(1,?)').run(configuredAdminHash);
  // Missing accounts still take one password derivation to reduce enumeration.
  const dummy=randomBytes(16).toString('hex')+':'+randomBytes(64).toString('hex');
  const validPassword=value=>typeof value==='string'&&value.length>=12&&value.length<=128;
  const emailOf=value=>typeof value==='string'?value.trim().toLowerCase():'';
  const validEmail=value=>value.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
  function session(req){const value=(req.headers.cookie||'').split(';').map(s=>s.trim()).find(s=>s.startsWith(cookieName+'='))?.slice(cookieName.length+1);return value&&/^[A-Za-z0-9_-]{43}$/.test(value)?db.prepare('SELECT users.id,users.email,users.created FROM sessions JOIN users ON users.id=sessions.user_id WHERE sessions.token=? AND sessions.expires>?').get(hash(value),Date.now()):null}
+ function adminSession(req){const value=(req.headers.cookie||'').split(';').map(s=>s.trim()).find(s=>s.startsWith(adminCookieName+'='))?.slice(adminCookieName.length+1);return value&&/^[A-Za-z0-9_-]{43}$/.test(value)?db.prepare('SELECT token FROM admin_sessions WHERE token=? AND expires>?').get(hash(value),Date.now()):null}
  function allow(key,max){const now=Date.now();db.prepare('DELETE FROM limits WHERE expires<?').run(now);db.prepare('INSERT INTO limits(key,count,expires) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=count+1').run(hash(key),now+15*60*1000);return db.prepare('SELECT count FROM limits WHERE key=?').get(hash(key)).count<=max}
  function newSession(res,userId){const value=token();db.prepare('DELETE FROM sessions WHERE expires<?').run(Date.now());db.prepare('INSERT INTO sessions VALUES(?,?,?)').run(hash(value),userId,Date.now()+TTL);res.setHeader('Set-Cookie',cookie(value))}
+ function newAdminSession(res){const value=token();db.prepare('DELETE FROM admin_sessions WHERE expires<?').run(Date.now());db.prepare('INSERT INTO admin_sessions VALUES(?,?)').run(hash(value),Date.now()+8*60*60*1000);res.setHeader('Set-Cookie',adminCookie(value))}
  async function body(req){let text='';for await(const chunk of req){text+=chunk;if(Buffer.byteLength(text)>4096)throw Error('BODY_LIMIT')}return JSON.parse(text)}
- const staticFiles={'/':'account.html','/account.html':'account.html','/account.js':'account.js','/account.css':'account.css','/account-page.css':'account-page.css','/brand-logo.css':'brand-logo.css','/i18n.js':'i18n.js','/i18n-data.js':'i18n-data.js','/i18n.css':'i18n.css','/assets/lotus-logo.png':'assets/lotus-logo.png'};
+ const staticFiles={'/':'account.html','/account.html':'account.html','/account.js':'account.js','/account.css':'account.css','/account-page.css':'account-page.css','/brand-logo.css':'brand-logo.css','/i18n.js':'i18n.js','/i18n-data.js':'i18n-data.js','/i18n.css':'i18n.css','/assets/lotus-logo.png':'assets/lotus-logo.png','/admin':'admin-app.html','/admin.html':'admin-app.html','/admin-app.js':'admin-app.js','/admin-app.css':'admin-app.css'};
  const server=http.createServer(async(req,res)=>{
   res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','no-referrer');res.setHeader('X-Frame-Options','DENY');
   res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'");
@@ -84,12 +92,43 @@ function createAccountServer({databasePath,origin,secure=true,trustFly=false,rat
    if(req.method==='GET'&&pathname==='/api/me'){const user=session(req);return send(user?200:401,user?{user:{email:user.email,created:user.created}}:{error:'unauthorized'})}
    if(req.method==='GET'&&pathname==='/api/profile'){const current=session(req);if(!current)return send(401,{error:'unauthorized'});const profile=db.prepare('SELECT email,created,full_name,phone,address,city,postal_code FROM users WHERE id=?').get(current.id);return send(200,{profile})}
    if(req.method==='GET'&&pathname==='/api/orders'){const current=session(req);if(!current)return send(401,{error:'unauthorized'});const orders=db.prepare('SELECT stripe_session_id,total_cents,currency,items_summary,status,tracking_code,created,updated FROM orders WHERE email=? ORDER BY created DESC LIMIT 100').all(current.email);return send(200,{orders:orders.map(order=>({id:order.stripe_session_id,totalCents:order.total_cents,currency:order.currency,itemsSummary:order.items_summary,status:order.status,trackingCode:order.tracking_code||null,created:order.created,updated:order.updated}))})}
+   if(req.method==='GET'&&pathname==='/api/admin/session'){const current=adminSession(req);return send(current?200:401,{authenticated:Boolean(current)})}
+   if(req.method==='GET'&&pathname==='/api/admin/dashboard'){
+    if(!adminSession(req))return send(401,{error:'unauthorized'});
+    const midnight=new Date();midnight.setUTCHours(0,0,0,0);
+    const metrics=db.prepare(`SELECT COUNT(*) AS total_orders,COALESCE(SUM(CASE WHEN status!='cancelled' THEN total_cents ELSE 0 END),0) AS revenue_cents,SUM(CASE WHEN status IN ('paid','processing') THEN 1 ELSE 0 END) AS to_fulfil,COUNT(DISTINCT email) AS customers FROM orders WHERE currency='EUR'`).get();
+    const today=db.prepare(`SELECT COUNT(*) AS count,COALESCE(SUM(total_cents),0) AS cents FROM orders WHERE currency='EUR' AND status!='cancelled' AND created>=?`).get(midnight.getTime());
+    const orders=db.prepare(`SELECT stripe_session_id,email,total_cents,currency,items_summary,status,tracking_code,recipient_name,address_line1,address_line2,city,postal_code,country,created,updated FROM orders ORDER BY created DESC LIMIT 200`).all();
+    const catalog=orderCatalog.map(({id,name,brand,category,image,price,size,availability,miniature})=>({id,name,brand,category,image,price,size,availability,miniature:miniature?{size:miniature.size,price:miniature.price,availability:miniature.availability}:null}));
+    return send(200,{metrics:{totalOrders:metrics.total_orders,revenueCents:metrics.revenue_cents,toFulfil:metrics.to_fulfil||0,customers:metrics.customers,todayOrders:today.count,todayCents:today.cents},orders:orders.map(o=>({id:o.stripe_session_id,email:o.email,totalCents:o.total_cents,currency:o.currency,itemsSummary:o.items_summary,status:o.status,trackingCode:o.tracking_code||'',recipientName:o.recipient_name,addressLine1:o.address_line1,addressLine2:o.address_line2,city:o.city,postalCode:o.postal_code,country:o.country,created:o.created,updated:o.updated})),products:catalog});
+   }
    if(req.method!=='POST')return send(405,{error:'method'});
    // Same-origin JSON requests only; do not enable wildcard CORS.
    if(req.headers.origin!==origin||!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))return send(403,{error:'origin'});
    const ip=trustFly?(req.headers['fly-client-ip']||req.socket.remoteAddress):req.socket.remoteAddress;
    if(!allow('ip:'+ip,rateLimit)){res.setHeader('Retry-After','900');return send(429,{error:'rate'})}
    const input=await body(req),email=emailOf(input.email);
+   if(pathname==='/api/admin/login'){
+    if(typeof input.password!=='string'||input.password.length>128)return send(400,{error:'credentials'});
+    if(!allow('admin-login:'+ip,6)){res.setHeader('Retry-After','900');return send(429,{error:'rate'})}
+    const stored=db.prepare('SELECT password FROM admin_credentials WHERE id=1').get();
+    if(!stored)return send(503,{error:'admin_not_configured'});
+    const valid=await checkPassword(input.password,stored.password);
+    if(!valid)return send(401,{error:'credentials'});
+    newAdminSession(res);return send(200,{ok:true});
+   }
+   if(pathname==='/api/admin/logout'){
+    const value=(req.headers.cookie||'').split(';').map(s=>s.trim()).find(s=>s.startsWith(adminCookieName+'='))?.slice(adminCookieName.length+1);
+    if(value)db.prepare('DELETE FROM admin_sessions WHERE token=?').run(hash(value));res.setHeader('Set-Cookie',adminCookie('',0));return send(200,{ok:true});
+   }
+   if(pathname==='/api/admin/order'){
+    if(!adminSession(req))return send(401,{error:'unauthorized'});
+    const allowedStatuses=['paid','processing','shipped','completed','cancelled'];
+    if(typeof input.id!=='string'||input.id.length>255||!allowedStatuses.includes(input.status)||typeof input.trackingCode!=='string'||input.trackingCode.length>120||/[<>\u0000-\u001f]/.test(input.trackingCode))return send(400,{error:'order'});
+    const updated=db.prepare('UPDATE orders SET status=?,tracking_code=?,updated=? WHERE stripe_session_id=?').run(input.status,input.trackingCode.trim(),Date.now(),input.id);
+    if(!updated.changes)return send(404,{error:'order_not_found'});
+    return send(200,{ok:true});
+   }
    if(['/api/register','/api/login','/api/recover'].includes(pathname)){
     if(!validEmail(email)||typeof input.password!=='string'||input.password.length>128)return send(400,{error:'invalid'});
     if(!allow('email:'+email,15))return send(429,{error:'rate'});
