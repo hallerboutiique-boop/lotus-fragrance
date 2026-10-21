@@ -14,7 +14,7 @@ const cardHTML=(p,miniature=false)=>{
 const categoryHTML=(category,index,entries,miniature=false)=>{
  const id=(miniature?'mini-':'')+category.id;
  const title=category.name+(miniature?' · 10 ml':'');
- return `<section class="catalog-category" id="${id}" aria-labelledby="heading-${id}"><div class="category-heading"><span>0${index+1}</span><h3 id="heading-${id}">${escapeHTML(title)}</h3><small>${entries.length} profumi</small></div><div class="fragrance-grid">${entries.map(p=>cardHTML(p,miniature)).join('')}</div></section>`;
+ return `<section class="catalog-category" id="${id}" aria-labelledby="heading-${id}"><div class="category-heading"><span>0${index+1}</span><h3 class="type-special" id="heading-${id}">${escapeHTML(title)}</h3><small>${entries.length} profumi</small></div><div class="fragrance-grid">${entries.map(p=>cardHTML(p,miniature)).join('')}</div></section>`;
 };
 const catalogHost=document.querySelector('#product-grid');
 catalogHost.className='catalog-groups';
