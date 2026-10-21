@@ -5,6 +5,7 @@
  const panel=document.querySelector('#assistant-panel'),launcher=document.querySelector('#assistant-launcher'),messages=document.querySelector('#assistant-messages'),form=document.querySelector('#assistant-form'),input=document.querySelector('#assistant-input'),toneChoice=document.querySelector('#assistant-tone-choice');
  let greeted=false,tone='neutral',toneSelected=false;
  const recommendation={active:false,style:null,category:null,shown:[],lastPrompt:''};
+ let pendingAddProductId=null;
  const catalogNow=()=>checkoutPage?checkoutCatalog:commerceCatalog;
  const cartNow=()=>checkoutPage?checkoutCart:cart;
  function syncCart(){if(checkoutPage){try{localStorage.setItem('lotus-bundle-cart',JSON.stringify(checkoutCart))}catch{}renderCheckout()}else{saveCart();renderCart()}}
@@ -21,8 +22,8 @@
  function recommend(query){
   const repeated=!!query&&query===recommendation.lastPrompt;
   if(query)recommendation.lastPrompt=query;
-  const styles={dolce:['vaniglia','tonka','caramello','pralina','miele','cacao','gourmand'],fresco:['bergamotto','agrumi','lavanda','mela','pera','pompelmo','mandarino'],intenso:['oud','ambra','tabacco','patchouli','caffe','cuoio','muschio'],speziato:['pepe','cannella','zafferano','cardamomo','zenzero']};
-  const styleAliases={dolce:/dolce|gourmand|cremos|vanigli/,fresco:/fresc|agrumat|pulito|legger|estiv/,intenso:/intens|decis|forte|persist|oriental/,speziato:/speziat|piccant|cald/};
+  const styles={dolce:['vaniglia','tonka','caramello','pralina','miele','cacao','gourmand'],fresco:['bergamotto','agrumi','lavanda','mela','pera','pompelmo','mandarino','marino'],intenso:['oud','ambra','tabacco','patchouli','caffe','cuoio','muschio'],speziato:['pepe','cannella','zafferano','cardamomo','zenzero'],floreale:['rosa','gelsomino','gardenia','tuberosa','orchidea','fiori d arancio'],legnoso:['sandalo','cedro','patchouli','legni','oud','cashmeran'],fruttato:['mango','cocco','fragola','mela','pera','frutti tropicali','uva','ananas']};
+  const styleAliases={dolce:/dolce|gourmand|cremos|vanigli|caramell|pralin|miel|cacao/,fresco:/fresc|agrum|pulit|legger|estiv|marin|acquatic|bergamott|lavand/,intenso:/intens|decis|forte|persist|oriental|ambra|tabacc|cuoio/,speziato:/speziat|piccant|cald|cannell|cardamom|zafferan|pepe/,floreale:/flore|fiorit|rosa|gelsom|gardenia|tuberosa|orchidea/,legnoso:/legnos|sandal|cedro|patchouli|oud|legni/,fruttato:/frutt|mango|cocco|fragol|mela|pera|ananas/};
   for(const [style,pattern] of Object.entries(styleAliases))if(pattern.test(query))recommendation.style=style;
   if(/donna|femmin/.test(query))recommendation.category='women';
   else if(/uomo|masch/.test(query))recommendation.category='men';
@@ -34,7 +35,7 @@
    recommendation.shown.push(...picks.map(item=>item.id));recommendation.active=false;
    return picks.length?`Certo, partiamo da due idee diverse: ${picks.map(item=>`${item.name} (${item.notes.slice(0,3).join(', ')})`).join(' oppure ')}. Quale ti ispira di più?`:'Dimmi se cerchi qualcosa di dolce, fresco, intenso o speziato e ti aiuto a scegliere.';
   }
-  if(!recommendation.style)return 'Che tipo di profumo ti attira di più: dolce e avvolgente, fresco e pulito, intenso o speziato?';
+  if(!recommendation.style)return 'Che atmosfera ti piace: dolce e avvolgente, fresca e pulita, floreale, fruttata, legnosa o speziata?';
   if(!recommendation.category)return `Perfetto, cerco qualcosa di ${recommendation.style}. Lo preferisci da donna, da uomo o va bene qualsiasi?`;
   const pool=(catalogNow()||[]).filter(item=>item.miniature?.availability==='available'&&(recommendation.category==='mix'||item.category===(recommendation.category==='women'?'arabi-donna':'arabi-uomo')));
   const terms=styles[recommendation.style];
@@ -45,7 +46,7 @@
   return `Per un profumo ${recommendation.style} ${recommendation.category==='women'?'da donna':recommendation.category==='men'?'da uomo':'senza una categoria specifica'}, guarderei ${matches.map(({item})=>`${item.name} (${item.notes.slice(0,3).join(', ')})`).join(' oppure ')}. Quale ti incuriosisce di più?`;
  }
  function respond(text){const query=normal(text),product=findProduct(text);
-  if(/^(ciao|salve|buongiorno|buonasera|hey)( |$)/.test(query))return 'Ciao! Dimmi quale profumo ti incuriosisce oppure chiedimi di aggiungerlo al carrello.';
+  if(/^(ciao|salve|buongiorno|buonasera|hey)( |$)/.test(query))return 'Ciao! Che piacere rivederti. Cosa ti piacerebbe trovare oggi?';
   if(/svuota|cancella tutto|elimina tutto/.test(query)){cart.splice(0);saveCart();renderCart();return 'Fatto, ho svuotato il carrello.'}
   if(/rimuovi|togli|elimina/.test(query)&&/(ultimo|ultima|voce|pacchetto|offerta)/.test(query))return removeLast()?'Ho rimosso l’ultima voce dal carrello.':'Il carrello è già vuoto.';
   if(/carrello/.test(query)&&/(apri|mostra|vedi|controlla)/.test(query)){if(checkoutPage)location.assign('index.html#carrello');else openCart();return 'Ecco il carrello: da lì puoi controllare i prodotti, i formati e il totale.'}
@@ -59,14 +60,23 @@
    if((checkoutPage?checkoutConfig.checkoutEndpoint:checkoutSettings.checkoutEndpoint)){if(!checkoutPage)location.assign('checkout.html');return checkoutPage?'Sei già nella pagina di checkout sicuro.':'Ti porto al checkout sicuro.'}
    return 'Il checkout online è momentaneamente disattivato; non posso avviare un pagamento.';
   }
+  if(pendingAddProductId&&/^(si|sì|certo|aggiungilo|aggiungila|va bene|ok)$/.test(query)){
+   const selected=(catalogNow()||[]).find(item=>item.id===pendingAddProductId);pendingAddProductId=null;
+   if(selected){const result=addOne(selected);return result.ok?`Fatto, ho aggiunto ${selected.name} al carrello nel formato da 10 ml.`:result.error}
+  }
   if(/rimuovi|togli|elimina/.test(query)&&product)return removeProduct(product)?`Ho rimosso ${product.name} dal carrello. Le fragranze dentro un Tris o una Discovery Box vanno rimosse come pacchetto dal carrello.`:`Non trovo ${product.name} come voce singola nel carrello. Se è dentro un pacchetto, apri il carrello e rimuovi quel pacchetto.`;
   if(/aggiungi|metti|inserisci/.test(query)&&product){const result=addOne(product);return result.ok?`Aggiunto ${product.name} nel formato tascabile da 10 ml. Il totale aggiornato è nel carrello.`:result.error}
-  if(product)return `${product.name}: ${product.description} Note in evidenza: ${product.notes.join(', ')}. Vuoi aggiungerlo? Scrivi “aggiungi ${product.name}”.`;
+  if(product){pendingAddProductId=product.id;return `${product.name}: ${product.description} Tra le note spiccano ${product.notes.join(', ')}. Vuoi che lo aggiunga al carrello?`}
   const startsRecommendation=/consigli|sugger|ispirami|serve un profumo|cerco un profumo|vorrei un profumo|voglio un profumo/.test(query);
   if(startsRecommendation&&!recommendation.active){recommendation.style=null;recommendation.category=null;recommendation.shown=[]}
   if(/altre|altri|un altra|un altro|ancora/.test(query)&&recommendation.shown.length){recommendation.active=true;return recommend(query)}
-  if(startsRecommendation||recommendation.active)return recommend(query);
-  return 'Certo, dimmi che tipo di fragranza hai in mente e ti aiuto a trovare quella giusta.';
+  const styleReply=/dolce|gourmand|cremos|vanigli|caramell|fresc|agrum|pulit|legger|estiv|marin|acquatic|intens|decis|forte|persist|speziat|piccant|cald|cannell|cardamom|zafferan|flore|fiorit|rosa|gelsom|gardenia|tuberosa|orchidea|legnos|sandal|cedro|patchouli|mango|cocco|fragol|unisex|mix|indifferent|qualsiasi|uomo|masch|donna|femmin/.test(query);
+  if(startsRecommendation||recommendation.active||(recommendation.shown.length&&styleReply))return recommend(query);
+  if(recommendation.shown.length){
+   if(/durat|persist|resist|ore/.test(query))return 'Non ho dati comparativi verificati sulla durata sulla pelle; posso però confrontare il carattere delle fragranze proposte. Quale vuoi approfondire?';
+   return 'Tra le proposte di prima, quale ti incuriosisce di più? Se nessuna fa per te, dimmi cosa vorresti cambiare e cerco un’alternativa.';
+  }
+  return 'Raccontami anche solo una nota o un’atmosfera che ti piace — vaniglia, agrumi, fiori o legni — e parto da lì con una proposta concreta.';
  }
  async function submit(text){const value=text.trim();if(!value)return;say(value,'user');input.value='';if(!catalogNow().length){try{const response=await fetch('products.json');if(response.ok){const loaded=(await response.json()).products;if(checkoutPage)checkoutCatalog=loaded;else commerceCatalog=loaded}}catch{}}const response=respond(value);say(toneSelected&&tone==='man'?(findProduct(value)?`Ottima scelta, hai gusto 😉 ${response}`:response.startsWith('Certo 😊')?response.replace('Certo 😊','Con piacere 😊'):`Con piacere 😊 ${response}`):response)}
  form.addEventListener('submit',event=>{event.preventDefault();submit(input.value)});
