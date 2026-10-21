@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /catalog-editor.html
+Disallow: /checkout.html
+Disallow: /account.html
+Disallow: /order-confirmation.html
+
+Sitemap: https://lotusfragrance.shop/sitemap.xml
