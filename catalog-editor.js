@@ -1,4 +1,5 @@
 const escapeEditor=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+if(sessionStorage.getItem('lotus-admin-demo')==='yes')document.querySelector('main').hidden=false;else location.replace('admin.html?return=catalog-editor.html');
 let editableCatalog;
 const editorRows=()=>editableCatalog.products.flatMap(p=>p.miniature?[p,{...p,...p.miniature,id:p.id+'::miniature',name:p.name+' · 10 ml (concept)'}]:[p]);
 const validCommercial=p=>p&&(p.price===null||(Number.isFinite(p.price)&&p.price>0))&&(p.size===null||(typeof p.size==='string'&&p.size.length<=80))&&[null,'available','unavailable','preorder'].includes(p.availability);
