@@ -3,8 +3,28 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  margin-inline: auto;
 }
+
+#footer .footer-payments {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+#footer .footer-payments .payment-brand-group,
+#footer .footer-payments > p {
+  width: 100%;
+  text-align: center;
+}
+
+#footer .footer-payments .payment-brand-group { margin-inline: auto; }
 
 #footer .footer-payments .payment-brand {
   display: block;
@@ -30,6 +50,17 @@
   filter: none !important;
   mix-blend-mode: normal !important;
 }
+
+#footer .footer-social .tiktok-brand-logo {
+  display: block;
+  width: 23px;
+  height: 23px;
+  overflow: visible;
+}
+
+#footer .footer-social .tiktok-mark-cyan { fill: #25f4ee; transform: translate(-0.45px, 0.35px); }
+#footer .footer-social .tiktok-mark-red { fill: #fe2c55; transform: translate(0.45px, -0.25px); }
+#footer .footer-social .tiktok-mark-white { fill: #fff; }
 
 @media (max-width: 760px) {
   #footer .footer-payments .payment-brand-list { gap: 7px; }
