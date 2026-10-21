@@ -21,4 +21,12 @@
 .assistant-tone-choice span{flex-basis:100%;margin-bottom:2px}
 .assistant-tone-choice button{padding:8px 11px;border:1px solid #776747;border-radius:999px;background:#111;color:#eee;font:11px Manrope,sans-serif;cursor:pointer}
 .assistant-tone-choice button:hover{background:#2a2419}
+.assistant-launcher{border-color:#d8c18e;box-shadow:0 0 16px #e6c87855,0 0 34px #d4b66b44,0 8px 30px #000b;animation:stella-online-glow 2.4s ease-in-out infinite}
+.assistant-launcher-label{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left}
+.assistant-launcher-label strong{font:600 16px/1 'Cormorant Garamond',Georgia,serif;letter-spacing:.06em}
+.assistant-launcher-label small{display:flex;align-items:center;gap:5px;color:#c4c0b5;font:10px/1 Manrope,Arial,sans-serif;letter-spacing:.04em}
+.assistant-launcher-label i{width:7px;height:7px;border-radius:50%;background:#77d69a;box-shadow:0 0 7px #74e49b;animation:online-dot 1.7s ease-in-out infinite}
+@keyframes stella-online-glow{0%,100%{box-shadow:0 0 12px #e6c87842,0 0 26px #d4b66b30,0 8px 30px #000b}50%{box-shadow:0 0 20px #f4d88b88,0 0 44px #e5c36a70,0 8px 34px #000c}}
+@keyframes online-dot{0%,100%{opacity:.7}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.assistant-launcher,.assistant-launcher-label i{animation:none}}
 @media(max-width:760px){.lotus-assistant{right:10px;bottom:10px}.assistant-launcher{gap:8px;min-height:58px;padding:5px 11px 5px 5px}.assistant-launcher-avatar{width:44px;height:44px}.assistant-launcher-label{font-size:12px}.assistant-panel{right:0;bottom:66px;width:min(440px,calc(100vw - 20px));height:min(620px,calc(100dvh - 90px))}.assistant-head .assistant-avatar{width:88px;height:88px}}
