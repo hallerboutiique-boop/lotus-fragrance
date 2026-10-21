@@ -7,6 +7,7 @@
   <meta name="color-scheme" content="dark">
   <title>Area operativa · Lotus Fragrance</title>
   <link rel="stylesheet" href="/admin-app.css">
+  <link rel="stylesheet" href="/admin-extra.css">
   <script defer src="/admin-app.js"></script>
 </head>
 <body>
@@ -33,6 +34,7 @@
         <button class="nav-item active" data-view="overview"><span>◫</span> Panoramica</button>
         <button class="nav-item" data-view="orders"><span>▤</span> Ordini <b id="nav-orders">0</b></button>
         <button class="nav-item" data-view="products"><span>✳</span> Catalogo</button>
+        <button class="nav-item" data-view="customers"><span>♙</span> Clienti</button>
       </nav>
       <div class="sidebar-bottom"><span class="online-dot"></span> Dati collegati al negozio<br><a href="https://lotusfragrance.shop/" target="_blank" rel="noreferrer">Apri Lotus Fragrance ↗</a></div>
     </aside>
@@ -58,13 +60,22 @@
       <section class="view" id="view-orders">
         <div class="page-heading"><div><p class="eyebrow">EVASIONE E TRACKING</p><h1>Gli <i>ordini.</i></h1></div><button id="export-orders" class="button button-outline">Esporta CSV ↓</button></div>
         <p class="section-intro">Aggiorna lo stato e inserisci il codice di tracciamento. Le modifiche vengono salvate nel database ordini.</p>
+        <label class="search-control"><span>Cerca ordine</span><input id="order-search" type="search" placeholder="Codice, email, nome o prodotto"></label>
         <div id="all-orders" class="orders-list"></div>
       </section>
 
       <section class="view" id="view-products">
         <div class="page-heading"><div><p class="eyebrow">PRODOTTI PUBBLICATI</p><h1>Il <i>catalogo.</i></h1></div></div>
         <p class="section-intro">Riepilogo del catalogo in pubblicazione. Campi non impostati nel negozio sono indicati come tali, senza inventare stock o formati.</p>
+        <label class="search-control"><span>Cerca fragranza</span><input id="catalog-search" type="search" placeholder="Nome, marca o categoria"></label>
         <div class="catalog-table-wrap"><table class="catalog-table"><thead><tr><th>Fragranza</th><th>Categoria</th><th>Formato standard</th><th>10 ml</th><th>Disponibilità</th></tr></thead><tbody id="catalog-rows"></tbody></table></div>
+      </section>
+
+      <section class="view" id="view-customers">
+        <div class="page-heading"><div><p class="eyebrow">ACQUIRENTI REGISTRATI E OSPITI</p><h1>I <i>clienti.</i></h1></div></div>
+        <p class="section-intro">Contatti ricavati dagli account creati e dagli ordini pagati. Nessun dato di navigazione viene raccolto in questa dashboard.</p>
+        <label class="search-control"><span>Cerca cliente</span><input id="customer-search" type="search" placeholder="Nome o email"></label>
+        <div class="catalog-table-wrap"><table class="catalog-table"><thead><tr><th>Cliente</th><th>Email</th><th>Account</th><th>Ordini</th><th>Totale ordini</th></tr></thead><tbody id="customer-rows"></tbody></table></div>
       </section>
       <footer class="footer-note">Lotus Fragrance · Area operativa protetta</footer>
     </main>
