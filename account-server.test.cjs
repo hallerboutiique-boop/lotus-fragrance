@@ -7,7 +7,7 @@ async function main(){
  const origin='http://127.0.0.1';
  const webhookSecret='whsec_test_unit';
  const adminPassword='lotus-admin-test-password';const adminSalt=randomBytes(16).toString('hex');const adminPasswordHash=adminSalt+':'+scryptSync(adminPassword,adminSalt,64,{N:32768,r:8,p:1,maxmem:64*1024*1024}).toString('hex');
- const server=createAccountServer({databasePath:':memory:',origin,secure:false,rateLimit:100,stripeWebhookSecret:webhookSecret,adminPasswordHash});
+ const server=createAccountServer({databasePath:':memory:',origin,siteOrigin:origin,internalApiToken:'test-internal-token',secure:false,rateLimit:100,stripeWebhookSecret:webhookSecret,adminPasswordHash});
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const base=`http://127.0.0.1:${server.address().port}`;
  const post=(path,body,cookie)=>fetch(base+path,{method:'POST',headers:{origin,'content-type':'application/json',...(cookie?{cookie}:{})},body:JSON.stringify(body)});
@@ -42,6 +42,15 @@ async function main(){
   const liveDashboard=await (await fetch(base+'/api/admin/dashboard',{headers:{cookie:adminCookie}})).json();assert.equal(liveDashboard.metrics.totalOrders,1);assert.equal(liveDashboard.metrics.revenueCents,3290);assert.equal(liveDashboard.orders[0].email,'test@example.com');assert.equal(liveDashboard.customers.length,1);assert.equal(liveDashboard.customers.find(c=>c.email==='test@example.com').orderCount,1);
   assert.equal((await post('/api/admin/order',{id:'cs_test_order123',status:'shipped',trackingCode:'TRACK-123'},adminCookie)).status,200);
   const trackedDashboard=await (await fetch(base+'/api/admin/dashboard',{headers:{cookie:adminCookie}})).json();assert.equal(trackedDashboard.orders[0].trackingCode,'TRACK-123');assert.equal(trackedDashboard.orders[0].status,'shipped');
+  const publicCatalog=await fetch(base+'/api/catalog');assert.equal(publicCatalog.status,200);assert.equal(publicCatalog.headers.get('access-control-allow-origin'),origin);const catalogData=await publicCatalog.json();assert.equal(catalogData.products.length,9);
+  assert.equal((await post('/api/admin/catalog',{products:catalogData.products.map(p=>p.id==='asad'?{...p,price:69,description:'Modifica verificata'}:p)},adminCookie)).status,200);
+  const edited=await (await fetch(base+'/api/catalog')).json();assert.equal(edited.products.find(p=>p.id==='asad').price,69);assert.equal(edited.products.find(p=>p.id==='asad').description,'Modifica verificata');
+  assert.equal((await post('/api/admin/discounts',{code:'TEST10',percent:10},adminCookie)).status,201);
+  const discountQuote=await fetch(base+'/api/checkout/quote',{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify({items:[{offerId:'singolo',fragranceIds:['asad']}],discountCode:'TEST10'})});assert.equal(discountQuote.status,200);assert.equal((await discountQuote.json()).totalCents,1341);
+  assert.equal((await fetch(base+'/api/checkout/quote',{method:'POST',headers:{origin:'https://evil.example','content-type':'application/json'},body:JSON.stringify({items:[],discountCode:'TEST10'})})).status,401);
+  const analyticsPreflight=await fetch(base+'/api/analytics/event',{method:'OPTIONS',headers:{origin}});assert.equal(analyticsPreflight.status,204);
+  const analyticsResponse=await fetch(base+'/api/analytics/event',{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify({session:'abcdefghijklmnopqrstuvwx12345678',event:'page_view',path:'/index.html#carrello',referrer:''})});assert.equal(analyticsResponse.status,202);
+  const analyticsDashboard=await (await fetch(base+'/api/admin/dashboard',{headers:{cookie:adminCookie}})).json();assert.equal(analyticsDashboard.analytics.week,1);assert.equal(analyticsDashboard.analytics.events[0].name,'page_view');
   const otherLogin=await post('/api/register',{email:'other@example.com',password:'another correct horse'});assert.equal(otherLogin.status,201);const otherCookie=otherLogin.headers.get('set-cookie').split(';')[0];assert.equal((await (await fetch(base+'/api/orders',{headers:{cookie:otherCookie}})).json()).orders.length,0);
   assert.equal((await post('/api/logout',{},logoutCookie)).status,200);
   assert.equal((await fetch(base+'/api/profile',{headers:{cookie:logoutCookie}})).status,401);

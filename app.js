@@ -12,13 +12,13 @@ function addBundle(offerId,fragranceIds){
  const result=LotusCommerce.validateBundle(offerId,fragranceIds,commerceCatalog);
  if(!result.ok)return result;
  if(cart.length>=20)return {ok:false,error:'Puoi inserire al massimo 20 pacchetti per ordine.'};
- cart.push(result.line);saveCart();renderCart();openCart();return result;
+ cart.push(result.line);saveCart();renderCart();openCart();window.LotusAnalytics?.event('cart_add');return result;
 }
 function addMystery(gender){
  const result=LotusCommerce.validateLine({offerId:'mystery',gender},commerceCatalog);
  if(!result.ok)return result;
  if(cart.length>=20)return {ok:false,error:'Puoi inserire al massimo 20 pacchetti per ordine.'};
- cart.push(result.line);saveCart();renderCart();openCart();return result;
+ cart.push(result.line);saveCart();renderCart();openCart();window.LotusAnalytics?.event('cart_add');return result;
 }
 function renderCart(){
  const holder=document.querySelector('#cart-items'),button=document.querySelector('#checkout'),status=document.querySelector('#checkout-status');
@@ -46,4 +46,4 @@ document.querySelector('#close-cart').onclick=closeCart;scrim.onclick=closeCart;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeCart()});
 document.querySelector('#checkout').onclick=()=>{if(!document.querySelector('#checkout').disabled)location.assign('checkout.html')};
 renderCart();
-const cookie=document.querySelector('#cookie-banner');if(localStorage.getItem('lotus-cookie-choice'))cookie.hidden=true;['#accept-cookies','#reject-cookies'].forEach(id=>document.querySelector(id).onclick=()=>{localStorage.setItem('lotus-cookie-choice',id==='#accept-cookies'?'accepted':'necessary');cookie.hidden=true});document.querySelector('#cookie-settings').onclick=e=>{e.preventDefault();cookie.hidden=false};
+const cookie=document.querySelector('#cookie-banner'),cookieChoice=localStorage.getItem('lotus-cookie-choice');if(cookieChoice)cookie.hidden=true;document.querySelector('#accept-cookies').onclick=()=>{localStorage.setItem('lotus-cookie-choice','necessary');localStorage.setItem('lotus-analytics-consent','yes');cookie.hidden=true;window.LotusAnalytics?.start()};document.querySelector('#reject-cookies').onclick=()=>{localStorage.setItem('lotus-cookie-choice','necessary');localStorage.removeItem('lotus-analytics-consent');cookie.hidden=true};document.querySelector('#cookie-settings').onclick=e=>{e.preventDefault();cookie.hidden=false};

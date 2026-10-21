@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const products = require('./products.json').products;
 const { createServer, priceCart, createSession } = require('./checkout-server.cjs');
 
 const three = [{ offerId: 'singolo', fragranceIds: ['asad'] }, { offerId: 'singolo', fragranceIds: ['9pm'] }, { offerId: 'singolo', fragranceIds: ['oud-glory'] }];
@@ -60,6 +61,10 @@ async function main() {
   } finally {
     await new Promise(resolve => consentServer.close(resolve));
   }
+  let dynamicStripeRequest;
+  const dynamicServer=createServer({env:{CHECKOUT_ENABLED:'true',STRIPE_SECRET_KEY:'sk_test_unit_test',CATALOG_API_URL:'https://lotus-fragrance-accounts.fly.dev/api/catalog/internal',INTERNAL_CATALOG_TOKEN:'secret-test'},catalogFetch:async(url,options)=>options.method==='POST'?{ok:true,json:async()=>({discountPercent:10})}:{ok:true,json:async()=>({products})},stripeFetch:async(url,options)=>{dynamicStripeRequest=options;return{ok:true,json:async()=>({url:'https://checkout.stripe.com/c/pay/cs_test_dynamic'})}}});
+  await new Promise(resolve=>dynamicServer.listen(0,'127.0.0.1',resolve));
+  try{const endpoint=`http://127.0.0.1:${dynamicServer.address().port}/checkout`;const response=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json',origin:'https://lotusfragrance.shop','idempotency-key':'dynamic-request-id-123'},body:JSON.stringify({legalAccepted:true,discountCode:'TEST10',items:three})});assert.equal(response.status,200);const fields=new URLSearchParams(dynamicStripeRequest.body);assert.equal(fields.get('line_items[0][price_data][unit_amount]'),'2961');assert.equal(fields.get('metadata[discount_code]'),'TEST10');}finally{await new Promise(resolve=>dynamicServer.close(resolve))}
   const server = statusServer;
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   try {

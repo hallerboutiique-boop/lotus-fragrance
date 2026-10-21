@@ -1,6 +1,6 @@
 const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const availabilityLabels={available:'Disponibile',unavailable:'Non disponibile',preorder:'Preordine'};
-let catalogCategories=[],activeCategory='all',catalogQuery='';
+let catalogCategories=[],activeCategory='all',catalogQuery='',homeSelections={featuredIds:[],arrivalIds:[]};
 const productURL=(p,miniature=false)=>`product.html?id=${encodeURIComponent(p.id)}${miniature?'&format=10ml':''}`;
 const cardHTML=(p,miniature=false)=>{
  const variant=miniature?p.miniature:p;
@@ -22,7 +22,8 @@ catalogHost.innerHTML='<p role="status">Caricamento della collezione…</p>';
 renderProducts=function(){
  const matching=LotusSearch.search(products,catalogQuery,LotusI18n.translate).filter(p=>activeCategory==='all'||p.category===activeCategory);
  document.querySelector('#catalog-count').textContent=`${matching.length} varianti`;
- catalogHost.innerHTML=catalogCategories.map((category,index)=>{
+ const curated=['featuredIds','arrivalIds'].map((key,index)=>{const chosen=homeSelections[key].map(id=>matching.find(p=>p.id===id)).filter(Boolean);return chosen.length?`<section class="catalog-category curated-category"><div class="category-heading"><span>✳</span><h3 class="type-special">${index?'Nuovi arrivi':'In primo piano'}</h3><small>${chosen.length} profumi</small></div><div class="fragrance-grid">${chosen.map(p=>cardHTML(p)).join('')}</div></section>`:''}).join('');
+ catalogHost.innerHTML=curated+catalogCategories.map((category,index)=>{
   const entries=matching.filter(p=>p.category===category.id);
   if(!entries.length)return '';
   return categoryHTML(category,index,entries);
@@ -30,8 +31,8 @@ renderProducts=function(){
 };
 async function initializeCatalog(){
  try{
-  const response=await fetch('products.json?v=prices-visible3',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
-  const data=await response.json();catalogCategories=data.categories;products.push(...data.products);
+  const response=await fetch('https://lotus-fragrance-accounts.fly.dev/api/catalog',{cache:'no-cache'});if(!response.ok)throw new Error('Catalogo non disponibile');
+  const data=await response.json();catalogCategories=data.categories;homeSelections=data.home||homeSelections;products.push(...data.products);
   const controls=document.createElement('div');controls.className='catalog-controls';
   controls.innerHTML=`<div class="catalog-filter-list" role="group" aria-label="Filtra per categoria"><button data-category="all" aria-pressed="true">Tutti</button>${data.categories.map(c=>`<button data-category="${c.id}" aria-pressed="false">${escapeHTML(c.name)}</button>`).join('')}</div><div class="catalog-search-row"><label>Cerca una fragranza<input type="search" id="catalog-search" placeholder="Nome, marchio o nota olfattiva…"/></label><span id="catalog-count" role="status" aria-live="polite"></span></div>`;
   catalogHost.before(controls);

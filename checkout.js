@@ -2,14 +2,15 @@
 const escapeCheckout=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const checkoutMoney=cents=>window.LotusI18n?LotusI18n.money(cents/100):new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(cents/100);
 const itemsNode=document.querySelector('#checkout-items'),totalNode=document.querySelector('#checkout-total'),button=document.querySelector('#checkout-pay'),statusNode=document.querySelector('#checkout-status'),legalCheckbox=document.querySelector('#checkout-legal');
-let checkoutCart=[],checkoutCatalog=[],checkoutConfig={};
+let checkoutCart=[],checkoutCatalog=[],checkoutConfig={},appliedDiscountCode='',appliedDiscountCents=0,discountValid=false;
 async function initializeCheckout(){
  try{
-  const [productsResponse,configResponse]=await Promise.all([fetch('products.json',{cache:'no-cache'}),fetch('commerce-config.json',{cache:'no-cache'})]);
+  const [productsResponse,configResponse]=await Promise.all([fetch('https://lotus-fragrance-accounts.fly.dev/api/catalog',{cache:'no-cache'}),fetch('commerce-config.json',{cache:'no-cache'})]);
   if(!productsResponse.ok||!configResponse.ok)throw Error();
   checkoutCatalog=(await productsResponse.json()).products;checkoutConfig=await configResponse.json();
   const saved=JSON.parse(localStorage.getItem('lotus-bundle-cart')||'[]');
   checkoutCart=Array.isArray(saved)?saved.slice(0,20).map(line=>LotusCommerce.validateLine(line,checkoutCatalog)).filter(result=>result.ok).map(result=>result.line):[];
+  if(checkoutCart.length)window.LotusAnalytics?.event('checkout_start');
   renderCheckout();
  }catch{itemsNode.innerHTML='<p role="alert">Non riesco a caricare il carrello. Torna allo shop e riprova.</p>';statusNode.textContent='Checkout non disponibile.'}
 }
@@ -24,7 +25,7 @@ function renderCheckout(){
  }).join('');
  const discountRow=quote.savingsCents?`<article class="checkout-row checkout-discount"><div class="mystery-thumb" aria-hidden="true">−</div><div><h3>Sconto Tris automatico</h3><p>Applicato al checkout</p></div><strong>−${checkoutMoney(quote.savingsCents)}</strong></article>`:'';
  itemsNode.innerHTML=productRows+discountRow;
- totalNode.textContent=checkoutMoney(quote.totalCents);
+ totalNode.textContent=checkoutMoney(Math.max(0,quote.totalCents-appliedDiscountCents));
  const endpoint=typeof checkoutConfig.checkoutEndpoint==='string'?checkoutConfig.checkoutEndpoint:'';
  const unconfirmedStandard=checkoutCart.some(line=>line.offerId==='standard'&&line.fragranceIds.some(id=>checkoutCatalog.find(product=>product.id===id)?.availability!=='available'));
  let endpointSafe=false;
@@ -38,9 +39,11 @@ button.addEventListener('click',async()=>{
  button.disabled=true;statusNode.textContent='Apertura del pagamento sicuro…';
  try{
   const endpoint=new URL(checkoutConfig.checkoutEndpoint,location.href);
-  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':globalThis.crypto.randomUUID()},body:JSON.stringify({legalAccepted:legalCheckbox.checked,items:checkoutCart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds})})});
+  const response=await fetch(endpoint.href,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':globalThis.crypto.randomUUID()},body:JSON.stringify({legalAccepted:legalCheckbox.checked,discountCode:appliedDiscountCode,items:checkoutCart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds})})});
   if(!response.ok)throw Error();const data=await response.json(),url=new URL(data.url);
   if(url.protocol!=='https:'||!checkoutConfig.checkoutAllowedHosts?.includes(url.hostname))throw Error();location.assign(url.href);
  }catch{statusNode.textContent='Pagamento non disponibile al momento. Nessun addebito è stato effettuato.';button.disabled=false}
 });
 initializeCheckout();
+document.querySelector('#apply-discount').addEventListener('click',async()=>{const status=document.querySelector('#discount-status'),code=document.querySelector('#discount-code').value.trim().toUpperCase();if(!code){appliedDiscountCode='';appliedDiscountCents=0;discountValid=false;status.textContent='Nessun codice inserito.';renderCheckout();return}try{const response=await fetch('https://lotus-fragrance-accounts.fly.dev/api/checkout/quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:checkoutCart.map(line=>line.offerId==='mystery'?{offerId:'mystery',gender:line.gender}:{offerId:line.offerId,fragranceIds:line.fragranceIds}),discountCode:code})});if(!response.ok)throw Error();const quote=await response.json();appliedDiscountCode=code;appliedDiscountCents=quote.discountCents;discountValid=true;totalNode.textContent=checkoutMoney(quote.totalCents);status.textContent=`Codice applicato · −${checkoutMoney(quote.discountCents)} (${quote.discountPercent}%).`;button.disabled=!legalCheckbox.checked}catch{appliedDiscountCode='';appliedDiscountCents=0;discountValid=false;status.textContent='Codice non valido o scaduto.';renderCheckout()}});
+document.querySelector('#discount-code').addEventListener('input',()=>{appliedDiscountCode='';appliedDiscountCents=0;discountValid=false;document.querySelector('#discount-status').textContent='Applica il codice per verificare lo sconto.';renderCheckout()});

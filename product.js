@@ -3,13 +3,14 @@ const productMoney={format:value=>LotusI18n.money(value)};
 async function loadProduct(){
  const host=document.querySelector('#product-content');
  try{
-  const response=await fetch('products.json?v=prices-visible3',{cache:'no-cache'});if(!response.ok)throw Error();
+  const response=await fetch('https://lotus-fragrance-accounts.fly.dev/api/catalog',{cache:'no-cache'});if(!response.ok)throw Error();
   const data=await response.json(),params=new URLSearchParams(location.search);
   const product=data.products.find(p=>p.id===params.get('id'));
   if(!product){document.title='Fragranza non trovata · Lotus Fragrance';host.innerHTML='<h1>Fragranza non trovata</h1><a class="back-link" href="index.html#collezione">← Torna al catalogo</a>';return;}
+  window.LotusAnalytics?.event('product_view');
   const mini=params.get('format')==='10ml',variant=mini?product.miniature:product;
   const title=product.name+(mini?' · 10 ml':'');
-  const category=data.categories.find(c=>c.id===product.category);
+  const category={ 'arabi-uomo':{name:'Profumi arabi da uomo'},'arabi-donna':{name:'Profumi arabi da donna'} }[product.category];
   const back=product.category;
   const href='product.html?id='+encodeURIComponent(product.id);
   const amount=Number.isFinite(variant.price)&&variant.price>0?variant.price:mini?LotusCommerce.offers.find(o=>o.id==='singolo').priceCents/100:null;

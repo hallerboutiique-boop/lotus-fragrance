@@ -8,6 +8,7 @@ primary_region = "fra"
   PORT = "8080"
   SITE_ORIGIN = "https://lotusfragrance.shop"
   CHECKOUT_ENABLED = "true"
+  CATALOG_API_URL = "https://lotus-fragrance-accounts.fly.dev/api/catalog/internal"
 
 [http_service]
   internal_port = 8080

@@ -1,7 +1,7 @@
 FROM node:24-bookworm-slim
 WORKDIR /app
 ENV NODE_ENV=production PORT=8080
-COPY account-server.cjs account.html account.js account.css account-page.css brand-logo.css i18n.js i18n-data.js i18n.css products.json admin-app.html admin-app.js admin-app.css admin-extra.css ./
+COPY account-server.cjs checkout-server.cjs commerce-core.js account.html account.js account.css account-page.css brand-logo.css i18n.js i18n-data.js i18n.css products.json admin-app.html admin-app.js admin-app.css admin-extra.css ./
 COPY assets/lotus-logo.png ./assets/lotus-logo.png
 RUN mkdir -p /data && chown node:node /data
 USER node

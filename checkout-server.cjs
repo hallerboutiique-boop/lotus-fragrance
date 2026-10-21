@@ -43,7 +43,7 @@ function parseBody(req) {
   });
 }
 
-function priceCart(items) {
+function priceCart(items, productCatalog = catalog, discountPercent = 0) {
   if (!Array.isArray(items) || !items.length || items.length > MAX_CART_LINES) {
     throw Object.assign(new Error('Carrello non valido'), { status: 400 });
   }
@@ -52,16 +52,16 @@ function priceCart(items) {
   const selected = [];
   for (const line of items) {
     if (line?.offerId === 'mystery') {
-      const valid = commerce.validateLine(line, catalog);
+      const valid = commerce.validateLine(line, productCatalog);
       if (!valid.ok) throw Object.assign(new Error(valid.error), { status: 400 });
-      const ids = commerce.resolveMystery(line.gender, catalog, max => crypto.randomInt(max));
-      selected.push({ offerId: 'mystery', gender: line.gender, products: ids.map(id => catalog.find(p => p.id === id)) });
+      const ids = commerce.resolveMystery(line.gender, productCatalog, max => crypto.randomInt(max));
+      selected.push({ offerId: 'mystery', gender: line.gender, products: ids.map(id => productCatalog.find(p => p.id === id)) });
       mysteryCount += 1;
       continue;
     }
     if (line?.offerId === 'standard') {
       if (!Array.isArray(line.fragranceIds) || line.fragranceIds.length !== 1) throw Object.assign(new Error('Confezione normale non valida'), { status: 400 });
-      const product = catalog.find(p => p.id === line.fragranceIds[0]);
+      const product = productCatalog.find(p => p.id === line.fragranceIds[0]);
       if (!product || product.availability !== 'available' || !Number.isFinite(product.price) || product.price <= 0) throw Object.assign(new Error('Confezione normale non disponibile'), { status: 400 });
       const priceCents = Math.round(product.price * 100);
       if (!Number.isSafeInteger(priceCents)) throw Object.assign(new Error('Prezzo non valido'), { status: 400 });
@@ -69,26 +69,27 @@ function priceCart(items) {
       selected.push({ offerId: 'standard', products: [product], priceCents });
       continue;
     }
-    const valid = commerce.validateBundle(line?.offerId, line?.fragranceIds, catalog);
+    const valid = commerce.validateBundle(line?.offerId, line?.fragranceIds, productCatalog);
     if (!valid.ok) throw Object.assign(new Error(valid.error), { status: 400 });
     regularCount += valid.selected.length;
     selected.push({ offerId: line.offerId, products: valid.selected });
   }
   const trisCount = Math.floor(regularCount / 3);
   const standardCents = selected.filter(group => group.offerId === 'standard').reduce((sum, group) => sum + group.priceCents, 0);
-  const totalCents = regularCount * SINGLE_CENTS - trisCount * (3 * SINGLE_CENTS - 3290) + mysteryCount * MYSTERY_CENTS + standardCents;
+  const beforeDiscountCents = regularCount * SINGLE_CENTS - trisCount * (3 * SINGLE_CENTS - 3290) + mysteryCount * MYSTERY_CENTS + standardCents;
+  const totalCents = Math.round(beforeDiscountCents * (100 - discountPercent) / 100);
   if (!Number.isSafeInteger(totalCents) || totalCents < 1) throw Object.assign(new Error('Totale non valido'), { status: 400 });
   const summary = selected.map(group => {
     const names = group.products.map(p => p.name).join(', ');
     return group.offerId === 'mystery' ? `Mystery ${group.gender}: ${names}` : names;
   }).join(' · ');
-  return { totalCents, summary: summary.slice(0, 4500), itemIds: selected.flatMap(group => group.products.map(product => product.id)), regularCount, trisCount, mysteryCount };
+  return { totalCents, beforeDiscountCents, discountCents: beforeDiscountCents-totalCents, discountPercent, summary: summary.slice(0, 4500), itemIds: selected.flatMap(group => group.products.map(product => product.id)), regularCount, trisCount, mysteryCount };
 }
 
-async function createSession({ items, stripeKey, requestId, legalAccepted, stripeFetch = fetch }) {
+async function createSession({ items, stripeKey, requestId, legalAccepted, stripeFetch = fetch, productCatalog = catalog, discountPercent = 0, discountCode = '' }) {
   if (!stripeKey || !/^(?:sk_(?:test|live)_|rk_live_)/.test(stripeKey)) throw Object.assign(new Error('Stripe non configurato'), { status: 503 });
   if (legalAccepted !== true) throw Object.assign(new Error('Conferma la presa visione delle condizioni'), { status: 400 });
-  const quote = priceCart(items);
+  const quote = priceCart(items, productCatalog, discountPercent);
   const fields = new URLSearchParams();
   fields.set('mode', 'payment');
   fields.set('locale', 'auto');
@@ -109,9 +110,10 @@ async function createSession({ items, stripeKey, requestId, legalAccepted, strip
   fields.set('metadata[mystery_count]', String(quote.mysteryCount));
   fields.set('metadata[legal_accepted]', 'true');
   fields.set('metadata[legal_version]', '2026-10-21');
+  if(discountCode)fields.set('metadata[discount_code]',discountCode.slice(0,32).toUpperCase());
   // Product indices keep the complete, randomly resolved selection inside Stripe's
   // 500-character metadata value limit; the order service expands them to names.
-  const productIds = catalog.map(product => product.id);
+  const productIds = productCatalog.map(product => product.id);
   fields.set('metadata[item_ids]', quote.itemIds.map(id => productIds.indexOf(id).toString(36)).join(','));
   const response = await stripeFetch('https://api.stripe.com/v1/checkout/sessions', {
     method: 'POST',
@@ -136,7 +138,7 @@ async function createSession({ items, stripeKey, requestId, legalAccepted, strip
   return { url: result.url };
 }
 
-function createServer({ env = process.env, stripeFetch = fetch } = {}) {
+function createServer({ env = process.env, stripeFetch = fetch, catalogFetch = fetch } = {}) {
   return http.createServer(async (req, res) => {
     const origin = req.headers.origin;
     if (req.method === 'OPTIONS') {
@@ -177,7 +179,15 @@ function createServer({ env = process.env, stripeFetch = fetch } = {}) {
       const requestId = String(req.headers['idempotency-key'] || '');
       if (!/^[a-zA-Z0-9_-]{12,80}$/.test(requestId)) throw Object.assign(new Error('Richiesta non valida'), { status: 400 });
       const body = await parseBody(req);
-      const result = await createSession({ items: body.items, stripeKey: env.STRIPE_SECRET_KEY, requestId, legalAccepted: body.legalAccepted, stripeFetch });
+      let productCatalog=catalog,discountPercent=0;
+      if(env.CATALOG_API_URL&&env.INTERNAL_CATALOG_TOKEN){
+        const response=await catalogFetch(env.CATALOG_API_URL,{headers:{authorization:`Bearer ${env.INTERNAL_CATALOG_TOKEN}`},signal:AbortSignal.timeout(5000)});
+        if(!response.ok)throw Object.assign(new Error('Catalogo non disponibile'),{status:503});
+        const data=await response.json();if(!Array.isArray(data.products)||data.products.length>200)throw Object.assign(new Error('Catalogo non valido'),{status:503});
+        productCatalog=data.products;
+        if(body.discountCode){const quoteUrl=new URL(env.CATALOG_API_URL);quoteUrl.pathname='/api/checkout/quote';const quoteResponse=await catalogFetch(quoteUrl.href,{method:'POST',headers:{authorization:`Bearer ${env.INTERNAL_CATALOG_TOKEN}`,'content-type':'application/json'},body:JSON.stringify({items:body.items,discountCode:body.discountCode}),signal:AbortSignal.timeout(5000)});if(!quoteResponse.ok)throw Object.assign(new Error('Codice sconto non valido'),{status:400});const quoteData=await quoteResponse.json();discountPercent=quoteData.discountPercent||0}
+      }
+      const result = await createSession({ items: body.items, stripeKey: env.STRIPE_SECRET_KEY, requestId, legalAccepted: body.legalAccepted, stripeFetch,productCatalog,discountPercent,discountCode:String(body.discountCode||'').trim() });
       return json(res, 200, result);
     } catch (error) {
       return json(res, error.status || 500, { error: error.status ? error.message : 'Errore temporaneo del pagamento' });

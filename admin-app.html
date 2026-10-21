@@ -35,6 +35,9 @@
         <button class="nav-item" data-view="orders"><span>▤</span> Ordini <b id="nav-orders">0</b></button>
         <button class="nav-item" data-view="products"><span>✳</span> Catalogo</button>
         <button class="nav-item" data-view="customers"><span>♙</span> Clienti</button>
+        <button class="nav-item" data-view="discounts"><span>%</span> Sconti</button>
+        <button class="nav-item" data-view="home"><span>⌂</span> Vetrina</button>
+        <button class="nav-item" data-view="analytics"><span>◷</span> Statistiche</button>
       </nav>
       <div class="sidebar-bottom"><span class="online-dot"></span> Dati collegati al negozio<br><a href="https://lotusfragrance.shop/" target="_blank" rel="noreferrer">Apri Lotus Fragrance ↗</a></div>
     </aside>
@@ -68,7 +71,8 @@
         <div class="page-heading"><div><p class="eyebrow">PRODOTTI PUBBLICATI</p><h1>Il <i>catalogo.</i></h1></div></div>
         <p class="section-intro">Riepilogo del catalogo in pubblicazione. Campi non impostati nel negozio sono indicati come tali, senza inventare stock o formati.</p>
         <label class="search-control"><span>Cerca fragranza</span><input id="catalog-search" type="search" placeholder="Nome, marca o categoria"></label>
-        <div class="catalog-table-wrap"><table class="catalog-table"><thead><tr><th>Fragranza</th><th>Categoria</th><th>Formato standard</th><th>10 ml</th><th>Disponibilità</th></tr></thead><tbody id="catalog-rows"></tbody></table></div>
+        <div class="catalog-table-wrap"><table class="catalog-table"><thead><tr><th>Fragranza</th><th>Categoria</th><th>Formato standard</th><th>10 ml</th><th>Disponibilità</th><th>Modifica</th></tr></thead><tbody id="catalog-rows"></tbody></table></div>
+        <p class="section-intro">Le modifiche a nome, descrizione, prezzo e disponibilità vengono applicate al negozio e al checkout. Le nuove fragranze si aggiungono da una modifica tecnica: qui puoi amministrare quelle già presenti.</p>
       </section>
 
       <section class="view" id="view-customers">
@@ -76,6 +80,22 @@
         <p class="section-intro">Contatti ricavati dagli account creati e dagli ordini pagati. Nessun dato di navigazione viene raccolto in questa dashboard.</p>
         <label class="search-control"><span>Cerca cliente</span><input id="customer-search" type="search" placeholder="Nome o email"></label>
         <div class="catalog-table-wrap"><table class="catalog-table"><thead><tr><th>Cliente</th><th>Email</th><th>Account</th><th>Ordini</th><th>Totale ordini</th></tr></thead><tbody id="customer-rows"></tbody></table></div>
+      </section>
+      <section class="view" id="view-discounts">
+        <div class="page-heading"><div><p class="eyebrow">PROMOZIONI</p><h1>Codici <i>sconto.</i></h1></div></div>
+        <p class="section-intro">Crea codici percentuali. Il checkout ricalcola e verifica lo sconto sul server.</p>
+        <form id="discount-form" class="admin-form"><label>Codice<input name="code" required maxlength="32" pattern="[A-Za-z0-9_-]{3,32}" placeholder="LOTUS10"></label><label>Sconto %<input name="percent" type="number" min="1" max="80" required></label><label>Scadenza facoltativa<input name="expires" type="date"></label><button class="button button-outline" type="submit">Crea codice</button></form>
+        <div id="discount-list" class="orders-list"></div>
+      </section>
+      <section class="view" id="view-home">
+        <div class="page-heading"><div><p class="eyebrow">CONTENUTI DEL NEGOZIO</p><h1>La <i>vetrina.</i></h1></div></div>
+        <p class="section-intro">Seleziona i prodotti da evidenziare come in primo piano o nuovi arrivi. Nessuna selezione attiva finché non la salvi esplicitamente.</p>
+        <div id="home-editor"></div><button id="save-home" class="button button-outline">Salva selezioni</button>
+      </section>
+      <section class="view" id="view-analytics">
+        <div class="page-heading"><div><p class="eyebrow">SOLO DOPO CONSENSO STATISTICO</p><h1>Dati di <i>visita.</i></h1></div></div>
+        <p class="section-intro">Statistiche aggregate pseudonime, conservate per 30 giorni. Nessun IP, indirizzo preciso o registrazione video della navigazione.</p>
+        <div id="analytics-panel" class="metric-grid"></div>
       </section>
       <footer class="footer-note">Lotus Fragrance · Area operativa protetta</footer>
     </main>

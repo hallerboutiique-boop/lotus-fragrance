@@ -45,6 +45,6 @@
   document.addEventListener('pointerdown',event=>{if(!searchRow.contains(event.target)&&!searchToggle.contains(event.target))closeSearch()});
   searchRow.addEventListener('focusout',event=>{if(!searchRow.contains(event.relatedTarget))hideSuggestions()});
 
- try{const response=await fetch('products.json',{cache:'no-cache'});if(!response.ok)throw Error();products=(await response.json()).products;if(!searchRow.hidden&&searchInput.value)suggest()}
+ try{const response=await fetch('https://lotus-fragrance-accounts.fly.dev/api/catalog',{cache:'no-cache'});if(!response.ok)throw Error();products=(await response.json()).products;if(!searchRow.hidden&&searchInput.value)suggest()}
  catch{searchInput.disabled=true;searchInput.placeholder=LotusI18n.translate('Il catalogo non è momentaneamente disponibile. Ricarica la pagina per riprovare.')}
 })();

@@ -1,7 +1,7 @@
 async function initializeOffers(){
  const host=document.querySelector('#offer-grid');
  try{
-  const responses=await Promise.all([fetch('products.json?v=offers1',{cache:'no-cache'}),fetch('commerce-config.json',{cache:'no-cache'})]);
+  const responses=await Promise.all([fetch('https://lotus-fragrance-accounts.fly.dev/api/catalog',{cache:'no-cache'}),fetch('commerce-config.json',{cache:'no-cache'})]);
   if(responses.some(r=>!r.ok))throw Error();
   const [data,config]=await Promise.all(responses.map(r=>r.json()));initializeCommerce(data.products,config);
   const copy={singolo:'Aggiungi 1 profumo da 10 ml dal catalogo: 14,90 €, spedizione gratuita.',tris:'Aggiungi 3 profumi da 10 ml dal catalogo: il totale diventa automaticamente 32,90 € al checkout. Risparmi 11,80 € rispetto a tre singoli.',box:'5 profumi da 10 ml a sorpresa: li scegliamo noi casualmente al checkout. Scegli solo Uomo, Donna o Mix. Totale 49,90 €, spedizione gratuita.'};

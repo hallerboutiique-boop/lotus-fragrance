@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="checkout-i18n.css?v=1">
   <link rel="stylesheet" href="assistant.css?v=stella-online-1">
   <link rel="stylesheet" href="alignment.css?v=center-all-1">
-  <script defer src="commerce-core.js?v=standard-cart-1"></script>
+  <script defer src="commerce-core.js?v=standard-cart-1"></script><script defer src="analytics.js?v=consent-1"></script>
   <script defer src="checkout.js?v=checkout-live1"></script>
   <script defer src="assistant.js?v=concierge-context-5"></script>
 </head>
@@ -26,7 +26,7 @@
   <main class="checkout-main">
     <div class="checkout-title"><p class="eyebrow">LOTUS FRAGRANCE · ORDINE</p><h1>Il tuo <em>checkout</em></h1><p>Controlla la selezione prima di proseguire al pagamento sicuro.</p></div>
     <div class="checkout-layout">
-      <section class="checkout-order" aria-labelledby="order-title"><div class="section-title"><h2 id="order-title">Riepilogo</h2><a href="index.html#carrello">Modifica carrello</a></div><div id="checkout-items" aria-live="polite"><p>Caricamento ordine…</p></div><div class="checkout-total"><span>Totale ordine</span><strong id="checkout-total">—</strong></div><p class="shipping-included">Spedizione gratuita</p></section>
+      <section class="checkout-order" aria-labelledby="order-title"><div class="section-title"><h2 id="order-title">Riepilogo</h2><a href="index.html#carrello">Modifica carrello</a></div><div id="checkout-items" aria-live="polite"><p>Caricamento ordine…</p></div><label class="discount-field">Codice sconto<input id="discount-code" maxlength="32" autocomplete="off" placeholder="Inserisci codice"></label><button id="apply-discount" type="button">Applica codice</button><p id="discount-status" role="status" aria-live="polite"></p><div class="checkout-total"><span>Totale ordine</span><strong id="checkout-total">—</strong></div><p class="shipping-included">Spedizione gratuita</p></section>
       <aside class="checkout-next"><div class="secure-mark" aria-hidden="true">◇</div><h2>Pagamento protetto</h2><p>Pagherai nella pagina sicura di Stripe. Lì potrai inserire i dati di spedizione e scegliere tra i metodi disponibili per il tuo ordine.</p><label class="checkout-legal"><input id="checkout-legal" type="checkbox"><span>Accetto i <a href="terms.html" target="_blank" rel="noopener">Termini e condizioni</a> e confermo di aver letto le informazioni su <a href="returns.html" target="_blank" rel="noopener">resi</a> e <a href="privacy.html" target="_blank" rel="noopener">privacy</a>.</span></label><button id="checkout-pay" type="button" disabled>Procedi al pagamento <span aria-hidden="true">→</span></button><p id="checkout-status" class="checkout-status" role="status" aria-live="polite">Carica il carrello e accetta i Termini e condizioni per proseguire.</p><a class="account-shortcut" href="https://lotus-fragrance-accounts.fly.dev/">Accedi o crea il tuo profilo cliente</a></aside>
     </div>
   </main>
