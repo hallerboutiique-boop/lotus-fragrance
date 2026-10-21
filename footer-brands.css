@@ -1,0 +1,39 @@
+/* Keep the footer marks in their original brand colors and compact proportions. */
+#footer .footer-payments .payment-brand-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+#footer .footer-payments .payment-brand {
+  display: block;
+  width: auto !important;
+  max-width: 54px;
+  height: 27px;
+  object-fit: contain;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  flex: 0 0 auto;
+}
+
+#footer .footer-payments .payment-brand--satispay,
+#footer .footer-payments .payment-brand--scalapay {
+  max-width: 66px;
+}
+
+#footer .footer-social .social-icon img {
+  display: block;
+  width: 23px !important;
+  height: 23px !important;
+  object-fit: contain;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+@media (max-width: 760px) {
+  #footer .footer-payments .payment-brand-list { gap: 7px; }
+  #footer .footer-payments .payment-brand { max-width: 48px; height: 24px; }
+  #footer .footer-payments .payment-brand--satispay,
+  #footer .footer-payments .payment-brand--scalapay { max-width: 60px; }
+}
