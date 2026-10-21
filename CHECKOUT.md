@@ -1,6 +1,6 @@
 # Offerte 10 ml e checkout online
 
-Offerte autorizzate: Singolo 1 × 10 ml €14,90; Tris 3 × 10 ml €32,90, automatico sui flaconi scelti; Mystery Box 5 × 10 ml €49,90, estrazione casuale secondo la preferenza Uomo/Donna/Mix. Spedizione inclusa. Il Tris è evidenziato come «Più scelto» su richiesta del titolare, non sulla base di statistiche di vendita.
+Offerte autorizzate: Singolo 1 × 10 ml €14,90; Tris 3 × 10 ml €32,90, automatico sui flaconi scelti; Mystery Box 5 × 10 ml €49,90, estrazione casuale secondo la preferenza Uomo/Donna/Mix. Spedizione gratuita. Il Tris è evidenziato come «Più scelto» su richiesta del titolare, non sulla base di statistiche di vendita.
 
 Il titolare ha confermato disponibili tutti i 9 profumi in formato 10 ml. È stato aggiornato solo `miniature.availability`; nessun prezzo del catalogo è stato cambiato. I prezzi dei pacchetti risiedono in `commerce-core.js` come importi interi in centesimi. Le schede del catalogo mantengono i loro dati commerciali separati; quando il prezzo singolo 10 ml non è valorizzato, mostrano la tariffa Singolo di €14,90 senza modificare i campi prezzo del JSON. Eventuali prezzi già impostati restano prioritari.
 
@@ -31,7 +31,7 @@ Il carrello locale conserva ID delle offerte e delle fragranze, o la preferenza 
 
 ## Aggiornamento offerte: Tris automatico e Mystery Box
 
-Le offerte sono ora all'inizio della home, subito dopo l'hero. Singolo 14,90 €, Tris 32,90 € ogni gruppo di 3 flaconi da 10 ml scelti nel catalogo, Mystery Box 49,90 € per 5 flaconi. Spedizione inclusa. I formati normali restano invariati.
+Le offerte sono ora all'inizio della home, subito dopo l'hero. Singolo 14,90 €, Tris 32,90 € ogni gruppo di 3 flaconi da 10 ml scelti nel catalogo, Mystery Box 49,90 € per 5 flaconi. Spedizione gratuita. I formati normali restano invariati.
 
 Il carrello anticipa il totale scontato: 3 singoli = 32,90 €, 4 = 47,80 €, 6 = 65,80 €. La Mystery Box non contribuisce alla soglia Tris ed è una riga separata. I pacchetti precedentemente salvati sono conservati.
 

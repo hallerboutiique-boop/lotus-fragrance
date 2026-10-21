@@ -16,7 +16,7 @@ for(const [index,language] of ['it','en','de','fr','es','ar'].entries()){
  assert.equal(context.document.documentElement.lang,language);
  assert.equal(context.document.documentElement.dir,language==='ar'?'rtl':'ltr');
  assert.ok(api.money(14.9).includes('€'));
- if(language!=='it')for(const source of ['3 flaconi · 10 ml ciascuno','Fragranza 1','Scegli tutte le 3 fragranze.','9 profumi arabi · 2 universi','Totale · spedizione inclusa'])assert.notEqual(api.translate(source),source);
+ if(language!=='it')for(const source of ['3 flaconi · 10 ml ciascuno','Fragranza 1','Scegli tutte le 3 fragranze.','9 profumi arabi · 2 universi','Totale · spedizione gratuita','€14,90 · Spedizione gratuita'])assert.notEqual(api.translate(source),source);
  assert.equal(api.translate('Lattafa · Profumi arabi da uomo'),language==='it'?'Lattafa · Profumi arabi da uomo':'Lattafa · '+api.translate('Profumi arabi da uomo'));
 }
 for(const file of ['index.html','product.html','admin.html','catalog-editor.html','account.html','checkout.html']){

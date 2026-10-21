@@ -13,7 +13,7 @@ async function loadProduct(){
   const back=product.category;
   const href='product.html?id='+encodeURIComponent(product.id);
   const amount=Number.isFinite(variant.price)&&variant.price>0?variant.price:mini?LotusCommerce.offers.find(o=>o.id==='singolo').priceCents/100:null;
-  const price=amount?productMoney.format(amount)+(mini?' · Spedizione inclusa':''):'Prezzo da definire';
+  const price=amount?productMoney.format(amount)+' · Spedizione gratuita':'Prezzo da definire';
   const status={available:'Disponibile',unavailable:'Non disponibile',preorder:'Preordine'}[variant.availability]||'Disponibilità da confermare';
   document.title=title+' · Lotus Fragrance';
   const canonicalUrl=new URL('product.html?id='+encodeURIComponent(product.id)+(mini?'&format=10ml':''),location.origin).href;

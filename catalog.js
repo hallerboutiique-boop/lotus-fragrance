@@ -7,7 +7,7 @@ const cardHTML=(p,miniature=false)=>{
  const image=miniature?variant.image:p.image;
  const name=p.name+(miniature?' · 10 ml':'');
  const amount=Number.isFinite(variant.price)&&variant.price>0?variant.price:miniature?LotusCommerce.offers.find(o=>o.id==='singolo').priceCents/100:null;
- const price=amount?euro(amount):'Prezzo da definire';
+ const price=amount?euro(amount)+' · Spedizione gratuita':'Prezzo da definire';
  const href=productURL(p,miniature);
  return `<article class="fragrance-card"><a class="fragrance-photo" href="${href}" aria-label="Scopri ${escapeHTML(name)}"><img src="${escapeHTML(image)}" alt="${escapeHTML(name)}" loading="lazy" decoding="async" width="1000" height="1000"/></a><div class="fragrance-copy"><h4><a href="${href}">${escapeHTML(name)}</a></h4><p class="fragrance-price">${escapeHTML(price)}</p></div></article>`;
 };

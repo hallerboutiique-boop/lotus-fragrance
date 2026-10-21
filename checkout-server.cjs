@@ -98,7 +98,7 @@ async function createSession({ items, stripeKey, requestId, legalAccepted, strip
   fields.set('shipping_options[0][shipping_rate_data][type]', 'fixed_amount');
   fields.set('shipping_options[0][shipping_rate_data][fixed_amount][amount]', '0');
   fields.set('shipping_options[0][shipping_rate_data][fixed_amount][currency]', 'eur');
-  fields.set('shipping_options[0][shipping_rate_data][display_name]', 'Spedizione inclusa');
+  fields.set('shipping_options[0][shipping_rate_data][display_name]', 'Spedizione gratuita');
   fields.set('line_items[0][quantity]', '1');
   fields.set('line_items[0][price_data][currency]', 'eur');
   fields.set('line_items[0][price_data][unit_amount]', String(quote.totalCents));
