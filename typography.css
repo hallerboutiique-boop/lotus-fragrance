@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Manrope:wght@800&display=swap");
+
+:where(h1, h2, h3, h4, h5, h6) {
+  font-family: "Manrope", Arial, sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.035em;
+}
+
+:where(
+  .lede,
+  .intro > p:last-child,
+  .feature-copy > p:not(.eyebrow),
+  .offers-intro,
+  .product-description,
+  .product p:not(.eyebrow),
+  .doc .intro,
+  .doc section > p,
+  .doc li,
+  .checkout-title > p:not(.eyebrow),
+  .checkout-next > p:not(.checkout-status):not(.payment-note),
+  .account-intro,
+  .account-notice p
+) {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-style: italic !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 760px) {
+  :where(h1, h2, h3, h4, h5, h6) {
+    letter-spacing: -0.025em;
+  }
+}
